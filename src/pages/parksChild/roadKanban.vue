@@ -1,624 +1,740 @@
 <template>
-	<div class="oneCard-right">
-		<div class="UserAssets-right-top">
-			<div class="user-left">
-				<span class="user-word">道路停车</span>
-			</div>
-			<div class="users-right">
-				<myhead></myhead>
-			</div>
-		</div>
-		<div class="wulianBot">
-			<div class="wulianBotBox">
-				<div class="wulianBotBoxT">
-					<div class="T_blue"></div>
-					<span class="T_span">资源</span>
-				</div>
-				<div class="roadBot">
-					<div class="firstBox">
-						<div class="firstBoxTop">站点总量</div>
-						<div class="firstBoxBot">9548</div>
-					</div>
-					<div class="rightBox">
-						<div class="otherBoxs1">
-							<div style="color: white;">泊位数</div>
-							<div class="otherBoxsBot">
-								<div class="otherBoxsBotBox">
-									<div class="otherNum">3430</div>
-									<div class="otherWord">空闲</div>
-								</div>
-								<div class="otherBoxsBotBox">
-									<div class="otherNum">3430</div>
-									<div class="otherWord">占用</div>
-								</div>
-								<div class="otherBoxsBotBox">
-									<div class="otherNum">8547</div>
-									<div class="otherWord">使用率</div>
-								</div>
-							</div>
-						</div>
-						<div class="otherBoxs2">
-							<div style="color: white;">地磁</div>
-							<div class="otherBoxsBot">
-								<div class="otherBoxsBotBox">
-									<div class="otherNum">3430</div>
-									<div class="otherWord">空闲</div>
-								</div>
-								<div class="otherBoxsBotBox">
-									<div class="otherNum">8430</div>
-									<div class="otherWord">离线</div>
-								</div>
-							</div>
-						</div>
-						<div class="otherBoxs3">
-							<div style="color: white;">视频桩</div>
-							<div class="otherBoxsBot">
-								<div class="otherBoxsBotBox">
-									<div class="otherNum">3430</div>
-									<div class="otherWord">空闲</div>
-								</div>
-								<div class="otherBoxsBotBox">
-									<div class="otherNum">8430</div>
-									<div class="otherWord">离线</div>
-								</div>
-							</div>
-						</div>
-						<div class="otherBoxs4">
-							<div style="color: white;">巡检车</div>
-							<div class="otherBoxsBot">
-								<div class="otherBoxsBotBox">
-									<div class="otherNum">3430</div>
-									<div class="otherWord">空闲</div>
-								</div>
-								<div class="otherBoxsBotBox">
-									<div class="otherNum">8430</div>
-									<div class="otherWord">离线</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="wulianBotBox">
-				<div class="wulianBotBoxT">
-					<div class="T_blue"></div>
-					<span class="T_span">订单</span>
-				</div>
-				<div class="ziyuanBox">
-					<div class="boxBoxs">
-						<div class="boxWord">订单数</div>
-						<div class="boxNum">3420</div>
-					</div>
-					<div class="boxBoxs">
-						<div class="boxWord">停车费</div>
-						<div class="boxNum1">3420</div>
-					</div>
-					<div class="boxBoxs">
-						<div class="boxWord">已缴</div>
-						<div class="boxNum1">3420</div>
-					</div>
-					<div class="boxBoxs">
-						<div class="boxWord">欠费</div>
-						<div class="boxNum1">3420</div>
-					</div>
-					<div class="boxBoxs">
-						<div class="boxWord">退款</div>
-						<div class="boxNum1">3420</div>
-					</div>
-					<div class="boxBoxs">
-						<div class="boxWord">优惠</div>
-						<div class="boxNum1">3420</div>
-					</div>
-				</div>
-			</div>
-			<div class="wulianBotBox1">
-				<div class="roadTopBox">
-					<div class="wulianBotBoxT">
-						<div class="T_blue"></div>
-						<span class="T_span">停车场排名</span>
-					</div>
-					<div class="roadConBox">
-						<div class="jindutiaoBox" v-for="item in 10">
-							<div>1</div>
-							<div class="tingchechangName">停车场</div>
-							<div class="jindut">
-								<el-progress :text-inside="true" :stroke-width="20" :percentage="70" :format="format" square></el-progress>
-							</div>
-						</div>
-					</div>
-					<div class="roadBotBox">
-						<el-pagination background :current-page.sync.number="pagenum" @current-change="handleCurrentChange" :page-size="pagesize"
-						 layout="prev, pager, next" :total="total" small>
-						</el-pagination>
-					</div>
-				</div>
-				<div class="roadTopBox">
-					<div class="wulianBotBoxT">
-						<div class="T_blue"></div>
-						<span class="T_span">运营商排名</span>
-					</div>
-					<div class="roadConBox">
-						<div class="jindutiaoBox" v-for="item in 10">
-							<div>1</div>
-							<div class="tingchechangName">运营商</div>
-							<div class="jindut1">
-								<el-progress :text-inside="true" :stroke-width="20" :percentage="96" :format="format" square></el-progress>
-							</div>
-						</div>
-					</div>
-					<div class="roadBotBox">
-						<el-pagination background :current-page.sync.number="pagenum" @current-change="handleCurrentChange" :page-size="pagesize"
-						 layout="prev, pager, next" :total="total" small>
-						</el-pagination>
-					</div>
-				</div>
-				<div class="roadTopBox">
-					<div class="wulianBotBoxT">
-						<div class="T_blue"></div>
-						<span class="T_span">欠费排名</span>
-					</div>
-					<div class="roadConBox">
-						<div class="jindutiaoBox" v-for="item in 10">
-							<div>1</div>
-							<div class="tingchechangName">运营商</div>
-							<div class="jindut2">
-								<el-progress :text-inside="true" :stroke-width="20" :percentage="24" :format="format" square></el-progress>
-							</div>
-						</div>
-					</div>
-					<div class="roadBotBox">
-						<el-pagination background :current-page.sync.number="pagenum" @current-change="handleCurrentChange" :page-size="pagesize"
-						 layout="prev, pager, next" :total="total" small>
-						</el-pagination>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="oneCard-right">
+    <div class="UserAssets-right-top">
+      <div class="user-left">
+        <span class="user-word">道路停车</span>
+      </div>
+      <div class="users-right">
+        <myhead></myhead>
+      </div>
+    </div>
+    <div class="wulianBot">
+      <div class="wulianBotBox">
+        <div class="wulianBotBoxT">
+          <div class="T_blue"></div>
+          <span class="T_span">资源</span>
+        </div>
+        <div class="roadBot">
+          <div class="firstBox">
+            <div class="firstBoxTop">站点总量</div>
+            <div class="firstBoxBot">
+              {{ this.resourceAndRecord.station_type_3_count }}
+            </div>
+          </div>
+          <div class="rightBox">
+            <div class="otherBoxs1">
+              <div style="color: white;">泊位数</div>
+              <div class="otherBoxsBot">
+                <div class="otherBoxsBotBox">
+                  <div class="otherNum">0</div>
+                  <div class="otherWord">空闲</div>
+                </div>
+                <div class="otherBoxsBotBox">
+                  <div class="otherNum">0</div>
+                  <div class="otherWord">占用</div>
+                </div>
+                <div class="otherBoxsBotBox">
+                  <div class="otherNum">0</div>
+                  <div class="otherWord">使用率</div>
+                </div>
+              </div>
+            </div>
+            <div class="otherBoxs2">
+              <div style="color: white;">地磁</div>
+              <div class="otherBoxsBot">
+                <div class="otherBoxsBotBox">
+                  <div class="otherNum">
+                    {{ this.resourceAndRecord.charger_type_7_count_online }}
+                  </div>
+                  <div class="otherWord">在线</div>
+                </div>
+                <div class="otherBoxsBotBox">
+                  <div class="otherNum">
+                    {{ this.resourceAndRecord.charger_type_7_count }}
+                  </div>
+                  <div class="otherWord">总数</div>
+                </div>
+              </div>
+            </div>
+            <div class="otherBoxs3">
+              <div style="color: white;">视频桩</div>
+              <div class="otherBoxsBot">
+                <div class="otherBoxsBotBox">
+                  <div class="otherNum">
+                    {{
+                      this.resourceAndRecord.charger_type_10_count_online +
+                        this.resourceAndRecord.charger_type_11_count_online
+                    }}
+                  </div>
+                  <div class="otherWord">在线</div>
+                </div>
+                <div class="otherBoxsBotBox">
+                  <div class="otherNum">
+                    {{
+                      this.resourceAndRecord.charger_type_10_count +
+                        this.resourceAndRecord.charger_type_11_count
+                    }}
+                  </div>
+                  <div class="otherWord">总数</div>
+                </div>
+              </div>
+            </div>
+            <div class="otherBoxs4">
+              <div style="color: white;">巡检车</div>
+              <div class="otherBoxsBot">
+                <div class="otherBoxsBotBox">
+                  <div class="otherNum">
+                    {{ this.resourceAndRecord.charger_type_18_count_online }}
+                  </div>
+                  <div class="otherWord">在线</div>
+                </div>
+                <div class="otherBoxsBotBox">
+                  <div class="otherNum">
+                    {{ this.resourceAndRecord.charger_type_18_count }}
+                  </div>
+                  <div class="otherWord">总数</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wulianBotBox">
+        <div class="wulianBotBoxT">
+          <div class="T_blue"></div>
+          <span class="T_span">订单</span>
+        </div>
+        <div class="ziyuanBox">
+          <div class="boxBoxs">
+            <div class="boxWord">订单数</div>
+            <div class="boxNum">{{ this.resourceAndRecord.pdr_count }}</div>
+          </div>
+          <div class="boxBoxs">
+            <div class="boxWord">停车费</div>
+            <div class="boxNum1">{{ this.resourceAndRecord.pdr_amount }}</div>
+          </div>
+          <div class="boxBoxs">
+            <div class="boxWord">已缴</div>
+            <div class="boxNum1">{{ this.resourceAndRecord.pdr_paid }}</div>
+          </div>
+          <div class="boxBoxs">
+            <div class="boxWord">欠费</div>
+            <div class="boxNum1">{{ this.resourceAndRecord.pdr_debts }}</div>
+          </div>
+          <div class="boxBoxs">
+            <div class="boxWord">退款</div>
+            <div class="boxNum1">{{ this.resourceAndRecord.pdr_refund }}</div>
+          </div>
+          <div class="boxBoxs">
+            <div class="boxWord">优惠</div>
+            <div class="boxNum1">0</div>
+          </div>
+        </div>
+      </div>
+      <div class="wulianBotBox1">
+        <div class="roadTopBox">
+          <div class="wulianBotBoxT">
+            <div class="T_blue"></div>
+            <span class="T_span">停车场排名</span>
+          </div>
+          <div class="roadConBox">
+            <div class="jindutiaoBox" v-for="(item, index) in this.parkingLot">
+              <div>{{ item.descId }}</div>
+              <div class="tingchechangName">{{ item.name }}</div>
+              <div class="jindut">
+                <el-progress
+                  :text-inside="true"
+                  :stroke-width="20"
+                  :percentage="percentage1(item.pdr_amount)"
+                  :format="
+                    () => {
+                      return item.pdr_amount;
+                    }
+                  "
+                  square
+                ></el-progress>
+              </div>
+            </div>
+          </div>
+          <div class="roadBotBox">
+            <el-pagination
+              background
+              :current-page.sync.number="pagenum1"
+              @current-change="handleCurrentChange1"
+              :page-size="pagesize1"
+              layout="prev, pager, next"
+              :total="total1"
+              small
+            >
+            </el-pagination>
+          </div>
+        </div>
+        <div class="roadTopBox">
+          <div class="wulianBotBoxT">
+            <div class="T_blue"></div>
+            <span class="T_span">运营商排名</span>
+          </div>
+          <div class="roadConBox">
+            <div class="jindutiaoBox" v-for="item in 10">
+              <div>1</div>
+              <div class="tingchechangName">运营商</div>
+              <div class="jindut1">
+                <el-progress
+                  :text-inside="true"
+                  :stroke-width="20"
+                  :percentage="96"
+                  :format="format"
+                  square
+                ></el-progress>
+              </div>
+            </div>
+          </div>
+          <div class="roadBotBox">
+            <el-pagination
+              background
+              :current-page.sync.number="pagenum"
+              @current-change="handleCurrentChange"
+              :page-size="pagesize"
+              layout="prev, pager, next"
+              :total="total"
+              small
+            >
+            </el-pagination>
+          </div>
+        </div>
+        <div class="roadTopBox">
+          <div class="wulianBotBoxT">
+            <div class="T_blue"></div>
+            <span class="T_span">欠费排名</span>
+          </div>
+          <div class="roadConBox">
+            <div class="jindutiaoBox" v-for="item in 10">
+              <div>1</div>
+              <div class="tingchechangName">运营商</div>
+              <div class="jindut2">
+                <el-progress
+                  :text-inside="true"
+                  :stroke-width="20"
+                  :percentage="24"
+                  :format="format"
+                  square
+                ></el-progress>
+              </div>
+            </div>
+          </div>
+          <div class="roadBotBox">
+            <el-pagination
+              background
+              :current-page.sync.number="pagenum"
+              @current-change="handleCurrentChange"
+              :page-size="pagesize"
+              layout="prev, pager, next"
+              :total="total"
+              small
+            >
+            </el-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-	import myhead from '../../components/myhead.vue'
-	export default {
-		components: {
-			myhead
-		},
-		data() {
-			return {
-				total:1000,
-				pagenum:1,
-				pagesize: 10
-			}
-		},
-		methods: {
-			format(percentage) {
-				return percentage = '8934';
-			},
-			handleCurrentChange(newPage) {
-				console.log(1)
-			},
-		},
-		created() {
+import myhead from "../../components/myhead.vue";
+export default {
+  components: {
+    myhead
+  },
+  data() {
+    return {
+      token: "",
+      pagenum0: 1,
+      pagesize0: 10,
+      resourceAndRecord: {},
+      total1: 0,
+      pagenum1: 1,
+      pagesize1: 10,
+      maxPdrAmount: 0,
+      parkingLot: []
+    };
+  },
 
-		},
-	}
+  mounted() {
+    this.token = localStorage.getItem("token").replace(/\"/g, "");
+    this.getResourceAndRecord();
+    this.getParkingLot();
+  },
+
+  methods: {
+    percentage1(pdrAmount) {
+      return 100 * (pdrAmount / this.maxPdrAmount);
+    },
+
+    format1(percentage) {
+      return (percentage = "8934");
+    },
+
+    getResourceAndRecord() {
+      let url =
+        "admin/api/report/FA201E10D5154499BA2C74FC0998F464" +
+        "/?token=" +
+        this.token +
+        "&page=" +
+        this.pagenum0 +
+        "&row=" +
+        this.pagesize0;
+
+      this.$axios.get(url).then(res => {
+        if (res.status == 200) {
+          this.resourceAndRecord = res.data.data[0];
+        }
+      });
+    },
+    getParkingLot() {
+      let url =
+        "admin/api/report/B2C5FC2773A547978676B2759487B921" +
+        "/?token=" +
+        this.token +
+        "&page=" +
+        this.pagenum1 +
+        "&row=" +
+        this.pagesize1 +
+        "&order=pdr_amount&sort=desc";
+
+      this.$axios.get(url).then(res => {
+        if (res.status == 200) {
+          this.parkingLot = res.data.data;
+
+          for (let i = 0; i < this.pagesize1; i++) {
+            this.parkingLot[i].descId =
+              (this.pagenum1 - 1) * this.pagesize1 + i + 1;
+          }
+          if (this.pagenum1 === 1) {
+            this.maxPdrAmount = res.data.data[0].pdr_amount;
+            console.log("res");
+            console.log(this.maxPdrA);
+          }
+          this.total1 = res.data.total || 0;
+        }
+      });
+    },
+
+    //监听页码值改变
+    handleCurrentChange1(newPage) {
+      this.pagenum1 = newPage;
+      this.getParkingLot();
+    }
+  }
+};
 </script>
 
 <style scoped="scoped">
-	.oneCard-right {
-		display: flex;
-		flex: 1;
-		flex-direction: column;
-		background-color: white;
-		border-top-left-radius: 50px;
-		border-bottom-left-radius: 50px;
-	}
+.oneCard-right {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: white;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+}
 
-	.jindut {
-		flex: 1;
-	}
-	
-	.jindut1{
-		flex: 1;
-	}
-	
-	.jindut2{
-		flex: 1;
-	}
-	
-	.jindut1>>>.el-progress-bar__inner {
-		border-radius: 5px;
-		background-color: ;
-		background-image: linear-gradient(93deg, 
-				#4facfe 0%, 
-				#00f2fe 100%);
-	}
-	
-	.jindut1>>>.el-progress-bar__outer {
-		border-radius: 5px;
-		background-color: #ddecfb;
-	}
-	
-	.jindut2>>>.el-progress-bar__inner {
-		border-radius: 5px;
-		background-color: ;
-		background-image: linear-gradient(93deg, 
-				#85f4bb 0%, 
-				#8cd9e8 100%);
-	}
-	
-	.jindut2>>>.el-progress-bar__outer {
-		border-radius: 5px;
-		background-color: #ddecfb;
-	}
+.jindut {
+  flex: 1;
+}
 
-	.jindut>>>.el-progress-bar__inner {
-		border-radius: 5px;
-		background-color: ;
-		background-image: linear-gradient(88deg,
-			#3fbbfe 0%,
-			#a541ff 100%);
-	}
+.jindut1 {
+  flex: 1;
+}
 
-	.jindut>>>.el-progress-bar__outer {
-		border-radius: 5px;
-		background-color: #ddecfb;
-	}
+.jindut2 {
+  flex: 1;
+}
 
-	.tingchechangName {
-		width: 12%;
-		text-align: center;
-	}
+.jindut1 >>> .el-progress-bar__inner {
+  border-radius: 5px;
+  background-color: ;
+  background-image: linear-gradient(93deg, #4facfe 0%, #00f2fe 100%);
+}
 
-	.roadConBox {
-		width: 100%;
-		height: 370px;
-		display: flex;
-		flex-direction: column;
-	}
+.jindut1 >>> .el-progress-bar__outer {
+  border-radius: 5px;
+  background-color: #ddecfb;
+}
 
-	.jindutiaoBox {
-		width: 100%;
-		height: 10%;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-	}
+.jindut2 >>> .el-progress-bar__inner {
+  border-radius: 5px;
+  background-color: ;
+  background-image: linear-gradient(93deg, #85f4bb 0%, #8cd9e8 100%);
+}
 
-	.roadBotBox {
-		display: flex;
-		flex: 1;
-		flex-direction: row;
-		justify-content: flex-end;
-		align-items: center;
-	}
+.jindut2 >>> .el-progress-bar__outer {
+  border-radius: 5px;
+  background-color: #ddecfb;
+}
 
-	.boxNum {
-		font-size: 30px;
-		font-weight: 600;
-		color: #0000FF;
-	}
+.jindut >>> .el-progress-bar__inner {
+  border-radius: 5px;
+  background-color: ;
+  background-image: linear-gradient(88deg, #3fbbfe 0%, #a541ff 100%);
+}
 
-	.roadTopBox {
-		display: flex;
-		flex-direction: column;
-		width: 32%;
-		height: 100%;
-	}
+.jindut >>> .el-progress-bar__outer {
+  border-radius: 5px;
+  background-color: #ddecfb;
+}
 
-	.boxNum1 {
-		font-size: 30px;
-		font-weight: 600;
-		color: #f8701e;
-	}
+.tingchechangName {
+  width: 12%;
+  text-align: center;
+}
 
-	.boxBoxs {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-around;
-		align-items: center;
-		height: 70px;
-	}
+.roadConBox {
+  width: 100%;
+  height: 370px;
+  display: flex;
+  flex-direction: column;
+}
 
-	.ziyuanBox {
-		width: 100%;
-		height: 100%;
-		justify-content: space-around;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-	}
+.jindutiaoBox {
+  width: 100%;
+  height: 10%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 
-	.boxBoxs {
-		width: 15%;
-	}
+.roadBotBox {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
 
-	.otherWord {
-		height: 20px;
-		width: 50px;
-		color: white;
-		border-radius: 10px;
-		text-align: center;
-		line-height: 20px;
-	}
+.boxNum {
+  font-size: 30px;
+  font-weight: 600;
+  color: #0000ff;
+}
 
-	.otherBoxsBot {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-between;
-		width: 100%;
-	}
+.roadTopBox {
+  display: flex;
+  flex-direction: column;
+  width: 32%;
+  height: 100%;
+}
 
-	.otherNum {
-		color: white;
-		font-size: 30px;
-		font-weight: 600;
-	}
+.boxNum1 {
+  font-size: 30px;
+  font-weight: 600;
+  color: #f8701e;
+}
 
-	.otherBoxsBotBox {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-around;
-		width: 45%;
-		align-items: center;
-		height: 75px;
-	}
+.boxBoxs {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 70px;
+}
 
-	.rightBox {
-		display: flex;
-		flex-direction: row;
-		width: 85%;
-		justify-content: space-between;
-	}
+.ziyuanBox {
+  width: 100%;
+  height: 100%;
+  justify-content: space-around;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 
-	.otherBoxs1 {
-		width: 25%;
-		height: 120px;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-around;
-		align-items: center;
-		background: url(../../assets/images/bowei.png) no-repeat;
-		background-size:100% 100%;
-	}
-	
-	.otherBoxs2 {
-		width: 22%;
-		height: 120px;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-around;
-		align-items: center;
-		background: url(../../assets/images/diciB.png) no-repeat;
-		background-size:100% 100%;
-	}
-	
-	.otherBoxs3 {
-		width: 22%;
-		height: 120px;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-around;
-		align-items: center;
-		background: url(../../assets/images/shexiang.png) no-repeat;
-		background-size:100% 100%;
-	}
-	
-	.otherBoxs4 {
-		width: 22%;
-		height: 120px;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-around;
-		align-items: center;
-		background: url(../../assets/images/cheliang.png) no-repeat;
-		background-size:100% 100%;
-	}
+.boxBoxs {
+  width: 15%;
+}
 
-	.firstBoxTop {
-		height: 30px;
-		line-height: 30px;
-		color: white;
-	}
+.otherWord {
+  height: 20px;
+  width: 50px;
+  color: white;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 20px;
+}
 
-	.firstBoxBot {
-		font-size: 40px;
-		color: white;
-		font-weight: 600;
-	}
+.otherBoxsBot {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
 
-	.firstBox {
-		width: 120px;
-		height: 120px;
-		background-image: linear-gradient(88deg,
-			#0d7fff 0%,
-			#4760ff 100%);
-		display: flex;
-		flex-direction: column;
-		border-radius: 10px;
-		align-items: center;
-		justify-content: center;
-	}
+.otherNum {
+  color: white;
+  font-size: 30px;
+  font-weight: 600;
+}
 
-	.roadBot {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-around;
-		align-items: center;
-	}
+.otherBoxsBotBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 45%;
+  align-items: center;
+  height: 75px;
+}
 
-	.wulianBotBoxBot {
-		width: 100%;
-		height: 270px;
-		display: flex;
-		flex-direction: row;
-	}
+.rightBox {
+  display: flex;
+  flex-direction: row;
+  width: 85%;
+  justify-content: space-between;
+}
 
-	.CwordBox {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		width: 50px;
-		align-items: center;
-		margin: 0 auto;
-	}
+.otherBoxs1 {
+  width: 25%;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background: url(../../assets/images/bowei.png) no-repeat;
+  background-size: 100% 100%;
+}
 
-	.CwordBox1 {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		width: 65px;
-		align-items: center;
-		margin: 0 auto;
-	}
+.otherBoxs2 {
+  width: 22%;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background: url(../../assets/images/diciB.png) no-repeat;
+  background-size: 100% 100%;
+}
 
-	.Cnum {
-		font-size: 30px;
-		color: #0000FF;
-		font-weight: 600;
-	}
+.otherBoxs3 {
+  width: 22%;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background: url(../../assets/images/shexiang.png) no-repeat;
+  background-size: 100% 100%;
+}
 
-	.quan {
-		width: 15px;
-		height: 15px;
-		border-radius: 50%;
+.otherBoxs4 {
+  width: 22%;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background: url(../../assets/images/cheliang.png) no-repeat;
+  background-size: 100% 100%;
+}
 
-	}
+.firstBoxTop {
+  height: 30px;
+  line-height: 30px;
+  color: white;
+}
 
-	.green {
-		background-color: #35fb3e;
-	}
+.firstBoxBot {
+  font-size: 40px;
+  color: white;
+  font-weight: 600;
+}
 
-	.gray {
-		background-color: #a0a0a0;
-	}
+.firstBox {
+  width: 120px;
+  height: 120px;
+  background-image: linear-gradient(88deg, #0d7fff 0%, #4760ff 100%);
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+}
 
-	.blue {
-		background-color: #0000FF;
-	}
+.roadBot {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
 
-	.orange {
-		background-color: #f8701e;
-	}
+.wulianBotBoxBot {
+  width: 100%;
+  height: 270px;
+  display: flex;
+  flex-direction: row;
+}
 
-	.red {
-		background-color: #fb0c28;
-	}
+.CwordBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 50px;
+  align-items: center;
+  margin: 0 auto;
+}
 
-	.purple {
-		background-color: #ab24f8;
-	}
+.CwordBox1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 65px;
+  align-items: center;
+  margin: 0 auto;
+}
 
-	.CnumBox {
-		display: flex;
-		flex-direction: column;
-		height: 50px;
-		justify-content: space-between;
-	}
+.Cnum {
+  font-size: 30px;
+  color: #0000ff;
+  font-weight: 600;
+}
 
-	.conCon {
-		display: flex;
-		flex: 1;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-around;
-	}
+.quan {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+}
 
-	.conRight {
-		width: 30%;
-		height: 100%;
-	}
+.green {
+  background-color: #35fb3e;
+}
 
-	.Ltitle {
-		font-size: 14px;
-		width: 60%;
-		margin: 0 auto;
-	}
+.gray {
+  background-color: #a0a0a0;
+}
 
-	.Lnum {
-		font-size: 50px;
-		height: 140px;
-		color: #0000FF;
-		font-weight: 600;
-	}
+.blue {
+  background-color: #0000ff;
+}
 
-	.conLeft {
-		display: flex;
-		flex-direction: column;
-		width: 20%;
-		height: 100%;
-		align-items: center;
-		justify-content: space-around;
-	}
+.orange {
+  background-color: #f8701e;
+}
 
-	.wulianBotBoxT {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-	}
+.red {
+  background-color: #fb0c28;
+}
 
-	.T_span {
-		font-size: 18px;
-		margin-left: 5px;
-	}
+.purple {
+  background-color: #ab24f8;
+}
 
-	.wulianBotBox {
-		width: 100%;
-		height: 20%;
-	}
+.CnumBox {
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+  justify-content: space-between;
+}
 
-	.wulianBotBox1 {
-		width: 100%;
-		height: 55%;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-	}
+.conCon {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
 
-	.T_blue {
-		width: 5px;
-		height: 15px;
-		background-color: #0000FF;
-	}
+.conRight {
+  width: 30%;
+  height: 100%;
+}
 
-	.wulianBot {
-		width: 95%;
-		margin: 0 auto;
-		height: 85%;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-	}
+.Ltitle {
+  font-size: 14px;
+  width: 60%;
+  margin: 0 auto;
+}
 
-	.UserAssets-right-top {
-		display: flex;
-		flex-direction: row;
-		width: 95%;
-		margin: 20px auto;
-		margin-top: 40px;
-	}
+.Lnum {
+  font-size: 50px;
+  height: 140px;
+  color: #0000ff;
+  font-weight: 600;
+}
 
-	.user-left {
-		flex: 1;
-	}
+.conLeft {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  height: 100%;
+  align-items: center;
+  justify-content: space-around;
+}
 
-	.users-right {
-		width: 150px;
-	}
+.wulianBotBoxT {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 
-	.user-word {
-		width: 47px;
-		height: 23px;
-		font-family: PingFangSC-Regular;
-		font-size: 24px;
-		font-weight: normal;
-		font-stretch: normal;
-		line-height: 24px;
-		letter-spacing: 1px;
-		color: #000000;
-	}
+.T_span {
+  font-size: 18px;
+  margin-left: 5px;
+}
+
+.wulianBotBox {
+  width: 100%;
+  height: 20%;
+}
+
+.wulianBotBox1 {
+  width: 100%;
+  height: 55%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.T_blue {
+  width: 5px;
+  height: 15px;
+  background-color: #0000ff;
+}
+
+.wulianBot {
+  width: 95%;
+  margin: 0 auto;
+  height: 85%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.UserAssets-right-top {
+  display: flex;
+  flex-direction: row;
+  width: 95%;
+  margin: 20px auto;
+  margin-top: 40px;
+}
+
+.user-left {
+  flex: 1;
+}
+
+.users-right {
+  width: 150px;
+}
+
+.user-word {
+  width: 47px;
+  height: 23px;
+  font-family: PingFangSC-Regular;
+  font-size: 24px;
+  font-weight: normal;
+  font-stretch: normal;
+  line-height: 24px;
+  letter-spacing: 1px;
+  color: #000000;
+}
 </style>
