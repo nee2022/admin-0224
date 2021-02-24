@@ -440,6 +440,10 @@ export default {
   color: #7c7c7c;
   border: solid 1px #cddeff;
 }
+.dataTable td {
+  /* 张义华添加 */
+  height: 55px;
+}
 
 .tBox {
   text-align: center;
@@ -479,7 +483,6 @@ export default {
 
 .tableClass {
   width: 95%;
-  height: 100%;
   margin: 0 auto;
   margin-top: 20px;
 }
