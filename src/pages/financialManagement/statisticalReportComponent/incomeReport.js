@@ -24,83 +24,83 @@ export default {
       tableData: [
         {
           date: "2016-05-03",
-          name: 800,
-          province: 1000,
-          city: 6000,
-          address: 688,
-          zip: 200333
+          name: 0,
+          province: 0,
+          city: 0,
+          address: 0,
+          zip: 0
         },
         {
           date: "2016-05-02",
-          name: 800,
-          province: 1000,
-          city: 6000,
-          address: 688,
-          zip: 200333
+          name: 0,
+          province: 0,
+          city: 0,
+          address: 0,
+          zip: 0
         },
         {
           date: "2016-05-04",
-          name: 800,
-          province: 1000,
-          city: 6000,
-          address: 688,
-          zip: 200333
+          name: 0,
+          province: 0,
+          city: 0,
+          address: 0,
+          zip: 0
         },
         {
           date: "2016-05-01",
-          name: 800,
-          province: 1000,
-          city: 6000,
-          address: 688,
-          zip: 200333
+          name: 0,
+          province: 0,
+          city: 0,
+          address: 0,
+          zip: 0
         },
         {
           date: "2016-05-08",
-          name: 800,
-          province: 1000,
-          city: 6000,
-          address: 688,
-          zip: 200333
+          name: 0,
+          province: 0,
+          city: 0,
+          address: 0,
+          zip: 0
         },
         {
           date: "2016-05-06",
-          name: 800,
-          province: 1000,
-          city: 6000,
-          address: 688,
-          zip: 200333
+          name: 0,
+          province: 0,
+          city: 0,
+          address: 0,
+          zip: 0
         },
         {
           date: "2016-05-07",
-          name: 800,
-          province: 1000,
-          city: 6000,
-          address: 688,
-          zip: 200333
+          name: 0,
+          province: 0,
+          city: 0,
+          address: 0,
+          zip: 0
         },
         {
           date: "2016-05-07",
-          name: 200,
-          province: 3500,
-          city: 4200,
-          address: 500,
-          zip: 6000
+          name: 0,
+          province: 0,
+          city: 0,
+          address: 0,
+          zip: 0
         },
         {
           date: "2016-05-07",
-          name: 800,
-          province: 1000,
-          city: 6000,
-          address: 688,
-          zip: 200333
+          name: 0,
+          province: 0,
+          city: 0,
+          address: 0,
+          zip: 0
         },
         {
           date: "2016-05-07",
-          name: 800,
-          province: 1000,
-          city: 6000,
-          address: 688,
-          zip: 200333
+          name: 0,
+          province: 0,
+          city: 0,
+          address: 0,
+          zip: 0
         }
       ],
       option: "",

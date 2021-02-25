@@ -56,13 +56,13 @@
               <div class="otherBoxsBot">
                 <div class="otherBoxsBotBox">
                   <div class="otherNum">
-                    {{ resourceAndRecord.charger_type_7_count_online }}
+                    0
                   </div>
                   <div class="otherWord">在线</div>
                 </div>
                 <div class="otherBoxsBotBox">
                   <div class="otherNum">
-                    {{ resourceAndRecord.charger_type_7_count }}
+                    0
                   </div>
                   <div class="otherWord">总数</div>
                 </div>

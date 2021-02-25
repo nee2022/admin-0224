@@ -8,13 +8,13 @@
           </div>
           <div class="bottom">
             <div class="p1">
-              <span>3440</span>
+              <span>0</span>
               <span>笔数</span>
             </div>
             <div class="p2">
               <div>
-                <span>8588</span>
-                <span>.21元</span>
+                <span>0</span>
+                <span>.00元</span>
               </div>
               <span class="amount">金额</span>
             </div>
@@ -26,13 +26,13 @@
           </div>
           <div class="bottom">
             <div class="p1">
-              <span>1024</span>
+              <span>0</span>
               <span>笔数</span>
             </div>
             <div class="p2">
               <div>
-                <span>1548</span>
-                <span>.23元</span>
+                <span>0</span>
+                <span>.00元</span>
               </div>
               <span class="amount">金额</span>
             </div>
@@ -44,13 +44,13 @@
           </div>
           <div class="bottom">
             <div class="p1">
-              <span>942</span>
+              <span>0</span>
               <span>笔数</span>
             </div>
             <div class="p2">
               <div>
-                <span>2492</span>
-                <span>.15元</span>
+                <span>0</span>
+                <span>.0元</span>
               </div>
               <span class="amount">金额</span>
             </div>
@@ -62,13 +62,13 @@
           </div>
           <div class="bottom">
             <div class="p1">
-              <span>942</span>
+              <span>0</span>
               <span>笔数</span>
             </div>
             <div class="p2">
               <div class="noBorder">
-                <span>2492</span>
-                <span>.15元</span>
+                <span>0</span>
+                <span>.00元</span>
               </div>
               <span class="amount">金额</span>
             </div>

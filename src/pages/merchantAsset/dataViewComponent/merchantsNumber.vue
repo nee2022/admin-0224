@@ -8,7 +8,7 @@
           </div>
           <div class="bottom">
             <div class="p1">
-              <span>3440</span>
+              <span>0</span>
             </div>
           </div>
         </li>
@@ -19,8 +19,9 @@
           <div class="bottom">
             <div class="p2">
               <div>
-                <span>8588</span>
-                <span>.21元</span>
+                <span>0</span>
+
+                <span>.00元</span>
               </div>
             </div>
           </div>
@@ -31,7 +32,7 @@
           </div>
           <div class="bottom">
             <div class="p1">
-              <span>2880</span>
+              <span>0</span>
             </div>
           </div>
         </li>
@@ -41,7 +42,7 @@
           </div>
           <div class="bottom">
             <div class="p1">
-              <span>5800</span>
+              <span>0</span>
             </div>
           </div>
         </li>
@@ -51,7 +52,7 @@
           </div>
           <div class="bottom">
             <div class="p1">
-              <span>7220</span>
+              <span>0</span>
             </div>
           </div>
         </li>
