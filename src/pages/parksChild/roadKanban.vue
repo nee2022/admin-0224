@@ -369,6 +369,11 @@ export default {
   data() {
     return {
       resourceAndRecord: {},
+      operationData: [],
+      tableChangeInfo: {
+        itemName: "日期",
+        code: "AC5FF95637CF4B4294A6B650535F5531"
+      },
       total: 1000,
       pagenum: 1,
       pagesize: 10,
@@ -438,6 +443,7 @@ export default {
   mounted() {
     this.token = localStorage.getItem("token").replace(/\"/g, "");
     this.getResourceAndRecord();
+    this.getRoadParkingOperationReportData();
     // this.getParkingLot();
   },
   methods: {
@@ -454,37 +460,79 @@ export default {
       this.$axios.get(url).then(res => {
         if (res.status == 200) {
           this.resourceAndRecord = res.data.data[0];
-          console.log(this.resourceAndRecord);
         }
       });
     },
-    getParkingLot() {
+    // getParkingLot() {
+    //   let url =
+    //     "admin/api/report/B2C5FC2773A547978676B2759487B921" +
+    //     "/?token=" +
+    //     this.token +
+    //     "&page=" +
+    //     this.pagenum1 +
+    //     "&row=" +
+    //     this.pagesize1 +
+    //     "&order=pdr_amount&sort=desc";
+
+    //   this.$axios.get(url).then(res => {
+    //     if (res.status == 200) {
+    //       this.parkingLot = res.data.data;
+
+    //       for (let i = 0; i < this.pagesize1; i++) {
+    //         this.parkingLot[i].descId =
+    //           (this.pagenum1 - 1) * this.pagesize1 + i + 1;
+    //       }
+    //       if (this.pagenum1 === 1) {
+    //         this.maxPdrAmount = res.data.data[0].pdr_amount;
+    //         console.log("res");
+    //         console.log(this.maxPdrA);
+    //       }
+    //       this.total1 = res.data.total || 0;
+    //     }
+    //   });
+    // },
+    getRoadParkingOperationReportData() {
+      let currentDate = this.getCurrentDate();
+      let lastWeekDate = this.getLastWeekDate();
+
       let url =
-        "admin/api/report/B2C5FC2773A547978676B2759487B921" +
+        "/admin/api/report/" +
+        this.tableChangeInfo.code +
         "/?token=" +
         this.token +
-        "&page=" +
-        this.pagenum1 +
-        "&row=" +
-        this.pagesize1 +
-        "&order=pdr_amount&sort=desc";
-
+        "&from=" +
+        lastWeekDate +
+        "&to=" +
+        currentDate +
+        "&order=dt&sort=asc";
+      // console.log("url");
+      // console.log(url);
       this.$axios.get(url).then(res => {
         if (res.status == 200) {
-          this.parkingLot = res.data.data;
-
-          for (let i = 0; i < this.pagesize1; i++) {
-            this.parkingLot[i].descId =
-              (this.pagenum1 - 1) * this.pagesize1 + i + 1;
-          }
-          if (this.pagenum1 === 1) {
-            this.maxPdrAmount = res.data.data[0].pdr_amount;
-            console.log("res");
-            console.log(this.maxPdrA);
-          }
-          this.total1 = res.data.total || 0;
+          this.operationData = res.data.data;
+          console.log("res");
+          console.log(this.operationData);
+          console.log("res");
+          this.total = res.data.total || 0;
         }
       });
+    },
+    getCurrentDate() {
+      let dateString = new Date().toLocaleDateString();
+      let dateArray = dateString.split("/");
+      if (dateArray[1].length === 1) {
+        dateArray[1] = "0" + dateArray[1];
+      }
+      return dateArray.join("");
+    },
+    getLastWeekDate() {
+      let lastWeekDateTime = new Date().getTime() - 3600 * 1000 * 24 * 6;
+      let dateString = new Date(lastWeekDateTime).toLocaleDateString();
+      let dateArray = dateString.split("/");
+      if (dateArray[1].length === 1) {
+        dateArray[1] = "0" + dateArray[1];
+      }
+      return dateArray.join("");
     },
     changeBg(id) {
       this.isActive = id;
@@ -513,19 +561,12 @@ export default {
     changeBg8(id) {
       this.isActive5 = id;
     },
-    chooseDate1() {
-      console.log(this.value1);
-    },
+    chooseDate1() {},
     chooseDate() {
-      console.log(this.value3);
       this.value1 = this.value3[0];
       this.value2 = this.value3[1];
-      console.log(this.value1);
-      console.log(this.value2);
     },
-    chooseDate2() {
-      console.log(this.value2);
-    },
+    chooseDate2() {},
     drawChart1() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("myEcharts1"));
