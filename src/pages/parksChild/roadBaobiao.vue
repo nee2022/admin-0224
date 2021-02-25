@@ -41,7 +41,7 @@
           <input type="text" placeholder="请输入关键字" class="searchText" />
         </div>
         <div>
-          <el-button type="primary" icon="el-icon-search" @click="getUserMes"
+          <el-button type="primary" icon="el-icon-search" @click="getTableData"
             >查询</el-button
           >
         </div>
@@ -66,26 +66,26 @@
         <table class="tableClass">
           <tr class="firstTr">
             <td class="td1">日期</td>
-            <td class="td2">商户名</td>
-            <td class="td2">站点</td>
-            <td class="td2">订单数</td>
-            <td class="td2">停车费</td>
-            <td class="td2">已缴费</td>
-            <td class="td2">欠费</td>
-            <td class="td2">退款</td>
-            <td class="td2">优惠</td>
+            <td class="td2">x</td>
+            <td class="td2">驶入次数</td>
+            <td class="td2">应收金额</td>
+            <td class="td2">实收金额</td>
+            <td class="td2">欠费金额</td>
+            <td class="td2">x</td>
+            <td class="td2">x</td>
+            <td class="td2">x</td>
             <td class="td2">图表</td>
           </tr>
-          <tr class="dataTable" v-for="item in cardList">
+          <tr class="dataTable" v-for="item in tableData">
             <td>{{ item.dt }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.id }}</td>
+            <td>x</td>
             <td>{{ item.pdr_count }}</td>
+            <td>{{ item.pdr_amount }}</td>
             <td>{{ item.pdr_paid }}</td>
-            <td>{{ item.pdr_paid }}</td>
-            <td>{{ item.payment_service_22_count }}</td>
-            <td>{{ item.payment_service_22_count }}</td>
-            <td>{{ item.payment_service_22_count }}</td>
+            <td>{{ item.pdr_debts }}</td>
+            <td>x</td>
+            <td>x</td>
+            <td>x</td>
             <td>
               <img
                 src="../../assets/images/The chart.png"
@@ -96,31 +96,12 @@
           </tr>
         </table>
       </div>
-      <!-- <div v-show="changeList == false" class="tubiaobox">
-					<div class="tubBox" v-for="(item,i) in my">
-						<div class="tubBoxTitleBox">
-							<div class="tubBoxTitle">
-								<div class="tubBoxTitleW">用户总增长趋势</div>
-								<div @click="dialogVisible = true,changeTitle(item.title,item.name,i)">
-									<img src="../../assets/layui/images/face/26.gif">
-								</div>
-							</div>
-						</div>
-						<div class="tubBoxConBox" :id="item.name"></div>
-						<el-dialog :title="tanchuT" :visible.sync="dialogVisible" width="80%" v-if="e==i">
-							<div class="tanchubox" :id="item.name">
-							</div>
-						</el-dialog>
-					</div>
-			</div> -->
       <el-dialog title="123" :visible.sync="dialogVisible" width="70%">
-        <div class="tanchuTubiao" id="myEcharts">
-          <!-- <div class="Ttitle"></div> -->
-        </div>
+        <div class="tanchuTubiao" id="myEcharts"></div>
       </el-dialog>
     </div>
     <div class="UserAssets-bottom">
-      <div class="UserAssets-bottom-left" :data="cardList">
+      <div class="UserAssets-bottom-left" :data="tableData">
         <span>共{{ total }}条信息</span>
       </div>
       <div class="UserAssets-bottom-right">
@@ -146,7 +127,7 @@ export default {
   },
   data() {
     return {
-      cardList: [], //卡数据
+      tableData: [], //卡数据
       tanchuT: "",
       option: "",
       dateList: [
@@ -171,6 +152,7 @@ export default {
           id: 5
         }
       ],
+      code: "AC5FF95637CF4B4294A6B650535F5531",
       username: "",
       total: 1, //数据总条数
       isActive: true,
@@ -210,15 +192,30 @@ export default {
     };
   },
   created() {
-    this.token = localStorage.getItem("token");
-    this.getUserMes();
-  },
-  mounted() {
     this.token = localStorage.getItem("token").replace(/\"/g, "");
     this.getTableData();
   },
-  mounted() {},
   methods: {
+    getTableData() {
+      let url =
+        "/admin/api/report/" +
+        this.code +
+        "/?token=" +
+        this.token +
+        "&page=" +
+        this.pagenum +
+        "&row=" +
+        this.pagesize;
+
+      this.$axios.get(url).then(res => {
+        if (res.status == 200) {
+          this.tableData = res.data.data;
+          console.log("res");
+          console.log(this.tableData);
+          this.total = res.data.total || 0;
+        }
+      });
+    },
     charts(e) {
       this.$nextTick(() => {
         this.drawChart();
@@ -293,39 +290,32 @@ export default {
       myChart.setOption(option);
     },
 
-    //获取用户卡信息列表
-    getUserMes() {
-      //token去掉引号
-      let toKen = this.token.replace(/\"/g, "");
-      let url =
-        "admin/api/report/91B6D649D2CA4710AF58F04C98C06ACC/?token=" +
-        toKen +
-        "&page=" +
-        this.pagenum +
-        "&row=" +
-        this.pagesize +
-        "&order=dt&sort=desc";
-      this.$axios.get(url).then(res => {
-        // console.log(res.status)//打印状态码
-        if (res.status == 200) {
-          this.cardList = res.data.data; //用户列表数据
-          console.log(this.cardList);
-          this.total = res.data.total;
-        }
-      });
-    },
     changeIcon() {
       this.changeList = !this.changeList;
     },
 
     changeBg(id) {
       this.isBg = id;
+
+      switch (id) {
+        case 1:
+          this.code = "AC5FF95637CF4B4294A6B650535F5531";
+          break;
+        case 3:
+          this.code = "875C0991E0B6410589601DB6660634A4";
+          break;
+        case 5:
+          this.code = "158F0EA53B25482B9E26D9C29637F239";
+          break;
+        default:
+          this.code = "AC5FF95637CF4B4294A6B650535F5531";
+      }
     },
 
     //监听页码值改变
     handleCurrentChange(newPage) {
       this.pagenum = newPage;
-      this.getUserMes();
+      this.getTableData();
     }
   }
 };
