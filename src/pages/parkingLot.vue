@@ -185,7 +185,7 @@
             </template>
             <el-menu-item-group>
               <el-menu-item index="5-1">
-                <router-link to="/rpYunYingBaoBiao">
+                <router-link to="/plYunYingBaoBiao">
                   <div class="menu-op">
                     <div>
                       <img src="../assets/images/Prepaid plan.png" />
@@ -195,7 +195,7 @@
                 </router-link>
               </el-menu-item>
               <el-menu-item index="5-2">
-                <router-link to="/rpYunYingShangBaoBiao">
+                <router-link to="/plYunYingShangBaoBiao">
                   <div class="menu-op">
                     <div>
                       <img src="../assets/images/Monthly package.png" />
@@ -205,7 +205,7 @@
                 </router-link>
               </el-menu-item>
               <el-menu-item index="5-3">
-                <router-link to="/rpZhanDianBaoBiao">
+                <router-link to="/plZhanDianBaoBiao">
                   <div class="menu-op">
                     <div>
                       <img src="../assets/images/Monthly package.png" />

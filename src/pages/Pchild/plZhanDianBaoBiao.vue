@@ -2,7 +2,7 @@
   <div class="oneCard-right">
     <div class="UserAssets-right-top">
       <div class="user-left">
-        <span class="user-word">道路停车报表</span>
+        <span class="user-word">停车报表</span>
       </div>
       <div class="users-right">
         <myhead></myhead>
@@ -66,7 +66,7 @@
         <table class="tableClass">
           <tr class="firstTr">
             <td class="td1">{{ tableChangeInfo.itemName }}</td>
-            <td class="td2">账号</td>
+            <td class="td2">站点名</td>
             <td class="td2">驶入次数</td>
             <td class="td2">应收金额</td>
             <td class="td2">实收金额</td>
@@ -78,7 +78,7 @@
           </tr>
           <tr class="dataTable" v-for="item in tableData">
             <td>{{ item.dt }}</td>
-            <td>{{ item.username }}</td>
+            <td>{{ item.name }}</td>
             <td>{{ item.pdr_count }}</td>
             <td>{{ item.pdr_amount }}</td>
             <td>{{ item.pdr_paid }}</td>
@@ -130,7 +130,7 @@ export default {
       tableData: [], //卡数据
       tableChangeInfo: {
         itemName: "日期",
-        code: "F4EC29FCD4804BD29C9A52E15C5835B3"
+        code: "2981C087C584411FA19D0902C0F6F6FF"
       },
       tanchuT: "",
       option: "",
@@ -302,27 +302,27 @@ export default {
 
       switch (id) {
         case 1:
-          this.tableChangeInfo.code = "F4EC29FCD4804BD29C9A52E15C5835B3";
+          this.tableChangeInfo.code = "2981C087C584411FA19D0902C0F6F6FF";
           this.tableChangeInfo.itemName = "日期";
           break;
         case 2:
-          this.tableChangeInfo.code = "F4EC29FCD4804BD29C9A52E15C5835B3";
+          this.tableChangeInfo.code = "2981C087C584411FA19D0902C0F6F6FF";
           this.tableChangeInfo.itemName = "周期";
           break;
         case 3:
-          this.tableChangeInfo.code = "8449BE849B0B455AA6E3230AEE9D4851";
+          this.tableChangeInfo.code = "897E9584BBEE4094B76BDDD8005E29EC";
           this.tableChangeInfo.itemName = "月度";
           break;
         case 4:
-          this.tableChangeInfo.code = "F4EC29FCD4804BD29C9A52E15C5835B3";
+          this.tableChangeInfo.code = "2981C087C584411FA19D0902C0F6F6FF";
           this.tableChangeInfo.itemName = "季度";
           break;
         case 5:
-          this.tableChangeInfo.code = "64E962C6356B4C08A14615551D0D4300";
+          this.tableChangeInfo.code = "B2C5FC2773A547978676B2759487B921";
           this.tableChangeInfo.itemName = "年度";
           break;
         default:
-          this.tableChangeInfo.code = "F4EC29FCD4804BD29C9A52E15C5835B3";
+          this.tableChangeInfo.code = "2981C087C584411FA19D0902C0F6F6FF";
           this.tableChangeInfo.itemName = "日期";
       }
       this.getTableData();

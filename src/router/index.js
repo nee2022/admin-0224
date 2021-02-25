@@ -335,6 +335,21 @@ export default new Router({
           path: "/jifeiguize",
           name: "jifeiguize",
           component: () => import("../pages/Pchild/jifeiguize.vue")
+        },
+        {
+          path: "/plYunYingBaoBiao",
+          name: "plYunYingBaoBiao",
+          component: () => import("../pages/Pchild/plYunYingBaoBiao.vue")
+        },
+        {
+          path: "/plYunYingShangBaoBiao",
+          name: "plYunYingShangBaoBiao",
+          component: () => import("../pages/Pchild/plYunYingShangBaoBiao.vue")
+        },
+        {
+          path: "/plZhanDianBaoBiao",
+          name: "plZhanDianBaoBiao",
+          component: () => import("../pages/Pchild/plZhanDianBaoBiao.vue")
         }
       ],
       redirect: "/parkingChang"
@@ -381,6 +396,7 @@ export default new Router({
           name: "rpZhanDianBaoBiao",
           component: () => import("../pages/parksChild/rpZhanDianBaoBiao.vue")
         },
+
         {
           path: "/dici",
           name: "dici",
