@@ -66,33 +66,33 @@
         <table class="tableClass">
           <tr class="firstTr">
             <td class="td1">{{ tableChangeInfo.itemName }}</td>
-            <td class="td2">x</td>
+            <!-- <td class="td2">x</td> -->
             <td class="td2">缴费数量</td>
             <td class="td2">缴费金额</td>
             <td class="td2">支付金额</td>
             <td class="td2">驶入次数</td>
             <td class="td2">应收金额</td>
             <td class="td2">实收金额</td>
-            <td class="td2">x</td>
-            <td class="td2">图表</td>
+            <!-- <td class="td2">x</td>
+            <td class="td2">图表</td> -->
           </tr>
           <tr class="dataTable" v-for="item in tableData">
             <td>{{ item.dt }}</td>
-            <td>x</td>
+            <!-- <td>x</td> -->
             <td>{{ item.payment_service_22_count }}</td>
             <td>{{ item.payment_service_22_amount }}</td>
             <td>{{ item.payment_service_22_pay }}</td>
             <td>{{ item.pdr_count }}</td>
             <td>{{ item.pdr_amount }}</td>
             <td>{{ item.pdr_paid }}</td>
-            <td>x</td>
+            <!-- <td>x</td>
             <td>
               <img
                 src="../../assets/images/The chart.png"
                 @click="(dialogVisible = true), charts(e)"
                 style="cursor: pointer;"
               />
-            </td>
+            </td> -->
           </tr>
         </table>
       </div>

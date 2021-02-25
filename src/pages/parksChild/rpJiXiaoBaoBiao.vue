@@ -73,8 +73,8 @@
             <td class="td2">账单数量</td>
             <td class="td2">账单金额</td>
             <td class="td2">支付金额</td>
-            <td class="td2">x</td>
-            <td class="td2">图表</td>
+            <!-- <td class="td2">x</td> -->
+            <!-- <td class="td2">图表</td> -->
           </tr>
           <tr class="dataTable" v-for="item in tableData">
             <td>{{ item.dt }}</td>
@@ -85,14 +85,14 @@
             <td>{{ item.payment_count }}</td>
             <td>{{ item.payment_amount }}</td>
             <td>{{ item.payment_pay }}</td>
-            <td>x</td>
-            <td>
+            <!-- <td>x</td> -->
+            <!-- <td>
               <img
                 src="../../assets/images/The chart.png"
                 @click="(dialogVisible = true), charts(e)"
                 style="cursor: pointer;"
               />
-            </td>
+            </td> -->
           </tr>
         </table>
       </div>

@@ -71,10 +71,10 @@
             <td class="td2">应收金额</td>
             <td class="td2">实收金额</td>
             <td class="td2">欠费金额</td>
+            <!-- <td class="td2">x</td>
             <td class="td2">x</td>
             <td class="td2">x</td>
-            <td class="td2">x</td>
-            <td class="td2">图表</td>
+            <td class="td2">图表</td> -->
           </tr>
           <tr class="dataTable" v-for="item in tableData">
             <td>{{ item.dt }}</td>
@@ -83,7 +83,7 @@
             <td>{{ item.pdr_amount }}</td>
             <td>{{ item.pdr_paid }}</td>
             <td>{{ item.pdr_debts }}</td>
-            <td>x</td>
+            <!-- <td>x</td>
             <td>x</td>
             <td>x</td>
             <td>
@@ -92,7 +92,7 @@
                 @click="(dialogVisible = true), charts(e)"
                 style="cursor: pointer;"
               />
-            </td>
+            </td> -->
           </tr>
         </table>
       </div>
