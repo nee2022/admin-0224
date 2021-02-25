@@ -16,7 +16,7 @@
         </div>
         <div class="roadBot">
           <div class="firstBox">
-            <div class="firstBoxTop">站点总量</div>
+            <div class="firstBoxTop">道路总量</div>
             <div class="firstBoxBot">
               {{ resourceAndRecord.station_type_3_count }}
             </div>
@@ -230,7 +230,7 @@
             style="display: flex;flex-direction: row;align-items: center;height: 50px;"
           >
             <div class="T_blue"></div>
-            <span class="T_span">停车场排名</span>
+            <span class="T_span">道路排名</span>
           </div>
           <div class="dateR2">
             <div class="dateBox">
