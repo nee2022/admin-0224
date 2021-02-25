@@ -255,7 +255,7 @@
             </template>
             <el-menu-item-group>
               <el-menu-item index="5-1">
-                <router-link to="/roadBaobiao">
+                <router-link to="/rpYunYingBaoBiao">
                   <div class="menu-op">
                     <div>
                       <img src="../assets/images/Prepaid plan.png" />
@@ -265,7 +265,7 @@
                 </router-link>
               </el-menu-item>
               <el-menu-item index="5-2">
-                <router-link to="/roadBaobiao">
+                <router-link to="/rpYunYingShangBaoBiao">
                   <div class="menu-op">
                     <div>
                       <img src="../assets/images/Monthly package.png" />
@@ -275,7 +275,7 @@
                 </router-link>
               </el-menu-item>
               <el-menu-item index="5-3">
-                <router-link to="/roadBaobiao">
+                <router-link to="/rpZhanDianBaoBiao">
                   <div class="menu-op">
                     <div>
                       <img src="../assets/images/Monthly package.png" />
@@ -285,7 +285,7 @@
                 </router-link>
               </el-menu-item>
               <el-menu-item index="5-4">
-                <router-link to="/jixiaobaobiao">
+                <router-link to="/rpJiXiaoBaoBiao">
                   <div class="menu-op">
                     <div>
                       <img src="../assets/images/Monthly package.png" />

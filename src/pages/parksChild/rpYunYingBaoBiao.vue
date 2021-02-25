@@ -2,7 +2,7 @@
   <div class="oneCard-right">
     <div class="UserAssets-right-top">
       <div class="user-left">
-        <span class="user-word">绩效报表</span>
+        <span class="user-word">停车报表</span>
       </div>
       <div class="users-right">
         <myhead></myhead>
@@ -14,69 +14,20 @@
           <div v-for="item in dateList">
             <span
               :class="{ chooseB: item.id == isBg }"
-              @click="daybao(item.id), changeBg(item.id)"
+              @click="changeBg(item.id)"
               >{{ item.name }}</span
             >
           </div>
         </div>
         <div class="dateSel">
           <template>
-            <div class="block" v-show="isBg == 1">
-              <!-- 	<el-date-picker v-model="value1" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyyMMdd" @change="chooseDate">
-							</el-date-picker> -->
+            <div class="block">
               <el-date-picker
                 v-model="value1"
-                type="date"
-                placeholder="开始日期"
-                value-format="yyyyMMdd"
-                @change="chooseDate1"
-              >
-              </el-date-picker>
-              至
-              <el-date-picker
-                v-model="value2"
-                type="date"
-                placeholder="结束日期"
-                value-format="yyyyMMdd"
-                @change="chooseDate2"
-              >
-              </el-date-picker>
-            </div>
-            <div class="block" v-show="isBg == 3">
-              <el-date-picker
-                v-model="value1"
-                type="month"
-                placeholder="开始月份"
-                value-format="yyyyMM"
-                @change="chooseDate1"
-              >
-              </el-date-picker>
-              至
-              <el-date-picker
-                v-model="value2"
-                type="month"
-                placeholder="结束月份"
-                value-format="yyyyMM"
-                @change="chooseDate2"
-              >
-              </el-date-picker>
-            </div>
-            <div class="block" v-show="isBg == 5">
-              <el-date-picker
-                v-model="value1"
-                type="year"
-                placeholder="开始年份"
-                value-format="yyyy"
-                @change="chooseDate1"
-              >
-              </el-date-picker>
-              至
-              <el-date-picker
-                v-model="value2"
-                type="year"
-                placeholder="结束年份"
-                value-format="yyyy"
-                @change="chooseDate2"
+                type="daterange"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
               >
               </el-date-picker>
             </div>
@@ -90,7 +41,7 @@
           <input type="text" placeholder="请输入关键字" class="searchText" />
         </div>
         <div>
-          <el-button type="primary" icon="el-icon-search" @click="searchData()"
+          <el-button type="primary" icon="el-icon-search" @click="getTableData"
             >查询</el-button
           >
         </div>
@@ -114,31 +65,27 @@
       <div style="height: 680px;">
         <table class="tableClass">
           <tr class="firstTr">
-            <td class="td1">日期</td>
-            <td class="td2">用户名</td>
-            <td class="td2">姓名</td>
-            <td class="td2">手机号</td>
-            <td class="td2">取证次数</td>
-            <td class="td2">账单数量</td>
-            <td class="td2">账单金额</td>
-            <td class="td2">支付金额</td>
-            <td class="td2">xx</td>
+            <td class="td1">{{ tableChangeInfo.itemName }}</td>
+            <td class="td2">x</td>
+            <td class="td2">驶入次数</td>
+            <td class="td2">应收金额</td>
+            <td class="td2">实收金额</td>
+            <td class="td2">欠费金额</td>
+            <td class="td2">x</td>
+            <td class="td2">x</td>
+            <td class="td2">x</td>
             <td class="td2">图表</td>
           </tr>
-          <tr
-            class="dataTable"
-            v-for="item in cardList"
-            v-show="cardList !== ''"
-          >
+          <tr class="dataTable" v-for="item in tableData">
             <td>{{ item.dt }}</td>
-            <td>{{ item.username }}</td>
-            <td>{{ item.stationName }}</td>
-            <td>223</td>
-            <td>123</td>
-            <td>1321</td>
-            <td>223</td>
-            <td>123</td>
-            <td>1321</td>
+            <td>x</td>
+            <td>{{ item.pdr_count }}</td>
+            <td>{{ item.pdr_amount }}</td>
+            <td>{{ item.pdr_paid }}</td>
+            <td>{{ item.pdr_debts }}</td>
+            <td>x</td>
+            <td>x</td>
+            <td>x</td>
             <td>
               <img
                 src="../../assets/images/The chart.png"
@@ -147,36 +94,14 @@
               />
             </td>
           </tr>
-          <tr v-show="cardList == ''">
-            <td colspan="10" class="notMsg">暂无信息</td>
-          </tr>
         </table>
       </div>
-      <!-- <div v-show="changeList == false" class="tubiaobox">
-					<div class="tubBox" v-for="(item,i) in my">
-						<div class="tubBoxTitleBox">
-							<div class="tubBoxTitle">
-								<div class="tubBoxTitleW">用户总增长趋势</div>
-								<div @click="dialogVisible = true,changeTitle(item.title,item.name,i)">
-									<img src="../../assets/layui/images/face/26.gif">
-								</div>
-							</div>
-						</div>
-						<div class="tubBoxConBox" :id="item.name"></div>
-						<el-dialog :title="tanchuT" :visible.sync="dialogVisible" width="80%" v-if="e==i">
-							<div class="tanchubox" :id="item.name">
-							</div>
-						</el-dialog>
-					</div>
-			</div> -->
       <el-dialog title="123" :visible.sync="dialogVisible" width="70%">
-        <div class="tanchuTubiao" id="myEcharts">
-          <!-- <div class="Ttitle"></div> -->
-        </div>
+        <div class="tanchuTubiao" id="myEcharts"></div>
       </el-dialog>
     </div>
     <div class="UserAssets-bottom">
-      <div class="UserAssets-bottom-left" :data="cardList">
+      <div class="UserAssets-bottom-left" :data="tableData">
         <span>共{{ total }}条信息</span>
       </div>
       <div class="UserAssets-bottom-right">
@@ -202,33 +127,12 @@ export default {
   },
   data() {
     return {
-      cardList: [], //卡数据
-      dayList: [],
-      numList: [],
+      tableData: [], //卡数据
+      tableChangeInfo: {
+        itemName: "日期",
+        code: "AC5FF95637CF4B4294A6B650535F5531"
+      },
       tanchuT: "",
-      chooseId: 1,
-      userList: [
-        {
-          day: "2021-01-07",
-          num: 1000
-        },
-        {
-          day: "2021-01-08",
-          num: 3484
-        },
-        {
-          day: "2021-01-09",
-          num: 1823
-        },
-        {
-          day: "2021-01-10",
-          num: 5942
-        },
-        {
-          day: "2021-01-11",
-          num: 2313
-        }
-      ], //这个是我新建的
       option: "",
       dateList: [
         {
@@ -256,8 +160,6 @@ export default {
       total: 1, //数据总条数
       isActive: true,
       isBg: 1,
-      startTime: "",
-      endTime: "",
       dialogVisible: false,
       addDialogVisible: false,
       add: false,
@@ -270,7 +172,6 @@ export default {
       type: 0,
       input: "",
       value1: "",
-      value2: "",
       value: true,
       e: 0,
       typeList: [
@@ -294,35 +195,34 @@ export default {
     };
   },
   created() {
-    this.token = localStorage.getItem("token");
-    this.first();
+    this.token = localStorage.getItem("token").replace(/\"/g, "");
+    this.getTableData();
   },
-  mounted() {},
   methods: {
-    send() {
-      this.userList.forEach(day => {
-        this.dayList.push(day.day);
+    getTableData() {
+      let url =
+        "/admin/api/report/" +
+        this.tableChangeInfo.code +
+        "/?token=" +
+        this.token +
+        "&page=" +
+        this.pagenum +
+        "&row=" +
+        this.pagesize;
+
+      this.$axios.get(url).then(res => {
+        if (res.status == 200) {
+          this.tableData = res.data.data;
+          console.log("res");
+          console.log(this.tableData);
+          this.total = res.data.total || 0;
+        }
       });
-      this.userList.forEach(num => {
-        this.numList.push(num.num);
-      });
-      console.log(this.numList);
     },
     charts(e) {
       this.$nextTick(() => {
         this.drawChart();
       });
-    },
-    // chooseDate() {
-    // 	console.log(this.value1)
-    // 	this.startTime = this.value1[0]
-    // 	this.endTime = this.value1[1]
-    // },
-    chooseDate1() {
-      console.log(this.value1);
-    },
-    chooseDate2() {
-      console.log(this.value2);
     },
     drawChart() {
       // 基于准备好的dom，初始化echarts实例
@@ -392,239 +292,46 @@ export default {
       // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
     },
+
     changeIcon() {
       this.changeList = !this.changeList;
     },
 
     changeBg(id) {
       this.isBg = id;
-      this.value1 = "";
-      this.value2 = "";
-      console.log(this.isBg);
-    },
-    first() {
-      let toKen = this.token.replace(/\"/g, "");
-      // console.log(toKen)
-      this.$axios
-        .get(
-          "/admin/api/report/CCC86C79D64211EAB961FA163EC6B4B1?token=" +
-            toKen +
-            "&page=" +
-            this.pagenum +
-            "&row=10"
-        )
-        .then(res => {
-          if (res.status == 200) {
-            this.cardList = res.data.data; //用户列表数据
-            this.total = res.data.total;
-            console.log(this.cardList);
-          }
-        });
-    },
-    searchData() {
-      if (this.isBg == 1) {
-        //日报
-        let toKen = this.token.replace(/\"/g, "");
-        // console.log(toKen)
-        this.$axios
-          .get(
-            "/admin/api/report/CCC86C79D64211EAB961FA163EC6B4B1?token=" +
-              toKen +
-              "&page=" +
-              this.pagenum +
-              "&row=10&from=" +
-              this.value1 +
-              "&to=" +
-              this.value2
-          )
-          .then(res => {
-            if (res.status == 200) {
-              this.cardList = res.data.data; //用户列表数据
-              this.total = res.data.total;
-              console.log(this.cardList);
-            }
-          });
-      } else if (this.isBg == 3) {
-        //月报
-        let toKen = this.token.replace(/\"/g, "");
-        // console.log(toKen)
-        this.$axios
-          .get(
-            "/admin/api/report/913B61BDD64411EAB961FA163EC6B4B1?token=" +
-              toKen +
-              "&page=" +
-              this.pagenum +
-              "&row=10&from=" +
-              this.value1 +
-              "&to=" +
-              this.value2
-          )
-          .then(res => {
-            if (res.status == 200) {
-              this.cardList = res.data.data; //用户列表数据
-              this.total = res.data.total;
-              console.log(this.cardList);
-            }
-          });
-      } else if (this.isBg == 5) {
-        //年报
-        let toKen = this.token.replace(/\"/g, "");
-        // console.log(toKen)
-        this.$axios
-          .get(
-            "/admin/api/report/92694694D64411EAB961FA163EC6B4B1?token=" +
-              toKen +
-              "&page=" +
-              this.pagenum +
-              "&row=10&from=" +
-              this.value1 +
-              "&to=" +
-              this.value2
-          )
-          .then(res => {
-            if (res.status == 200) {
-              this.cardList = res.data.data; //用户列表数据
-              this.total = res.data.total;
-              console.log(this.cardList);
-            }
-          });
+
+      switch (id) {
+        case 1:
+          this.tableChangeInfo.code = "AC5FF95637CF4B4294A6B650535F5531";
+          this.tableChangeInfo.itemName = "日期";
+          break;
+        case 2:
+          this.tableChangeInfo.code = "AC5FF95637CF4B4294A6B650535F5531";
+          this.tableChangeInfo.itemName = "周期";
+          break;
+        case 3:
+          this.tableChangeInfo.code = "875C0991E0B6410589601DB6660634A4";
+          this.tableChangeInfo.itemName = "月度";
+          break;
+        case 4:
+          this.tableChangeInfo.code = "AC5FF95637CF4B4294A6B650535F5531";
+          this.tableChangeInfo.itemName = "季度";
+          break;
+        case 5:
+          this.tableChangeInfo.code = "158F0EA53B25482B9E26D9C29637F239";
+          this.tableChangeInfo.itemName = "年度";
+          break;
+        default:
+          this.tableChangeInfo.code = "AC5FF95637CF4B4294A6B650535F5531";
+          this.tableChangeInfo.itemName = "日期";
       }
+      this.getTableData();
     },
-    daybao(id) {
-      //让点击的id等于传进来的id
-      if (id != "") {
-        this.chooseId = id;
-      }
-      this.pagenum = 1;
-      if (this.chooseId == 1) {
-        //日报
-        let toKen = this.token.replace(/\"/g, "");
-        // console.log(toKen)
-        this.$axios
-          .get(
-            "/admin/api/report/CCC86C79D64211EAB961FA163EC6B4B1?token=" +
-              toKen +
-              "&page=" +
-              this.pagenum +
-              "&row=10"
-          )
-          .then(res => {
-            if (res.status == 200) {
-              this.cardList = res.data.data; //用户列表数据
-              this.total = res.data.total;
-              console.log(this.cardList);
-            }
-          });
-      } else if (this.chooseId == 3) {
-        //月报
-        let toKen = this.token.replace(/\"/g, "");
-        // console.log(toKen)
-        this.$axios
-          .get(
-            "/admin/api/report/913B61BDD64411EAB961FA163EC6B4B1?token=" +
-              toKen +
-              "&page=" +
-              this.pagenum +
-              "&row=10"
-          )
-          .then(res => {
-            if (res.status == 200) {
-              this.cardList = res.data.data; //用户列表数据
-              this.total = res.data.total;
-              console.log(this.cardList);
-            }
-          });
-      } else if (this.chooseId == 5) {
-        //年报
-        let toKen = this.token.replace(/\"/g, "");
-        // console.log(toKen)
-        this.$axios
-          .get(
-            "/admin/api/report/92694694D64411EAB961FA163EC6B4B1?token=" +
-              toKen +
-              "&page=" +
-              this.pagenum +
-              "&row=10"
-          )
-          .then(res => {
-            if (res.status == 200) {
-              this.cardList = res.data.data; //用户列表数据
-              this.total = res.data.total;
-              console.log(this.cardList);
-            }
-          });
-      }
-    },
+
     //监听页码值改变
     handleCurrentChange(newPage) {
       this.pagenum = newPage;
-      if (this.chooseId == 1) {
-        //日报
-        let toKen = this.token.replace(/\"/g, "");
-        // console.log(toKen)
-        this.$axios
-          .get(
-            "/admin/api/report/CCC86C79D64211EAB961FA163EC6B4B1?token=" +
-              toKen +
-              "&page=" +
-              this.pagenum +
-              "&row=10&from=" +
-              this.value1 +
-              "&to=" +
-              this.value2
-          )
-          .then(res => {
-            if (res.status == 200) {
-              this.cardList = res.data.data; //用户列表数据
-              this.total = res.data.total;
-              console.log(this.cardList);
-            }
-          });
-      } else if (this.chooseId == 3) {
-        //月报
-        let toKen = this.token.replace(/\"/g, "");
-        // console.log(toKen)
-        this.$axios
-          .get(
-            "/admin/api/report/913B61BDD64411EAB961FA163EC6B4B1?token=" +
-              toKen +
-              "&page=" +
-              this.pagenum +
-              "&row=10&from=" +
-              this.value1 +
-              "&to=" +
-              this.value2
-          )
-          .then(res => {
-            if (res.status == 200) {
-              this.cardList = res.data.data; //用户列表数据
-              this.total = res.data.total;
-              console.log(this.cardList);
-            }
-          });
-      } else if (this.chooseId == 5) {
-        //年报
-        let toKen = this.token.replace(/\"/g, "");
-        // console.log(toKen)
-        this.$axios
-          .get(
-            "/admin/api/report/92694694D64411EAB961FA163EC6B4B1?token=" +
-              toKen +
-              "&page=" +
-              this.pagenum +
-              "&row=10&from=" +
-              this.value1 +
-              "&to=" +
-              this.value2
-          )
-          .then(res => {
-            if (res.status == 200) {
-              this.cardList = res.data.data; //用户列表数据
-              this.total = res.data.total;
-              console.log(this.cardList);
-            }
-          });
-      }
+      this.getTableData();
     }
   }
 };
@@ -739,6 +446,10 @@ export default {
   color: #7c7c7c;
   border: solid 1px #cddeff;
 }
+.dataTable td {
+  /* 张义华添加 */
+  height: 55px;
+}
 
 .tBox {
   text-align: center;
@@ -776,13 +487,8 @@ export default {
   border-right: solid 1px #cddeff;
 }
 
-.dateSel >>> .el-date-editor.el-input {
-  width: 150px;
-}
-
 .tableClass {
   width: 95%;
-  height: 100%;
   margin: 0 auto;
   margin-top: 20px;
 }
@@ -1061,11 +767,6 @@ export default {
   cursor: pointer;
 }
 
-.notMsg {
-  text-align: center;
-  font-size: 18px;
-}
-
 .imgBoxOff {
   width: 450px;
   height: 160px;
@@ -1094,18 +795,8 @@ export default {
 
 .dateSel >>> .el-input__inner {
   height: 40px;
-  border: none;
-  text-align: center;
-}
-
-.block {
-  width: 350px;
-  border: solid 1px #1e69fe;
   border-radius: 5px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  border: solid 1px #1e69fe;
 }
 
 .el-table td div {
