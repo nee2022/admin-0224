@@ -42,16 +42,16 @@
           <el-button type="primary">打印</el-button>
         </div>
         <div class="toggleTable">
-          <div v-if="chart" class="listButton" @click="toggleListTable">
+          <div v-show="chart" class="listButton" @click="toggleListTable">
             <img src="../../../assets/images/listIcon.png" alt="" />
           </div>
-          <div v-if="!chart" class="chartButton" @click="toggleChartTable">
+          <div v-show="!chart" class="chartButton" @click="toggleChartTable">
             <img src="../../../assets/images/chartIcon.png" alt="" />
           </div>
         </div>
       </div>
       <div class="section2">
-        <template v-if="!chart">
+        <template v-show="!chart">
           <div class="el-table-wrapper">
             <el-table :data="tableData" style="width: 100%">
               <el-table-column prop="date" label="日期"> </el-table-column>
@@ -77,7 +77,7 @@
             </el-table>
           </div>
         </template>
-        <template v-if="chart">
+        <template v-show="chart">
           <swiper
             :options="swiperOption"
             ref="mySwiper"
@@ -150,49 +150,9 @@
             <div class="swiper-scrollbar" slot="scrollbar"></div>
           </swiper>
         </template>
-        <!-- <template v-if="chart">
-          <ul class="chartItems not-select">
-            <li>
-              <div class="echartWrapper">
-                <div id="incomeReportEchart1"></div>
-                <div class="echartBar"><span>订单总数</span></div>
-              </div>
-            </li>
-            <li>
-              <div class="echartWrapper">
-                <div id="incomeReportEchart2"></div>
-                <div class="echartBar"><span>订单金额</span></div>
-              </div>
-            </li>
-            <li>
-              <div class="echartWrapper">
-                <div id="incomeReportEchart3"></div>
-                <div class="echartBar"><span>收入金额</span></div>
-              </div>
-            </li>
-            <li>
-              <div class="echartWrapper">
-                <div id="incomeReportEchart4"></div>
-                <div class="echartBar"><span>充值金额</span></div>
-              </div>
-            </li>
-            <li>
-              <div class="echartWrapper">
-                <div id="incomeReportEchart5"></div>
-                <div class="echartBar"><span>收入金额增长趋势</span></div>
-              </div>
-            </li>
-            <li>
-              <div class="echartWrapper">
-                <div id="incomeReportEchart6"></div>
-                <div class="echartBar"><span>支出金额增长趋势</span></div>
-              </div>
-            </li>
-          </ul>
-        </template> -->
       </div>
     </section>
-    <footer v-if="!chart">
+    <footer v-show="!chart">
       <div class="total" :data="tableData">
         <span>共{{ total }}条信息</span>
       </div>

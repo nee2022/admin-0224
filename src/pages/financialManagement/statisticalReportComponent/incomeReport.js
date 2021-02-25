@@ -17,6 +17,10 @@ export default {
         // 所有的参数同 swiper 官方 api 参数
         // ...
       },
+      tableChangeInfo: {
+        itemName: "日期",
+        code: "0ADC1C7B022B4EE790CEF99236F5C9A9"
+      },
       tableData: [
         {
           date: "2016-05-03",
@@ -143,6 +147,38 @@ export default {
     });
   },
   methods: {
+    callback() {
+      console.log("callback");
+    },
+    changeBg(id) {
+      this.isBg = id;
+      switch (id) {
+        case 1:
+          this.tableChangeInfo.code = "0ADC1C7B022B4EE790CEF99236F5C9A9";
+          this.tableChangeInfo.itemName = "日期";
+          break;
+        case 2:
+          this.tableChangeInfo.code = "0ADC1C7B022B4EE790CEF99236F5C9A9";
+          this.tableChangeInfo.itemName = "周期";
+          break;
+        case 3:
+          this.tableChangeInfo.code = "BEDFEA46D8A74AECB1665E287A75D029";
+          this.tableChangeInfo.itemName = "月度";
+          break;
+        case 4:
+          this.tableChangeInfo.code = "0ADC1C7B022B4EE790CEF99236F5C9A9";
+          this.tableChangeInfo.itemName = "季度";
+          break;
+        case 5:
+          this.tableChangeInfo.code = "91E81EC66D324087860BCD30B747B420";
+          this.tableChangeInfo.itemName = "年度";
+          break;
+        default:
+          this.tableChangeInfo.code = "0ADC1C7B022B4EE790CEF99236F5C9A9";
+          this.tableChangeInfo.itemName = "日期";
+      }
+      this.getTableData();
+    },
     m1: function() {
       this.swiper.slideTo(0, 100, false);
     },
@@ -154,7 +190,6 @@ export default {
     },
     toggleChartTable() {
       this.chart = true;
-
       this.$nextTick(() => {
         this.drawIncomeReportEchart1();
         this.drawIncomeReportEchart2();
