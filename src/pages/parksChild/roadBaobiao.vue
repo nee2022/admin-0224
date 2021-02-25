@@ -65,7 +65,7 @@
       <div style="height: 680px;">
         <table class="tableClass">
           <tr class="firstTr">
-            <td class="td1">日期</td>
+            <td class="td1">{{ tableChangeInfo.itemName }}</td>
             <td class="td2">x</td>
             <td class="td2">驶入次数</td>
             <td class="td2">应收金额</td>
@@ -128,6 +128,10 @@ export default {
   data() {
     return {
       tableData: [], //卡数据
+      tableChangeInfo: {
+        itemName: "日期",
+        code: "AC5FF95637CF4B4294A6B650535F5531"
+      },
       tanchuT: "",
       option: "",
       dateList: [
@@ -152,7 +156,6 @@ export default {
           id: 5
         }
       ],
-      code: "AC5FF95637CF4B4294A6B650535F5531",
       username: "",
       total: 1, //数据总条数
       isActive: true,
@@ -199,7 +202,7 @@ export default {
     getTableData() {
       let url =
         "/admin/api/report/" +
-        this.code +
+        this.tableChangeInfo.code +
         "/?token=" +
         this.token +
         "&page=" +
@@ -299,17 +302,30 @@ export default {
 
       switch (id) {
         case 1:
-          this.code = "AC5FF95637CF4B4294A6B650535F5531";
+          this.tableChangeInfo.code = "AC5FF95637CF4B4294A6B650535F5531";
+          this.tableChangeInfo.itemName = "日期";
+          break;
+        case 2:
+          this.tableChangeInfo.code = "AC5FF95637CF4B4294A6B650535F5531";
+          this.tableChangeInfo.itemName = "周期";
           break;
         case 3:
-          this.code = "875C0991E0B6410589601DB6660634A4";
+          this.tableChangeInfo.code = "875C0991E0B6410589601DB6660634A4";
+          this.tableChangeInfo.itemName = "月度";
+          break;
+        case 4:
+          this.tableChangeInfo.code = "AC5FF95637CF4B4294A6B650535F5531";
+          this.tableChangeInfo.itemName = "季度";
           break;
         case 5:
-          this.code = "158F0EA53B25482B9E26D9C29637F239";
+          this.tableChangeInfo.code = "158F0EA53B25482B9E26D9C29637F239";
+          this.tableChangeInfo.itemName = "年度";
           break;
         default:
-          this.code = "AC5FF95637CF4B4294A6B650535F5531";
+          this.tableChangeInfo.code = "AC5FF95637CF4B4294A6B650535F5531";
+          this.tableChangeInfo.itemName = "日期";
       }
+      this.getTableData();
     },
 
     //监听页码值改变
