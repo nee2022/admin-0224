@@ -42,16 +42,16 @@
           <el-button type="primary">打印</el-button>
         </div>
         <div class="toggleTable">
-          <div v-show="chart" class="listButton" @click="toggleListTable">
+          <div v-if="chart" class="listButton" @click="toggleListTable">
             <img src="../../../assets/images/listIcon.png" alt="" />
           </div>
-          <div v-show="!chart" class="chartButton" @click="toggleChartTable">
+          <div v-if="!chart" class="chartButton" @click="toggleChartTable">
             <img src="../../../assets/images/chartIcon.png" alt="" />
           </div>
         </div>
       </div>
       <div class="section2">
-        <template v-show="!chart">
+        <template v-if="!chart">
           <div class="el-table-wrapper">
             <el-table :data="tableData" style="width: 100%">
               <el-table-column prop="date" label="日期"> </el-table-column>
@@ -77,7 +77,7 @@
             </el-table>
           </div>
         </template>
-        <template v-show="chart">
+        <template v-if="chart">
           <swiper
             :options="swiperOption"
             ref="mySwiper"
@@ -152,7 +152,7 @@
         </template>
       </div>
     </section>
-    <footer v-show="!chart">
+    <footer v-if="!chart">
       <div class="total" :data="tableData">
         <span>共{{ total }}条信息</span>
       </div>

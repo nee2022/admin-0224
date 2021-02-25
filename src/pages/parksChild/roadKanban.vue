@@ -1,740 +1,1173 @@
 <template>
-  <div class="oneCard-right">
-    <div class="UserAssets-right-top">
-      <div class="user-left">
-        <span class="user-word">道路停车</span>
-      </div>
-      <div class="users-right">
-        <myhead></myhead>
-      </div>
-    </div>
-    <div class="wulianBot">
-      <div class="wulianBotBox">
-        <div class="wulianBotBoxT">
-          <div class="T_blue"></div>
-          <span class="T_span">资源</span>
-        </div>
-        <div class="roadBot">
-          <div class="firstBox">
-            <div class="firstBoxTop">站点总量</div>
-            <div class="firstBoxBot">
-              {{ this.resourceAndRecord.station_type_3_count }}
-            </div>
-          </div>
-          <div class="rightBox">
-            <div class="otherBoxs1">
-              <div style="color: white;">泊位数</div>
-              <div class="otherBoxsBot">
-                <div class="otherBoxsBotBox">
-                  <div class="otherNum">0</div>
-                  <div class="otherWord">空闲</div>
-                </div>
-                <div class="otherBoxsBotBox">
-                  <div class="otherNum">0</div>
-                  <div class="otherWord">占用</div>
-                </div>
-                <div class="otherBoxsBotBox">
-                  <div class="otherNum">0</div>
-                  <div class="otherWord">使用率</div>
-                </div>
-              </div>
-            </div>
-            <div class="otherBoxs2">
-              <div style="color: white;">地磁</div>
-              <div class="otherBoxsBot">
-                <div class="otherBoxsBotBox">
-                  <div class="otherNum">
-                    {{ this.resourceAndRecord.charger_type_7_count_online }}
-                  </div>
-                  <div class="otherWord">在线</div>
-                </div>
-                <div class="otherBoxsBotBox">
-                  <div class="otherNum">
-                    {{ this.resourceAndRecord.charger_type_7_count }}
-                  </div>
-                  <div class="otherWord">总数</div>
-                </div>
-              </div>
-            </div>
-            <div class="otherBoxs3">
-              <div style="color: white;">视频桩</div>
-              <div class="otherBoxsBot">
-                <div class="otherBoxsBotBox">
-                  <div class="otherNum">
-                    {{
-                      this.resourceAndRecord.charger_type_10_count_online +
-                        this.resourceAndRecord.charger_type_11_count_online
-                    }}
-                  </div>
-                  <div class="otherWord">在线</div>
-                </div>
-                <div class="otherBoxsBotBox">
-                  <div class="otherNum">
-                    {{
-                      this.resourceAndRecord.charger_type_10_count +
-                        this.resourceAndRecord.charger_type_11_count
-                    }}
-                  </div>
-                  <div class="otherWord">总数</div>
-                </div>
-              </div>
-            </div>
-            <div class="otherBoxs4">
-              <div style="color: white;">巡检车</div>
-              <div class="otherBoxsBot">
-                <div class="otherBoxsBotBox">
-                  <div class="otherNum">
-                    {{ this.resourceAndRecord.charger_type_18_count_online }}
-                  </div>
-                  <div class="otherWord">在线</div>
-                </div>
-                <div class="otherBoxsBotBox">
-                  <div class="otherNum">
-                    {{ this.resourceAndRecord.charger_type_18_count }}
-                  </div>
-                  <div class="otherWord">总数</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="wulianBotBox">
-        <div class="wulianBotBoxT">
-          <div class="T_blue"></div>
-          <span class="T_span">订单</span>
-        </div>
-        <div class="ziyuanBox">
-          <div class="boxBoxs">
-            <div class="boxWord">订单数</div>
-            <div class="boxNum">{{ this.resourceAndRecord.pdr_count }}</div>
-          </div>
-          <div class="boxBoxs">
-            <div class="boxWord">停车费</div>
-            <div class="boxNum1">{{ this.resourceAndRecord.pdr_amount }}</div>
-          </div>
-          <div class="boxBoxs">
-            <div class="boxWord">已缴</div>
-            <div class="boxNum1">{{ this.resourceAndRecord.pdr_paid }}</div>
-          </div>
-          <div class="boxBoxs">
-            <div class="boxWord">欠费</div>
-            <div class="boxNum1">{{ this.resourceAndRecord.pdr_debts }}</div>
-          </div>
-          <div class="boxBoxs">
-            <div class="boxWord">退款</div>
-            <div class="boxNum1">{{ this.resourceAndRecord.pdr_refund }}</div>
-          </div>
-          <div class="boxBoxs">
-            <div class="boxWord">优惠</div>
-            <div class="boxNum1">0</div>
-          </div>
-        </div>
-      </div>
-      <div class="wulianBotBox1">
-        <div class="roadTopBox">
-          <div class="wulianBotBoxT">
-            <div class="T_blue"></div>
-            <span class="T_span">停车场排名</span>
-          </div>
-          <div class="roadConBox">
-            <div class="jindutiaoBox" v-for="(item, index) in this.parkingLot">
-              <div>{{ item.descId }}</div>
-              <div class="tingchechangName">{{ item.name }}</div>
-              <div class="jindut">
-                <el-progress
-                  :text-inside="true"
-                  :stroke-width="20"
-                  :percentage="percentage1(item.pdr_amount)"
-                  :format="
-                    () => {
-                      return item.pdr_amount;
-                    }
-                  "
-                  square
-                ></el-progress>
-              </div>
-            </div>
-          </div>
-          <div class="roadBotBox">
-            <el-pagination
-              background
-              :current-page.sync.number="pagenum1"
-              @current-change="handleCurrentChange1"
-              :page-size="pagesize1"
-              layout="prev, pager, next"
-              :total="total1"
-              small
-            >
-            </el-pagination>
-          </div>
-        </div>
-        <div class="roadTopBox">
-          <div class="wulianBotBoxT">
-            <div class="T_blue"></div>
-            <span class="T_span">运营商排名</span>
-          </div>
-          <div class="roadConBox">
-            <div class="jindutiaoBox" v-for="item in 10">
-              <div>1</div>
-              <div class="tingchechangName">运营商</div>
-              <div class="jindut1">
-                <el-progress
-                  :text-inside="true"
-                  :stroke-width="20"
-                  :percentage="96"
-                  :format="format"
-                  square
-                ></el-progress>
-              </div>
-            </div>
-          </div>
-          <div class="roadBotBox">
-            <el-pagination
-              background
-              :current-page.sync.number="pagenum"
-              @current-change="handleCurrentChange"
-              :page-size="pagesize"
-              layout="prev, pager, next"
-              :total="total"
-              small
-            >
-            </el-pagination>
-          </div>
-        </div>
-        <div class="roadTopBox">
-          <div class="wulianBotBoxT">
-            <div class="T_blue"></div>
-            <span class="T_span">欠费排名</span>
-          </div>
-          <div class="roadConBox">
-            <div class="jindutiaoBox" v-for="item in 10">
-              <div>1</div>
-              <div class="tingchechangName">运营商</div>
-              <div class="jindut2">
-                <el-progress
-                  :text-inside="true"
-                  :stroke-width="20"
-                  :percentage="24"
-                  :format="format"
-                  square
-                ></el-progress>
-              </div>
-            </div>
-          </div>
-          <div class="roadBotBox">
-            <el-pagination
-              background
-              :current-page.sync.number="pagenum"
-              @current-change="handleCurrentChange"
-              :page-size="pagesize"
-              layout="prev, pager, next"
-              :total="total"
-              small
-            >
-            </el-pagination>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="road-right">
+		<div class="UserAssets-right-top">
+			<div class="user-left">
+				<span class="user-word">道路停车</span>
+			</div>
+			<div class="users-right">
+				<myhead></myhead>
+			</div>
+		</div>
+		<div class="wulianBot">
+			<div class="wulianBotBox">
+				<div class="wulianBotBoxT">
+					<div class="T_blue"></div>
+					<span class="T_span">资源</span>
+				</div>
+				<div class="roadBot">
+					<div class="firstBox">
+						<div class="firstBoxTop">站点总量</div>
+						<div class="firstBoxBot">9548</div>
+					</div>
+					<div class="rightBox">
+						<div class="otherBoxs1">
+							<div style="color: white;">泊位数</div>
+							<div class="otherBoxsBot">
+								<div class="otherBoxsBotBox">
+									<div class="otherNum">3430</div>
+									<div class="otherWord">空闲</div>
+								</div>
+								<div class="otherBoxsBotBox">
+									<div class="otherNum">3430</div>
+									<div class="otherWord">占用</div>
+								</div>
+								<div class="otherBoxsBotBox">
+									<el-progress type="circle" :percentage="25" stroke-width="10" width="60" format></el-progress>
+									<div class="otherWord">占用率</div>
+								</div>
+							</div>
+						</div>
+						<div class="otherBoxs2">
+							<div style="color: white;">地磁</div>
+							<div class="otherBoxsBot">
+								<div class="otherBoxsBotBox">
+									<div class="otherNum">3430</div>
+									<div class="otherWord">空闲</div>
+								</div>
+								<div class="otherBoxsBotBox">
+									<div class="otherNum">8430</div>
+									<div class="otherWord">离线</div>
+								</div>
+							</div>
+						</div>
+						<div class="otherBoxs3">
+							<div style="color: white;">视频桩</div>
+							<div class="otherBoxsBot">
+								<div class="otherBoxsBotBox">
+									<div class="otherNum">3430</div>
+									<div class="otherWord">空闲</div>
+								</div>
+								<div class="otherBoxsBotBox">
+									<div class="otherNum">8430</div>
+									<div class="otherWord">离线</div>
+								</div>
+							</div>
+						</div>
+						<div class="otherBoxs4">
+							<div style="color: white;">巡检车</div>
+							<div class="otherBoxsBot">
+								<div class="otherBoxsBotBox">
+									<div class="otherNum">3430</div>
+									<div class="otherWord">空闲</div>
+								</div>
+								<div class="otherBoxsBotBox">
+									<div class="otherNum">8430</div>
+									<div class="otherWord">离线</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="wulianBotBox">
+				<div class="wulianBotBoxT">
+					<div class="T_blue"></div>
+					<span class="T_span">订单</span>
+				</div>
+				<div class="ziyuanBox">
+					<div class="boxBoxs">
+						<div class="boxWord">订单数</div>
+						<div class="boxNum">3420</div>
+					</div>
+					<div class="boxBoxs">
+						<div class="boxWord">停车费</div>
+						<div class="boxNum1">3420</div>
+					</div>
+					<div class="boxBoxs">
+						<div class="boxWord">已缴</div>
+						<div class="boxNum1">3420</div>
+					</div>
+					<div class="boxBoxs">
+						<div class="boxWord">欠费</div>
+						<div class="boxNum1">3420</div>
+					</div>
+					<div class="boxBoxs">
+						<div class="boxWord">退款</div>
+						<div class="boxNum1">3420</div>
+					</div>
+					<div class="boxBoxs">
+						<div class="boxWord">优惠</div>
+						<div class="boxNum1">3420</div>
+					</div>
+				</div>
+			</div>
+			<div class="wulianBotBox1">
+				<div class="roadTopBox">
+					<div style="display: flex;flex-direction: row;align-items: center;height: 50px;">
+						<div class="T_blue"></div>
+						<span class="T_span">停车数据曲线</span>
+					</div>
+					<div class="dateR">
+						<div class="dateBox3">
+							<div class="blueBoxs" v-for="item in dateList" :class="{ BGactive:item.id == isActive }" @click="changeBg(item.id)">{{item.name}}</div>
+						</div>
+						<div class="dateSel">
+							<template>
+								<div class="block" v-show="isBg == 1">
+									<el-date-picker v-model="value3" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"
+									 value-format="yyyyMMdd" @change="chooseDate">
+									</el-date-picker>
+									<!-- <el-date-picker v-model="value1" type="date" placeholder="开始日期" value-format="yyyyMMdd" @change="chooseDate1">
+									</el-date-picker>
+									至
+									<el-date-picker v-model="value2" type="date" placeholder="结束日期" value-format="yyyyMMdd" @change="chooseDate2">
+									</el-date-picker> -->
+								</div>
+								<div class="block" v-show="isBg == 2">
+									<el-date-picker v-model="value3" type="monthrange" range-separator="至" start-placeholder="开始月份"
+									 end-placeholder="结束月份" value-format="yyyyMM" @change="chooseDate">
+									</el-date-picker>
+								</div>
+								<div class="block" v-show="isBg == 3">
+									<el-date-picker v-model="value1" type="year" placeholder="开始年份" value-format="yyyy" @change="chooseDate1">
+									</el-date-picker>
+									至
+									<el-date-picker v-model="value2" type="year" placeholder="结束年份" value-format="yyyy" @change="chooseDate2">
+									</el-date-picker>
+								</div>
+							</template>
+						</div>
+						<div>
+							<el-button type="primary" icon="el-icon-search" @click="searchData()">查询</el-button>
+						</div>
+					</div>
+				</div>
+				<div class="charstBox1" id="myEcharts1">
+				</div>
+			</div>
+			<div class="wulianBotBox1">
+				<div class="roadTopBox">
+					<div style="display: flex;flex-direction: row;align-items: center;height: 50px;">
+						<div class="T_blue"></div>
+						<span class="T_span">停车场排名</span>
+					</div>
+					<div class="dateR2">
+						<div class="dateBox">
+							<div class="blueBoxs" v-for="item in day" :class="{ BGactive:item.id == isActive1 }" @click="changeBg1(item.id)">{{item.name}}</div>
+						</div>
+						<div class="dateBox1">
+							<div class="blueBoxs1" v-for="item in shouList" :class="{ BGactive:item.id == isActive2 }" @click="changeBg2(item.id)">{{item.name}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="charstBox1" id="myEcharts2">
+				</div>
+			</div>
+			<div class="wulianBotBox1">
+				<div class="roadTopBox">
+					<div style="display: flex;flex-direction: row;align-items: center;height: 50px;">
+						<div class="T_blue"></div>
+						<span class="T_span">运营商排名</span>
+					</div>
+					<div class="dateR2">
+						<div class="dateBox">
+							<div class="blueBoxs" v-for="item in day" :class="{ BGactive:item.id == isActive3 }" @click="changeBg3(item.id)">{{item.name}}</div>
+						</div>
+						<div class="dateBox1">
+							<div class="blueBoxs1" v-for="item in shouList" :class="{ BGactive:item.id == isActive4 }" @click="changeBg4(item.id)">{{item.name}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="charstBox1" id="myEcharts3">
+				</div>
+			</div>
+			<div class="wulianBotBox1">
+				<div class="roadTopBox">
+					<div style="display: flex;flex-direction: row;align-items: center;height: 50px;">
+						<div class="T_blue"></div>
+						<span class="T_span">欠费排名</span>
+					</div>
+					<div class="dateR2">
+						<div class="dateBox">
+							<div class="blueBoxs" v-for="item in day" :class="{ BGactive:item.id == isActive5 }" @click="changeBg5(item.id)">{{item.name}}</div>
+						</div>
+						<div class="dateBox1">
+							<div class="blueBoxs1" v-for="item in shouList" :class="{ BGactive:item.id == isActive6 }" @click="changeBg6(item.id)">{{item.name}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="charstBox1" id="myEcharts4">
+				</div>
+			</div>
+			<div class="wulianBotBox1">
+				<div class="roadTopBox">
+					<div style="display: flex;flex-direction: row;align-items: center;height: 50px;">
+						<div class="T_blue"></div>
+						<span class="T_span">收费员绩效排名</span>
+					</div>
+					<div class="dateR2">
+						<div class="dateBox">
+							<div class="blueBoxs" v-for="item in day" :class="{ BGactive:item.id == isActive7 }" @click="changeBg7(item.id)">{{item.name}}</div>
+						</div>
+						<div class="dateBox1">
+							<div class="blueBoxs1" v-for="item in shouList" :class="{ BGactive:item.id == isActive8 }" @click="changeBg8(item.id)">{{item.name}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="charstBox1" id="myEcharts5">
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
-import myhead from "../../components/myhead.vue";
-export default {
-  components: {
-    myhead
-  },
-  data() {
-    return {
-      token: "",
-      pagenum0: 1,
-      pagesize0: 10,
-      resourceAndRecord: {},
-      total1: 0,
-      pagenum1: 1,
-      pagesize1: 10,
-      maxPdrAmount: 0,
-      parkingLot: []
-    };
-  },
+	import myhead from '../../components/myhead.vue'
+	export default {
+		components: {
+			myhead
+		},
+		data() {
+			return {
+				total: 1000,
+				pagenum: 1,
+				pagesize: 10,
+				isActive: 1,
+				isActive1: 1,
+				isActive2: 1,
+				isActive3: 1,
+				isActive4: 1,
+				isActive5: 1,
+				isActive6: 1,
+				isActive7: 1,
+				isActive8: 1,
+				isBg: 1,
+				isBg2: 1,
+				value1: '',
+				value2: '',
+				value3: '',
+				shouList: [{
+						name: '收入',
+						id: 1
+					},
+					{
+						name: '取证率',
+						id: 2
+					}
+				],
+				day: [{
+						name: '今年',
+						id: 1
+					},
+					{
+						name: '本月',
+						id: 2
+					},
+					{
+						name: '今天',
+						id: 3
+					}
+				],
+				dateList: [{
+						name: '近一周',
+						id: 1
+					},
+					{
+						name: '近一月',
+						id: 2
+					},
+					{
+						name: '近一年',
+						id: 3
+					}
+				]
+			}
+		},
+		created() {
+			this.$nextTick(() => {
+				this.drawChart1();
+				this.drawChart2();
+				this.drawChart3();
+				this.drawChart4();
+				this.drawChart5();
+			});
+		},
+		methods: {
+			changeBg(id) {
+				this.isActive = id;
+			},
+			changeBg1(id) {
+				this.isActive1 = id;
+			},
+			changeBg2(id) {
+				this.isActive2 = id;
+			},
+			changeBg3(id) {
+				this.isActive3 = id;
+			},
+			changeBg4(id) {
+				this.isActive4 = id;
+			},
+			changeBg5(id) {
+				this.isActive5 = id;
+			},
+			changeBg6(id) {
+				this.isActive3 = id;
+			},
+			changeBg7(id) {
+				this.isActive4 = id;
+			},
+			changeBg8(id) {
+				this.isActive5 = id;
+			},
+			chooseDate1() {
+				console.log(this.value1)
+			},
+			chooseDate() {
+				console.log(this.value3)
+				this.value1 = this.value3[0]
+				this.value2 = this.value3[1]
+				console.log(this.value1)
+				console.log(this.value2)
+			},
+			chooseDate2() {
+				console.log(this.value2)
+			},
+			drawChart1() {
+				// 基于准备好的dom，初始化echarts实例
+				let myChart = this.$echarts.init(document.getElementById("myEcharts1"));
+				// 指定图表的配置项和数据
+				var option = {
+					tooltip: {
+						trigger: 'axis'
+					},
+					color: ['#ff7200', '#00cc57', '#238ae1'],
+					grid: {
 
-  mounted() {
-    this.token = localStorage.getItem("token").replace(/\"/g, "");
-    this.getResourceAndRecord();
-    this.getParkingLot();
-  },
+					},
+					legend: {
+						data: ['应收', '实收', '欠费'],
+						orient: 'horizontal', //垂直显示
+						y: 'bottom', //延Y轴居中
+						x: 'center', //居右显示
+						itemGap: 100, //图例间隔
+						textStyle: {
+							fontSize: 16
+						},
+						// show: true,
+						// borderWidth: 2,
+						// shadowColor: 'rgba(0, 0, 0, 0.5)',
+						// shadowBlur: 5,
+						// borderRadius: 10,
+						// padding: [20, 10],
 
-  methods: {
-    percentage1(pdrAmount) {
-      return 100 * (pdrAmount / this.maxPdrAmount);
-    },
+					},
+					xAxis: {
+						data: [1, 2, 3, 4, 5],
+						fontSize: 18,
+					},
+					yAxis: {
+						type: 'value',
+						name: '单位:金额'
+					},
+					series: [{
+							name: '应收',
+							type: 'line',
+							data: [2, 432, 54, 1, 4],
+							smooth: true,
+						},
+						{
+							name: '实收',
+							type: 'line',
+							data: [22, 452, 524, 11, 54],
+							smooth: true,
+						},
+						{
+							name: '欠费',
+							type: 'line',
+							data: [252, 432, 244, 1214, 412],
+							smooth: true,
+						}
+					]
+				};
+				// 使用刚指定的配置项和数据显示图表。
+				myChart.setOption(option);
+			},
 
-    format1(percentage) {
-      return (percentage = "8934");
-    },
+			drawChart2() {
+				// 基于准备好的dom，初始化echarts实例
+				let myChart = this.$echarts.init(document.getElementById("myEcharts2"));
+				// 指定图表的配置项和数据
+				var option = {
+					tooltip: {
+						show: true
+					},
+					xAxis: {
+						type: 'category',
+						data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+						axisLabel: {
+							show: true,
+							textStyle: {
+								fontSize: 16
+							}
+						}
+					},
+					yAxis: {
+						type: 'value',
+						name: '单位:元',
+						axisLabel: {
+							show: true,
+							textStyle: {
+								fontSize: 16
+							}
+						}
+					},
+					series: [{
+						data: [2320, 1700, 3150, 2480, 4670, 1110, 3255, 6546, 2313, 4325],
+						type: 'bar',
+						barWidth: '60',
+						itemStyle: {
+							normal: {
+								color: new this.$echarts.graphic.LinearGradient(
+									0, 0, 0, 1,
+									[{
+											offset: 1,
+											color: '#9929ea'
+										},
+										{
+											offset: 0,
+											color: '#5808fb'
+										}
+									]
+								)
+							},
+						},
+						label: { //label要加入normal才可生效,label即为x轴对应Y轴的值
+							normal: {
+								show: true,
+								color: '#5808fb', //设置渐变时候控制不到颜色，只能通过全局textStyle来控制
+								position: 'top'
+							}
+						},
 
-    getResourceAndRecord() {
-      let url =
-        "admin/api/report/FA201E10D5154499BA2C74FC0998F464" +
-        "/?token=" +
-        this.token +
-        "&page=" +
-        this.pagenum0 +
-        "&row=" +
-        this.pagesize0;
+					}]
+				};
+				// 使用刚指定的配置项和数据显示图表。
+				myChart.setOption(option);
+			},
 
-      this.$axios.get(url).then(res => {
-        if (res.status == 200) {
-          this.resourceAndRecord = res.data.data[0];
-        }
-      });
-    },
-    getParkingLot() {
-      let url =
-        "admin/api/report/B2C5FC2773A547978676B2759487B921" +
-        "/?token=" +
-        this.token +
-        "&page=" +
-        this.pagenum1 +
-        "&row=" +
-        this.pagesize1 +
-        "&order=pdr_amount&sort=desc";
+			drawChart3() {
+				// 基于准备好的dom，初始化echarts实例
+				let myChart = this.$echarts.init(document.getElementById("myEcharts3"));
+				// 指定图表的配置项和数据
+				var option = {
+					tooltip: {
+						show: true
+					},
+					xAxis: {
+						type: 'category',
+						data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+						axisLabel: {
+							show: true,
+							textStyle: {
+								fontSize: 16
+							}
+						}
+					},
+					yAxis: {
+						type: 'value',
+						name: '单位:元',
+						axisLabel: {
+							show: true,
+							textStyle: {
+								fontSize: 16
+							}
+						}
+					},
+					series: [{
+						data: [2320, 1700, 3150, 2480, 4670, 1110, 3255, 6546, 2313, 4325],
+						type: 'bar',
+						barWidth: '60',
+						itemStyle: {
+							normal: {
+								color: new this.$echarts.graphic.LinearGradient(
+									0, 0, 0, 1,
+									[{
+											offset: 1,
+											color: '#0bbafb'
+										},
+										{
+											offset: 0,
+											color: '#4285ec'
+										}
+									]
+								)
+							},
+						},
+						label: { //label要加入normal才可生效,label即为x轴对应Y轴的值
+							normal: {
+								show: true,
+								color: '#4285ec', //设置渐变时候控制不到颜色，只能通过全局textStyle来控制
+								position: 'top'
+							}
+						},
 
-      this.$axios.get(url).then(res => {
-        if (res.status == 200) {
-          this.parkingLot = res.data.data;
+					}]
+				};
+				// 使用刚指定的配置项和数据显示图表。
+				myChart.setOption(option);
+			},
+			drawChart4() {
+				// 基于准备好的dom，初始化echarts实例
+				let myChart = this.$echarts.init(document.getElementById("myEcharts4"));
+				// 指定图表的配置项和数据
+				var option = {
+					tooltip: {
+						show: true
+					},
+					xAxis: {
+						type: 'category',
+						data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+						axisLabel: {
+							show: true,
+							textStyle: {
+								fontSize: 16
+							}
+						}
+					},
+					yAxis: {
+						type: 'value',
+						name: '单位:元',
+						axisLabel: {
+							show: true,
+							textStyle: {
+								fontSize: 16
+							}
+						}
+					},
+					series: [{
+						data: [2320, 1700, 3150, 2480, 4670, 1110, 3255, 6546, 2313, 4325],
+						type: 'bar',
+						barWidth: '60',
+						itemStyle: {
+							normal: {
+								color: new this.$echarts.graphic.LinearGradient(
+									0, 0, 0, 1,
+									[{
+											offset: 1,
+											color: '#84f5de'
+										},
+										{
+											offset: 0,
+											color: '#4cc5f8'
+										}
+									]
+								)
+							},
+						},
+						label: { //label要加入normal才可生效,label即为x轴对应Y轴的值
+							normal: {
+								show: true,
+								color: '#4cc5f8', //设置渐变时候控制不到颜色，只能通过全局textStyle来控制
+								position: 'top'
+							}
+						},
 
-          for (let i = 0; i < this.pagesize1; i++) {
-            this.parkingLot[i].descId =
-              (this.pagenum1 - 1) * this.pagesize1 + i + 1;
-          }
-          if (this.pagenum1 === 1) {
-            this.maxPdrAmount = res.data.data[0].pdr_amount;
-            console.log("res");
-            console.log(this.maxPdrA);
-          }
-          this.total1 = res.data.total || 0;
-        }
-      });
-    },
+					}]
+				};
+				// 使用刚指定的配置项和数据显示图表。
+				myChart.setOption(option);
+			},
+			drawChart5() {
+				// 基于准备好的dom，初始化echarts实例
+				let myChart = this.$echarts.init(document.getElementById("myEcharts5"));
+				// 指定图表的配置项和数据
+				var option = {
+					tooltip: {
+						show: true
+					},
+					xAxis: {
+						type: 'category',
+						data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+						axisLabel: {
+							show: true,
+							textStyle: {
+								fontSize: 16
+							}
+						}
+					},
+					yAxis: {
+						type: 'value',
+						name: '单位:元',
+						axisLabel: {
+							show: true,
+							textStyle: {
+								fontSize: 16
+							}
+						}
+					},
+					series: [{
+						data: [2320, 1700, 3150, 2480, 4670, 1110, 3255, 6546, 2313, 4325],
+						type: 'bar',
+						barWidth: '60',
+						itemStyle: {
+							normal: {
+								color: new this.$echarts.graphic.LinearGradient(
+									0, 0, 0, 1,
+									[{
+											offset: 1,
+											color: '#015eea'
+										},
+										{
+											offset: 0,
+											color: '#00c0fa'
+										}
+									]
+								)
+							},
+						},
+						label: { //label要加入normal才可生效,label即为x轴对应Y轴的值
+							normal: {
+								show: true,
+								color: '#00c0fa', //设置渐变时候控制不到颜色，只能通过全局textStyle来控制
+								position: 'top'
+							}
+						},
 
-    //监听页码值改变
-    handleCurrentChange1(newPage) {
-      this.pagenum1 = newPage;
-      this.getParkingLot();
-    }
-  }
-};
+					}]
+				};
+				// 使用刚指定的配置项和数据显示图表。
+				myChart.setOption(option);
+			},
+		},
+	}
 </script>
 
 <style scoped="scoped">
-.oneCard-right {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  background-color: white;
-  border-top-left-radius: 50px;
-  border-bottom-left-radius: 50px;
-}
+	.road-right {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		background-color: white;
+		border-top-left-radius: 50px;
+		border-bottom-left-radius: 50px;
+		height: 3150px;
+	}
 
-.jindut {
-  flex: 1;
-}
+	.BGactive {
+		background-color: #0000FF;
+		color: white;
+		border-radius: 10px;
 
-.jindut1 {
-  flex: 1;
-}
+	}
 
-.jindut2 {
-  flex: 1;
-}
+	.charstBox1 {
+		width: 100%;
+		height: 85%;
+	}
 
-.jindut1 >>> .el-progress-bar__inner {
-  border-radius: 5px;
-  background-color: ;
-  background-image: linear-gradient(93deg, #4facfe 0%, #00f2fe 100%);
-}
+	.block {
+		width: 300px;
+		border: solid 1px #1e69fe;
+		border-radius: 5px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
 
-.jindut1 >>> .el-progress-bar__outer {
-  border-radius: 5px;
-  background-color: #ddecfb;
-}
+	.dateR>>>.el-button--primary {
+		color: #FFF;
+		background-color: #0000FF;
+		border-color: #0000FF;
+		height: 35px;
+		width: 80px;
+	}
 
-.jindut2 >>> .el-progress-bar__inner {
-  border-radius: 5px;
-  background-color: ;
-  background-image: linear-gradient(93deg, #85f4bb 0%, #8cd9e8 100%);
-}
+	.dateSel>>>.el-input__inner {
+		height: 35px;
+		border: none;
+		text-align: center;
+	}
 
-.jindut2 >>> .el-progress-bar__outer {
-  border-radius: 5px;
-  background-color: #ddecfb;
-}
+	.dateSel>>>.el-date-editor.el-input {
+		width: 100px;
+	}
 
-.jindut >>> .el-progress-bar__inner {
-  border-radius: 5px;
-  background-color: ;
-  background-image: linear-gradient(88deg, #3fbbfe 0%, #a541ff 100%);
-}
 
-.jindut >>> .el-progress-bar__outer {
-  border-radius: 5px;
-  background-color: #ddecfb;
-}
+	.blueBoxs {
+		width: 33.333%;
+		text-align: center;
+		line-height: 30px;
+	}
 
-.tingchechangName {
-  width: 12%;
-  text-align: center;
-}
+	.blueBoxs1 {
+		width: 50%;
+		text-align: center;
+		line-height: 30px;
+	}
 
-.roadConBox {
-  width: 100%;
-  height: 370px;
-  display: flex;
-  flex-direction: column;
-}
+	.dateR {
+		width: 850px;
+		height: 50px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
 
-.jindutiaoBox {
-  width: 100%;
-  height: 10%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
+	.dateR2 {
+		width: 550px;
+		height: 50px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
 
-.roadBotBox {
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-}
+	.dateBox {
+		width: 55%;
+		height: 30px;
+		display: flex;
+		flex-direction: row;
+		border: solid 1px #0000FF;
+		border-radius: 10px;
+		cursor: pointer;
+	}
 
-.boxNum {
-  font-size: 30px;
-  font-weight: 600;
-  color: #0000ff;
-}
+	.dateBox3 {
+		width: 420px;
+		height: 30px;
+		display: flex;
+		flex-direction: row;
+		border: solid 1px #0000FF;
+		border-radius: 10px;
+		cursor: pointer;
+	}
 
-.roadTopBox {
-  display: flex;
-  flex-direction: column;
-  width: 32%;
-  height: 100%;
-}
+	.dateBox1 {
+		width: 40%;
+		height: 30px;
+		display: flex;
+		flex-direction: row;
+		border: solid 1px #0000FF;
+		border-radius: 10px;
+		cursor: pointer;
+	}
 
-.boxNum1 {
-  font-size: 30px;
-  font-weight: 600;
-  color: #f8701e;
-}
+	.jindut {
+		flex: 1;
+	}
 
-.boxBoxs {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  height: 70px;
-}
+	.jindut1 {
+		flex: 1;
+	}
 
-.ziyuanBox {
-  width: 100%;
-  height: 100%;
-  justify-content: space-around;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
+	.jindut2 {
+		flex: 1;
+	}
 
-.boxBoxs {
-  width: 15%;
-}
+	.jindut1>>>.el-progress-bar__inner {
+		border-radius: 5px;
+		background-color: ;
+		background-image: linear-gradient(93deg,
+			#4facfe 0%,
+			#00f2fe 100%);
+	}
 
-.otherWord {
-  height: 20px;
-  width: 50px;
-  color: white;
-  border-radius: 10px;
-  text-align: center;
-  line-height: 20px;
-}
+	.jindut1>>>.el-progress-bar__outer {
+		border-radius: 5px;
+		background-color: #ddecfb;
+	}
 
-.otherBoxsBot {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
+	.jindut2>>>.el-progress-bar__inner {
+		border-radius: 5px;
+		background-color: ;
+		background-image: linear-gradient(93deg,
+			#85f4bb 0%,
+			#8cd9e8 100%);
+	}
 
-.otherNum {
-  color: white;
-  font-size: 30px;
-  font-weight: 600;
-}
+	.jindut2>>>.el-progress-bar__outer {
+		border-radius: 5px;
+		background-color: #ddecfb;
+	}
 
-.otherBoxsBotBox {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 45%;
-  align-items: center;
-  height: 75px;
-}
+	.jindut>>>.el-progress-bar__inner {
+		border-radius: 5px;
+		background-color: ;
+		background-image: linear-gradient(88deg,
+			#3fbbfe 0%,
+			#a541ff 100%);
+	}
 
-.rightBox {
-  display: flex;
-  flex-direction: row;
-  width: 85%;
-  justify-content: space-between;
-}
+	.jindut>>>.el-progress-bar__outer {
+		border-radius: 5px;
+		background-color: #ddecfb;
+	}
 
-.otherBoxs1 {
-  width: 25%;
-  height: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  background: url(../../assets/images/bowei.png) no-repeat;
-  background-size: 100% 100%;
-}
+	.tingchechangName {
+		width: 12%;
+		text-align: center;
+	}
 
-.otherBoxs2 {
-  width: 22%;
-  height: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  background: url(../../assets/images/diciB.png) no-repeat;
-  background-size: 100% 100%;
-}
+	.roadConBox {
+		width: 100%;
+		height: 370px;
+		display: flex;
+		flex-direction: column;
+	}
 
-.otherBoxs3 {
-  width: 22%;
-  height: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  background: url(../../assets/images/shexiang.png) no-repeat;
-  background-size: 100% 100%;
-}
+	.jindutiaoBox {
+		width: 100%;
+		height: 10%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
 
-.otherBoxs4 {
-  width: 22%;
-  height: 120px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  background: url(../../assets/images/cheliang.png) no-repeat;
-  background-size: 100% 100%;
-}
+	.roadBotBox {
+		display: flex;
+		flex: 1;
+		flex-direction: row;
+		justify-content: flex-end;
+		align-items: center;
+	}
 
-.firstBoxTop {
-  height: 30px;
-  line-height: 30px;
-  color: white;
-}
+	.boxNum {
+		font-size: 30px;
+		font-weight: 600;
+		color: #0000FF;
+	}
 
-.firstBoxBot {
-  font-size: 40px;
-  color: white;
-  font-weight: 600;
-}
+	.roadTopBox {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		width: 100%;
+	}
 
-.firstBox {
-  width: 120px;
-  height: 120px;
-  background-image: linear-gradient(88deg, #0d7fff 0%, #4760ff 100%);
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  align-items: center;
-  justify-content: center;
-}
+	.boxNum1 {
+		font-size: 30px;
+		font-weight: 600;
+		color: #f8701e;
+	}
 
-.roadBot {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-}
+	.boxBoxs {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		align-items: center;
+		height: 70px;
+	}
 
-.wulianBotBoxBot {
-  width: 100%;
-  height: 270px;
-  display: flex;
-  flex-direction: row;
-}
+	.ziyuanBox {
+		width: 100%;
+		height: 100%;
+		justify-content: space-around;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
 
-.CwordBox {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 50px;
-  align-items: center;
-  margin: 0 auto;
-}
+	.boxBoxs {
+		width: 15%;
+	}
 
-.CwordBox1 {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 65px;
-  align-items: center;
-  margin: 0 auto;
-}
+	.otherWord {
+		height: 20px;
+		width: 50px;
+		color: white;
+		border-radius: 10px;
+		text-align: center;
+		line-height: 20px;
+	}
 
-.Cnum {
-  font-size: 30px;
-  color: #0000ff;
-  font-weight: 600;
-}
+	.otherBoxsBot {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+	}
 
-.quan {
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-}
+	.otherNum {
+		color: white;
+		font-size: 30px;
+		font-weight: 600;
+	}
 
-.green {
-  background-color: #35fb3e;
-}
+	.otherBoxsBotBox {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		width: 45%;
+		align-items: center;
+		height: 75px;
+	}
 
-.gray {
-  background-color: #a0a0a0;
-}
+	.rightBox {
+		display: flex;
+		flex-direction: row;
+		width: 85%;
+		justify-content: space-between;
+	}
 
-.blue {
-  background-color: #0000ff;
-}
+	.otherBoxs1 {
+		width: 25%;
+		height: 120px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		align-items: center;
+		background: url(../../assets/images/bowei.png) no-repeat;
+		background-size: 100% 100%;
+	}
 
-.orange {
-  background-color: #f8701e;
-}
+	.otherBoxs2 {
+		width: 22%;
+		height: 120px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		align-items: center;
+		background: url(../../assets/images/diciB.png) no-repeat;
+		background-size: 100% 100%;
+	}
 
-.red {
-  background-color: #fb0c28;
-}
+	.otherBoxs3 {
+		width: 22%;
+		height: 120px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		align-items: center;
+		background: url(../../assets/images/shexiang.png) no-repeat;
+		background-size: 100% 100%;
+	}
 
-.purple {
-  background-color: #ab24f8;
-}
+	.otherBoxs4 {
+		width: 22%;
+		height: 120px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		align-items: center;
+		background: url(../../assets/images/cheliang.png) no-repeat;
+		background-size: 100% 100%;
+	}
 
-.CnumBox {
-  display: flex;
-  flex-direction: column;
-  height: 50px;
-  justify-content: space-between;
-}
+	.firstBoxTop {
+		height: 30px;
+		line-height: 30px;
+		color: white;
+	}
 
-.conCon {
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-}
+	.firstBoxBot {
+		font-size: 40px;
+		color: white;
+		font-weight: 600;
+	}
 
-.conRight {
-  width: 30%;
-  height: 100%;
-}
+	.firstBox {
+		width: 120px;
+		height: 120px;
+		background: url(../../assets/images/frist.png);
+		display: flex;
+		flex-direction: column;
+		border-radius: 10px;
+		align-items: center;
+		justify-content: center;
+	}
 
-.Ltitle {
-  font-size: 14px;
-  width: 60%;
-  margin: 0 auto;
-}
+	.roadBot {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		align-items: center;
+	}
 
-.Lnum {
-  font-size: 50px;
-  height: 140px;
-  color: #0000ff;
-  font-weight: 600;
-}
+	.wulianBotBoxBot {
+		width: 100%;
+		height: 270px;
+		display: flex;
+		flex-direction: row;
+	}
 
-.conLeft {
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-  height: 100%;
-  align-items: center;
-  justify-content: space-around;
-}
+	.CwordBox {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		width: 50px;
+		align-items: center;
+		margin: 0 auto;
+	}
 
-.wulianBotBoxT {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
+	.CwordBox1 {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		width: 65px;
+		align-items: center;
+		margin: 0 auto;
+	}
 
-.T_span {
-  font-size: 18px;
-  margin-left: 5px;
-}
+	.Cnum {
+		font-size: 30px;
+		color: #0000FF;
+		font-weight: 600;
+	}
 
-.wulianBotBox {
-  width: 100%;
-  height: 20%;
-}
+	.quan {
+		width: 15px;
+		height: 15px;
+		border-radius: 50%;
 
-.wulianBotBox1 {
-  width: 100%;
-  height: 55%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
+	}
 
-.T_blue {
-  width: 5px;
-  height: 15px;
-  background-color: #0000ff;
-}
+	.green {
+		background-color: #35fb3e;
+	}
 
-.wulianBot {
-  width: 95%;
-  margin: 0 auto;
-  height: 85%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
+	.gray {
+		background-color: #a0a0a0;
+	}
 
-.UserAssets-right-top {
-  display: flex;
-  flex-direction: row;
-  width: 95%;
-  margin: 20px auto;
-  margin-top: 40px;
-}
+	.blue {
+		background-color: #0000FF;
+	}
 
-.user-left {
-  flex: 1;
-}
+	.orange {
+		background-color: #f8701e;
+	}
 
-.users-right {
-  width: 150px;
-}
+	.red {
+		background-color: #fb0c28;
+	}
 
-.user-word {
-  width: 47px;
-  height: 23px;
-  font-family: PingFangSC-Regular;
-  font-size: 24px;
-  font-weight: normal;
-  font-stretch: normal;
-  line-height: 24px;
-  letter-spacing: 1px;
-  color: #000000;
-}
+	.purple {
+		background-color: #ab24f8;
+	}
+
+	.CnumBox {
+		display: flex;
+		flex-direction: column;
+		height: 50px;
+		justify-content: space-between;
+	}
+
+	.conCon {
+		display: flex;
+		flex: 1;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-around;
+	}
+
+	.conRight {
+		width: 30%;
+		height: 100%;
+	}
+
+	.Ltitle {
+		font-size: 14px;
+		width: 60%;
+		margin: 0 auto;
+	}
+
+	.Lnum {
+		font-size: 50px;
+		height: 140px;
+		color: #0000FF;
+		font-weight: 600;
+	}
+
+	.conLeft {
+		display: flex;
+		flex-direction: column;
+		width: 20%;
+		height: 100%;
+		align-items: center;
+		justify-content: space-around;
+	}
+
+	.wulianBotBoxT {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.T_span {
+		font-size: 18px;
+		margin-left: 5px;
+	}
+
+	.wulianBotBox {
+		width: 100%;
+		height: 200px;
+	}
+
+	.wulianBotBox1 {
+		width: 100%;
+		height: 500px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		margin-top: 50px;
+	}
+
+	.T_blue {
+		width: 5px;
+		height: 15px;
+		background-color: #0000FF;
+	}
+
+	.wulianBot {
+		width: 95%;
+		margin: 0 auto;
+		height: 85%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.UserAssets-right-top {
+		display: flex;
+		flex-direction: row;
+		width: 95%;
+		margin: 20px auto;
+		margin-top: 40px;
+	}
+
+	.user-left {
+		flex: 1;
+	}
+
+	.users-right {
+		width: 150px;
+	}
+
+	.user-word {
+		width: 47px;
+		height: 23px;
+		font-family: PingFangSC-Regular;
+		font-size: 24px;
+		font-weight: normal;
+		font-stretch: normal;
+		line-height: 24px;
+		letter-spacing: 1px;
+		color: #000000;
+	}
 </style>
