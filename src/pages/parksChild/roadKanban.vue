@@ -1045,13 +1045,13 @@ export default {
 }
 
 .otherBoxs1 {
-  width: 25%;
+  width: 30%;
   height: 120px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  background: url(../../assets/images/bowei.png) no-repeat;
+  background: url(../../assets/images/boweix@2x.png) no-repeat;
   background-size: 100% 100%;
 }
 

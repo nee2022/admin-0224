@@ -22,6 +22,23 @@
             </div>
           </div>
           <div class="rightBox">
+            <div class="otherBoxs3">
+              <div style="color: white;">卡口</div>
+              <div class="otherBoxsBot">
+                <div class="otherBoxsBotBox">
+                  <div class="otherNum">
+                    0
+                  </div>
+                  <div class="otherWord">在线</div>
+                </div>
+                <div class="otherBoxsBotBox">
+                  <div class="otherNum">
+                    0
+                  </div>
+                  <div class="otherWord">总数</div>
+                </div>
+              </div>
+            </div>
             <div class="otherBoxs1">
               <div style="color: white;">泊位数</div>
               <div class="otherBoxsBot">
@@ -48,40 +65,6 @@
                     "
                   ></el-progress>
                   <div class="otherWord">占用率</div>
-                </div>
-              </div>
-            </div>
-            <div class="otherBoxs2">
-              <div style="color: white;">地磁</div>
-              <div class="otherBoxsBot">
-                <div class="otherBoxsBotBox">
-                  <div class="otherNum">
-                    0
-                  </div>
-                  <div class="otherWord">在线</div>
-                </div>
-                <div class="otherBoxsBotBox">
-                  <div class="otherNum">
-                    0
-                  </div>
-                  <div class="otherWord">总数</div>
-                </div>
-              </div>
-            </div>
-            <div class="otherBoxs3">
-              <div style="color: white;">卡口</div>
-              <div class="otherBoxsBot">
-                <div class="otherBoxsBotBox">
-                  <div class="otherNum">
-                    0
-                  </div>
-                  <div class="otherWord">在线</div>
-                </div>
-                <div class="otherBoxsBotBox">
-                  <div class="otherNum">
-                    0
-                  </div>
-                  <div class="otherWord">总数</div>
                 </div>
               </div>
             </div>
@@ -292,72 +275,6 @@
         </div>
         <div class="charstBox1" id="myEcharts3"></div>
       </div>
-      <!-- <div class="wulianBotBox1">
-        <div class="roadTopBox">
-          <div
-            style="display: flex;flex-direction: row;align-items: center;height: 50px;"
-          >
-            <div class="T_blue"></div>
-            <span class="T_span">欠费排名</span>
-          </div>
-          <div class="dateR2">
-            <div class="dateBox">
-              <div
-                class="blueBoxs"
-                v-for="item in day"
-                :class="{ BGactive: item.id == isActive5 }"
-                @click="changeBg5(item.id)"
-              >
-                {{ item.name }}
-              </div>
-            </div>
-            <div class="dateBox1">
-              <div
-                class="blueBoxs1"
-                v-for="item in shouList"
-                :class="{ BGactive: item.id == isActive6 }"
-                @click="changeBg6(item.id)"
-              >
-                {{ item.name }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="charstBox1" id="myEcharts4"></div>
-      </div>
-      <div class="wulianBotBox1">
-        <div class="roadTopBox">
-          <div
-            style="display: flex;flex-direction: row;align-items: center;height: 50px;"
-          >
-            <div class="T_blue"></div>
-            <span class="T_span">收费员绩效排名</span>
-          </div>
-          <div class="dateR2">
-            <div class="dateBox">
-              <div
-                class="blueBoxs"
-                v-for="item in day"
-                :class="{ BGactive: item.id == isActive7 }"
-                @click="changeBg7(item.id)"
-              >
-                {{ item.name }}
-              </div>
-            </div>
-            <div class="dateBox1">
-              <div
-                class="blueBoxs1"
-                v-for="item in shouList"
-                :class="{ BGactive: item.id == isActive8 }"
-                @click="changeBg8(item.id)"
-              >
-                {{ item.name }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="charstBox1" id="myEcharts5"></div>
-      </div> -->
     </div>
   </div>
 </template>
@@ -1141,16 +1058,15 @@ export default {
 }
 
 .otherBoxs1 {
-  width: 25%;
+  width: 35%;
   height: 120px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  background: url(../../assets/images/bowei.png) no-repeat;
+  background: url(../../assets/images/boweix@2x.png) no-repeat;
   background-size: 100% 100%;
 }
-
 .otherBoxs2 {
   width: 22%;
   height: 120px;
@@ -1158,29 +1074,32 @@ export default {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  background: url(../../assets/images/diciB.png) no-repeat;
+  background: url(../../assets/images/shexiangx@2x.png) no-repeat;
   background-size: 100% 100%;
 }
-
+/* 卡口 */
 .otherBoxs3 {
-  width: 22%;
+  width: 25%;
   height: 120px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  background: url(../../assets/images/shexiang.png) no-repeat;
+  background: url(../../assets/images/kakoux@2x.png) no-repeat;
+
   background-size: 100% 100%;
 }
 
 .otherBoxs4 {
-  width: 22%;
+  width: 30%;
   height: 120px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  background: url(../../assets/images/cheliang.png) no-repeat;
+  /*  泊位*/
+  background: url(../../assets/images/shexiangx@2x.png) no-repeat;
+
   background-size: 100% 100%;
 }
 
@@ -1197,7 +1116,7 @@ export default {
 }
 
 .firstBox {
-  width: 120px;
+  width: 155px;
   height: 120px;
   background: url(../../assets/images/frist.png);
   display: flex;
