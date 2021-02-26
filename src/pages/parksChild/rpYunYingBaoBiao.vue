@@ -991,7 +991,7 @@ export default {
 }
 
 .UserAssets-right-text {
-  width: 1300px;
+  width: 1000px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
