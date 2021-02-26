@@ -2,7 +2,7 @@
 	<div class="oneCard-right">
 		<div class="UserAssets-right-top">
 			<div class="user-left">
-				<span class="user-word">用户统计</span>
+				<span class="user-word">优惠券统计</span>
 			</div>
 			<div class="users-right">
 				<myhead></myhead>
@@ -80,7 +80,7 @@
 						</td>
 						<td class="td6">认证用户数</td>
 					</tr>
-					<tr class="dataTable" v-for="item in cardList">
+					<!-- <tr class="dataTable" v-for="item in cardList">
 						<td class="dateColor">{{item.dt}}</td>
 						<td>{{item.users_count}}</td>
 						<td>{{item.payment_service_1_amount}}</td>
@@ -93,7 +93,8 @@
 							</div>
 						</td>
 						<td>{{item.users_audit_count}}</td>
-					</tr>
+					</tr> -->
+					<tr><td colspan="6" style="text-align: center;">暂无数据</td></tr>
 				</table>
 			</div>
 			<div v-show="changeList == false" class="tubiaobox">
@@ -290,7 +291,7 @@
 				dialogVisible: false,
 				addDialogVisible: false,
 				add: false,
-				changeList: false,
+				changeList: true,
 				selected: 0, //下拉框
 				pagenum: 1, //分页
 				pagenum2: 1, //分页
@@ -528,7 +529,6 @@
 						this.value3= ''
 						this.xzhou = []
 						this.shouji = []
-						this.pagenum = 1
 						this.weixin = []
 						this.zhifubo = []
 						this.userNum = []
@@ -553,7 +553,6 @@
 						this.value1 = ''
 						this.value2 = ''
 						this.value3= ''
-						this.pagenum = 1
 						this.xzhou = []
 						this.shouji = []
 						this.weixin = []
@@ -580,7 +579,6 @@
 						this.value1 = ''
 						this.value2 = ''
 						this.value3= ''
-						this.pagenum = 1
 						this.xzhou = []
 						this.shouji = []
 						this.weixin = []
@@ -731,7 +729,7 @@
 						this.chong = []
 						this.pay = []
 						this.$axios.get("/admin/api/report/C66DF2CDB1224F1ABFCE23D2412A6BA5?token=" + toKen + "&page=" + this.pagenum +
-								"&row=10&from=" + this.value1 + "&to=" + this.value2)
+								"&row=10")
 							.then(res => {
 								if (res.status == 200) {
 									this.cardList = res.data.data //用户列表数据
@@ -755,7 +753,7 @@
 						this.chong = []
 						this.pay = []
 						this.$axios.get("/admin/api/report/CA2D285CB59A4E9B8DCDC529762D7DE1?token=" + toKen + "&page=" + this.pagenum +
-								"&row=10&from=" + this.value1 + "&to=" + this.value2)
+								"&row=10")
 							.then(res => {
 								if (res.status == 200) {
 									this.cardList = res.data.data //用户列表数据
@@ -779,7 +777,7 @@
 						this.chong = []
 						this.pay = []
 						this.$axios.get("/admin/api/report/5BC0A870FBA04474A9675D75CB43A7A3?token=" + toKen + "&page=" + this.pagenum +
-								"&row=10&from=" + this.value1 + "&to=" + this.value2)
+								"&row=10")
 							.then(res => {
 								if (res.status == 200) {
 									this.cardList = res.data.data //用户列表数据

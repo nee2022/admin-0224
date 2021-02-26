@@ -8,7 +8,7 @@
 			</a>
 		</div>
 		<div class="fou">
-			<div class="four f" @mouseenter.stop="enter" @mouseleave.stop="leave" :class="{ show: change }">
+			<div class="four f" v-show="flag1 == loginConfig.divShow1" @mouseenter.stop="enter" @mouseleave.stop="leave" :class="{ show: change }">
 				<div :class="{ hide: change }">
 					<img class="img" src="../assets/images/administer.png" alt="" />
 					<span class="font">平台管理</span>
@@ -54,7 +54,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="four f" @mouseenter.stop="enter1" @mouseleave.stop="leave1" :class="{ show: change1 }">
+			<div class="four f" v-show="flag2 == loginConfig.divShow2" @mouseenter.stop="enter1" @mouseleave.stop="leave1" :class="{ show: change1 }">
 				<div :class="{ hide: change1 }">
 					<img class="img" src="../assets/images/electric.png" alt="" />
 					<span class="font">智慧充电</span>
@@ -76,7 +76,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="four" @mouseenter.stop="enter2" @mouseleave.stop="leave2" :class="{ show: change2 }">
+			<div class="four" v-show="flag3 == loginConfig.divShow3" @mouseenter.stop="enter2" @mouseleave.stop="leave2" :class="{ show: change2 }">
 				<div :class="{ hide: change2 }">
 					<img class="img" src="../assets/images/stop.png" alt="" />
 					<span class="font">智慧停车</span>
@@ -96,7 +96,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="four f" @mouseenter.stop="enter3" @mouseleave.stop="leave3" :class="{ show: change3 }">
+			<div class="four f" v-show="flag4 == loginConfig.divShow4" @mouseenter.stop="enter3" @mouseleave.stop="leave3" :class="{ show: change3 }">
 				<div :class="{ hide: change3 }">
 					<img class="img" src="../assets/images/use.png" alt="" />
 					<span class="font">智慧用电</span>
@@ -122,7 +122,7 @@
 					</router-link>
 				</div>
 			</div>
-			<div class="four f" @mouseenter.stop="enter4" @mouseleave.stop="leave4" :class="{ show: change4 }">
+			<div class="four f" v-show="flag5 == loginConfig.divShow5" @mouseenter.stop="enter4" @mouseleave.stop="leave4" :class="{ show: change4 }">
 				<div :class="{ hide: change4 }">
 					<img class="img" src="../assets/images/foot.png" alt="" />
 					<span class="font">智慧出行</span>
@@ -148,7 +148,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="four" @mouseenter.stop="enter5" @mouseleave.stop="leave5" :class="{ show: change5 }">
+			<div class="four" v-show="flag6 == loginConfig.divShow6" @mouseenter.stop="enter5" @mouseleave.stop="leave5" :class="{ show: change5 }">
 				<div :class="[{ hide: change5 }]">
 					<img class="img" src="../assets/images/city.png" alt="" />
 					<span class="font">智慧城市</span>
@@ -188,6 +188,12 @@
 				change3: false,
 				change4: false,
 				change5: false,
+				flag1:true,
+				flag2:true,
+				flag3:true,
+				flag4:true,
+				flag5:true,
+				flag6:true,
 			};
 		},
 		methods: {
@@ -380,7 +386,6 @@
 
 	.four {
 		border-radius: 20px;
-		float: left;
 		width: 357px;
 		height: 235px;
 		background: #e0f8ff;
@@ -388,14 +393,7 @@
 		line-height: 50px;
 		position: relative;
 		cursor: pointer;
-	}
-
-	.f {
-		margin-right: 36px !important;
-	}
-
-	.four:nth-child(n + 4) {
-		margin-top: 49px;
+		margin: 10px 20px 10px 20px;
 	}
 
 	.four .img {
@@ -406,13 +404,21 @@
 	}
 
 	.fou {
-		width: 1143px;
+		display: flex;
+		width: 1200px;
+		height: 530px;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		margin: 0 auto;
+		margin-top: 7%;
+		/* width: 1143px;
 		height: 519px;
 
 		position: relative;
 		top: 44%;
 		left: 50%;
-		transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%); */
 	}
 
 	.font {

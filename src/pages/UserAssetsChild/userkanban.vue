@@ -11,7 +11,7 @@
 		<div class="kanbanCon">
 			<div class="kanbanConTab">
 				<div v-for="item in tabList" style="cursor:pointer;">
-					<div class="kanbanConTabW" :class="{ chooseB:item.id == isBg }" @click="changeBg(item.id)">
+					<div class="kanbanConTabW" :class="{ chooseB:item.id == isBg }" @click="changeBg(item.id),chooseYM(item.id)">
 						{{item.name}}
 					</div>
 				</div>
@@ -125,69 +125,62 @@
 				</div>
 			</div>
 			<div class="kanbanConBox" v-show="flag == 2">
-				<div class="kanbanConTop2">
+				<div class="kanbanConTop2" v-for="item in oneList">
 					<div class="kanbanConTopWord1">
-						<div class="kanbanConTopW1">总量</div>
+						<div class="kanbanConTopW1">储值卡数</div>
 						<div class="kanbanConTopWBox">
 							<div class="wordBox">
-								<div class="kanbanConTopW2">8564</div>
-								<div class="bluebox">总数</div>
-							</div>
-							<div class="wordBox">
 								<div>
-									<span class="kanbanConTopW3">1323</span>
-									<span class="kanbanConTopW4">元</span>
+									<span class="kanbanConTopW2">{{item.cards_count}}</span>
 								</div>
-								<div class="bluebox">余额</div>
+								<div class="bluebox">数量</div>
 							</div>
 						</div>
 					</div>
 					<div class="kanbanConTopWord1">
-						<div class="kanbanConTopW1">鉴权卡</div>
+						<div class="kanbanConTopW1">储值卡余额</div>
 						<div class="kanbanConTopWBox">
 							<div class="wordBox">
-								<div class="kanbanConTopW2">8564</div>
-								<div class="bluebox">总数</div>
-							</div>
-							<div class="wordBox">
 								<div>
-									<span class="kanbanConTopW3">1323</span>
+									<span class="kanbanConTopW3">{{item.cards_amount}}</span>
 									<span class="kanbanConTopW4">元</span>
 								</div>
-								<div class="bluebox">余额</div>
+								<div class="orangebox">余额</div>
 							</div>
 						</div>
 					</div>
 					<div class="kanbanConTopWord1">
-						<div class="kanbanConTopW1">储值卡</div>
+						<div class="kanbanConTopW1">离线卡数量</div>
 						<div class="kanbanConTopWBox">
 							<div class="wordBox">
-								<div class="kanbanConTopW2">8564</div>
-								<div class="bluebox">总数</div>
-							</div>
-							<div class="wordBox">
-								<div>
-									<span class="kanbanConTopW3">1323</span>
-									<span class="kanbanConTopW4">元</span>
-								</div>
-								<div class="bluebox">余额</div>
+								<div class="kanbanConTopW2">{{item.cards_type_3_count}}</div>
+								<div class="bluebox">数量</div>
 							</div>
 						</div>
 					</div>
 					<div class="kanbanConTopWord1">
-						<div class="kanbanConTopW1">离线卡</div>
+						<div class="kanbanConTopW1">网络卡数量</div>
 						<div class="kanbanConTopWBox">
 							<div class="wordBox">
-								<div class="kanbanConTopW2">8564</div>
-								<div class="bluebox">总数</div>
+								<div class="kanbanConTopW2">{{item.cards_type_2_count}}</div>
+								<div class="bluebox">数量</div>
 							</div>
+						</div>
+					</div>
+					<div class="kanbanConTopWord1">
+						<div class="kanbanConTopW1">鉴权卡数量</div>
+						<div class="kanbanConTopWBox">
 							<div class="wordBox">
+								<div class="kanbanConTopW2">{{item.cards_type_1_count}}</div>
+								<div class="bluebox">数量</div>
+							</div>
+							<!-- <div class="wordBox">
 								<div>
 									<span class="kanbanConTopW3">1323</span>
 									<span class="kanbanConTopW4">元</span>
 								</div>
 								<div class="bluebox">余额</div>
-							</div>
+							</div> -->
 						</div>
 					</div>
 				</div>
@@ -203,7 +196,7 @@
 					<div class="kanbanBotConR1">
 						<div class="kanbanBotConLTitle">
 							<div class="blue"></div>
-							<span style="margin-left: 5px;font-size: 16px;">用户实名认证情况</span>
+							<span style="margin-left: 5px;font-size: 16px;">一卡通各种余额占比情况</span>
 						</div>
 						<div class="kanbanConRImg1" id="myEcharts6">
 						</div>
@@ -213,24 +206,38 @@
 					<div class="zhexianTitle">
 						<div class="kanbanBotBotLTitle">
 							<div class="blue"></div>
-							<span style="margin-left: 5px;font-size: 16px;">优惠券数量、余额增长曲线</span>
+							<span style="margin-left: 5px;font-size: 16px;">一卡通各种卡数量增长曲线</span>
 						</div>
 						<div class="kanbanBotBotRTitle">
 							<div class="chooseData1">
 								<div v-for="item in date">
-									<div :class="{ chooseBg:item.id == isBg2 }" @click="changeBg2(item.id)">
+									<div :class="{ chooseBg:item.id == isBg2 }" @click="changeBg2(item.id),getDateMes1(item.id)">
 										{{item.name}}
 									</div>
 								</div>
 							</div>
-							<div class="chooseData2">
+							<div class="chooseData2 dateSel">
 								<template>
-									<div class="block">
-										<el-date-picker v-model="value1" type="daterange" range-separator="至" start-placeholder="开始日期"
-										 end-placeholder="结束日期">
+									<div class="block" v-show="isBg2 == 1 || isBg2 == 2">
+										<!-- 	<el-date-picker v-model="value1" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyyMMdd" @change="chooseDate">
+											</el-date-picker> -->
+										<el-date-picker v-model="value1" type="date" placeholder="开始日期" value-format="yyyyMMdd" @change="chooseDate1">
+										</el-date-picker>
+										至
+										<el-date-picker v-model="value2" type="date" placeholder="结束日期" value-format="yyyyMMdd" @change="chooseDate2">
+										</el-date-picker>
+									</div>
+									<div class="block" v-show="isBg2 == 3">
+										<el-date-picker v-model="value1" type="month" placeholder="开始月份" value-format="yyyyMM" @change="chooseDate1">
+										</el-date-picker>
+										至
+										<el-date-picker v-model="value2" type="month" placeholder="结束月份" value-format="yyyyMM" @change="chooseDate2">
 										</el-date-picker>
 									</div>
 								</template>
+							</div>
+							<div>
+								<el-button type="primary" icon="el-icon-search" @click="searchBot4()">查询</el-button>
 							</div>
 						</div>
 					</div>
@@ -244,12 +251,12 @@
 						<div class="kanbanConTopW1">总量</div>
 						<div class="kanbanConTopWBox">
 							<div class="wordBox">
-								<div class="kanbanConTopW2">8564</div>
+								<div class="kanbanConTopW2">0</div>
 								<div class="bluebox">总数</div>
 							</div>
 							<div class="wordBox">
 								<div>
-									<span class="kanbanConTopW3">1323</span>
+									<span class="kanbanConTopW3">0</span>
 									<span class="kanbanConTopW4">元</span>
 								</div>
 								<div class="bluebox">余额</div>
@@ -260,12 +267,12 @@
 						<div class="kanbanConTopW1">消费</div>
 						<div class="kanbanConTopWBox">
 							<div class="wordBox">
-								<div class="kanbanConTopW2">8564</div>
+								<div class="kanbanConTopW2">0</div>
 								<div class="bluebox">总数</div>
 							</div>
 							<div class="wordBox">
 								<div>
-									<span class="kanbanConTopW3">1323</span>
+									<span class="kanbanConTopW3">0</span>
 									<span class="kanbanConTopW4">元</span>
 								</div>
 								<div class="bluebox">余额</div>
@@ -276,12 +283,12 @@
 						<div class="kanbanConTopW1">过期</div>
 						<div class="kanbanConTopWBox">
 							<div class="wordBox">
-								<div class="kanbanConTopW2">8564</div>
+								<div class="kanbanConTopW2">0</div>
 								<div class="bluebox">总数</div>
 							</div>
 							<div class="wordBox">
 								<div>
-									<span class="kanbanConTopW3">1323</span>
+									<span class="kanbanConTopW3">0</span>
 									<span class="kanbanConTopW4">元</span>
 								</div>
 								<div class="bluebox">余额</div>
@@ -324,12 +331,12 @@
 						<div class="kanbanConTopW1">总量</div>
 						<div class="kanbanConTopWBox">
 							<div class="wordBox">
-								<div class="kanbanConTopW2">8564</div>
+								<div class="kanbanConTopW2">0</div>
 								<div class="bluebox">总数</div>
 							</div>
 							<div class="wordBox">
 								<div>
-									<span class="kanbanConTopW3">1323</span>
+									<span class="kanbanConTopW3">0</span>
 									<span class="kanbanConTopW4">元</span>
 								</div>
 								<div class="bluebox">余额</div>
@@ -340,12 +347,12 @@
 						<div class="kanbanConTopW1">消费</div>
 						<div class="kanbanConTopWBox">
 							<div class="wordBox">
-								<div class="kanbanConTopW2">8564</div>
+								<div class="kanbanConTopW2">0</div>
 								<div class="bluebox">总数</div>
 							</div>
 							<div class="wordBox">
 								<div>
-									<span class="kanbanConTopW3">1323</span>
+									<span class="kanbanConTopW3">0</span>
 									<span class="kanbanConTopW4">元</span>
 								</div>
 								<div class="bluebox">余额</div>
@@ -386,19 +393,19 @@
 				<div class="kanbanConTop2">
 					<div class="kanbanConTopWord">
 						<div class="kanbanConTopW1">无感支付总数</div>
-						<div class="kanbanConTopW2">9565</div>
+						<div class="kanbanConTopW2">0</div>
 					</div>
 					<div class="kanbanConTopWord">
 						<div class="kanbanConTopW1">钱包</div>
-						<div class="kanbanConTopW2">2314</div>
+						<div class="kanbanConTopW2">0</div>
 					</div>
 					<div class="kanbanConTopWord">
 						<div class="kanbanConTopW1">微信</div>
-						<div class="kanbanConTopW2">1323</div>
+						<div class="kanbanConTopW2">0</div>
 					</div>
 					<div class="kanbanConTopWord">
 						<div class="kanbanConTopW1">支付宝</div>
-						<div class="kanbanConTopW2">5323</div>
+						<div class="kanbanConTopW2">0</div>
 					</div>
 				</div>
 				<div class="kanbanBotCon">
@@ -463,8 +470,15 @@
 				zhifubo: [],
 				weixin: [],
 				shouji: [],
+				czkNum: [],
+				jqkNum: [],
+				lxkNum: [],
+				wlkNum: [],
+				oneDt: [],
+				zhexian4: [],
 				value1: '',
 				value2: '',
+				chuzhiAmount: '',
 				tabList: [{
 						name: '用户数',
 						id: 1
@@ -491,6 +505,7 @@
 				jian: '',
 				flag: 1,
 				value1: '',
+				oneList: [],
 				xzhou: [],
 				yzhou: [],
 				date: [{
@@ -569,6 +584,48 @@
 			changeBg2(id) {
 				this.isBg2 = id;
 			},
+			chooseYM(id) {
+				let toKen = this.token.replace(/\"/g, "")
+				if (id == 2) {
+					this.$axios.get("admin/api/report/DE24EADC179A4D2BA5799A4916C61878?token=" + toKen +
+							"&order=dt&sort=asc&page=1&row=1")
+						.then(res => {
+							console.log(res.data.data)
+							if (res.status == 200) {
+								this.oneList = res.data.data
+								this.lixianNum = res.data.data[0].cards_type_3_count
+								this.wangluokaNum = res.data.data[0].cards_type_2_count
+								this.jianquankaNum = res.data.data[0].cards_type_1_count
+								this.chuzhiAmount = res.data.data[0].cards_amount
+								console.log(this.jianquankaNum)
+							}
+							this.drawChart5();
+							this.drawChart6();
+						})
+						this.oneDt = []
+						this.jqkNum = []
+						this.lxkNum = []
+						this.czkNum = []
+						this.wlkNum = []
+						this.$echarts.init(document.getElementById("myEcharts4")).dispose();
+						this.$axios.get("admin/api/report/6B52A176C758419699BC8E2113094232?token=" + toKen +
+								"&order=dt&sort=asc&page=1&row=7&from=" + this.value1 + "&to=" + this.value2)
+							.then(res => {
+								console.log(res.data.data)
+								if (res.status == 200) {
+									this.zhexian4 = res.data.data
+									for (let i in this.zhexian4) {
+										this.oneDt.push(this.zhexian4[i].dt)
+										this.jqkNum.push(this.zhexian4[i].cards_type_1_count)
+										this.lxkNum.push(this.zhexian4[i].cards_type_3_count)
+										this.czkNum.push(this.zhexian4[i].cards_count)
+										this.wlkNum.push(this.zhexian4[i].cards_type_2_count)
+									}
+								}
+								this.drawChart4();
+							})
+				}
+			},
 			getAll() {
 				//token去掉引号
 				let toKen = this.token.replace(/\"/g, "")
@@ -587,16 +644,90 @@
 							this.drawChart();
 						}
 					})
-
 			},
-			searchBot(){
+			searchBot4() {
+				//token去掉引号
+				let toKen = this.token.replace(/\"/g, "")
+				if (this.isBg2 == 1) {
+					this.oneDt = []
+					this.jqkNum = []
+					this.lxkNum = []
+					this.czkNum = []
+					this.wlkNum = []
+					this.$echarts.init(document.getElementById("myEcharts4")).dispose();
+					this.$axios.get("admin/api/report/6B52A176C758419699BC8E2113094232?token=" + toKen +
+							"&order=dt&sort=asc&page=1&row=7&from=" + this.value1 + "&to=" + this.value2)
+						.then(res => {
+							console.log(res.data.data)
+							if (res.status == 200) {
+								this.zhexian4 = res.data.data
+								for (let i in this.zhexian4) {
+									this.oneDt.push(this.zhexian4[i].dt)
+									this.jqkNum.push(this.zhexian4[i].cards_type_1_count)
+									this.lxkNum.push(this.zhexian4[i].cards_type_3_count)
+									this.czkNum.push(this.zhexian4[i].cards_count)
+									this.wlkNum.push(this.zhexian4[i].cards_type_2_count)
+								}
+							}
+							this.drawChart4();
+						})
+				} else if (this.isBg2 == 2) {
+					this.oneDt = []
+					this.jqkNum = []
+					this.lxkNum = []
+					this.czkNum = []
+					this.wlkNum = []
+					this.$echarts.init(document.getElementById("myEcharts4")).dispose();
+					this.$axios.get("admin/api/report/0686D43D0CFE4EB8955BAB813B663FAD?token=" + toKen +
+							"&order=dt&sort=asc&page=1&row=30&from=" + this.value1 + "&to=" + this.value2)
+						.then(res => {
+							console.log(res.data.data)
+							if (res.status == 200) {
+								this.zhexian4 = res.data.data
+								for (let i in this.zhexian4) {
+									this.oneDt.push(this.zhexian4[i].dt)
+									this.jqkNum.push(this.zhexian4[i].cards_type_1_count)
+									this.lxkNum.push(this.zhexian4[i].cards_type_3_count)
+									this.czkNum.push(this.zhexian4[i].cards_count)
+									this.wlkNum.push(this.zhexian4[i].cards_type_2_count)
+								}
+							}
+							this.drawChart4();
+						})
+				} else if (this.isBg2 == 3) {
+					this.oneDt = []
+					this.jqkNum = []
+					this.lxkNum = []
+					this.czkNum = []
+					this.wlkNum = []
+					this.$echarts.init(document.getElementById("myEcharts4")).dispose();
+					this.$axios.get("admin/api/report/74AD058E9AB04435AD2AD77F1F02846B?token=" + toKen +
+							"&order=dt&sort=asc&page=1&row=12&from=" + this.value1 + "&to=" + this.value2)
+						.then(res => {
+							console.log(res.data.data)
+							if (res.status == 200) {
+								this.zhexian4 = res.data.data
+								for (let i in this.zhexian4) {
+									this.oneDt.push(this.zhexian4[i].dt)
+									this.jqkNum.push(this.zhexian4[i].cards_type_1_count)
+									this.lxkNum.push(this.zhexian4[i].cards_type_3_count)
+									this.czkNum.push(this.zhexian4[i].cards_count)
+									this.wlkNum.push(this.zhexian4[i].cards_type_2_count)
+								}
+							}
+							this.drawChart4();
+						})
+				}
+			},
+
+			searchBot() {
 				//token去掉引号
 				let toKen = this.token.replace(/\"/g, "")
 				if (this.isBg2 == 1) {
 					this.xzhou = []
 					this.shouji = []
 					this.weixin = []
-					this.zhifubo= []
+					this.zhifubo = []
 					this.$echarts.init(document.getElementById("myEcharts1")).dispose();
 					this.$axios.get("admin/api/report/C66DF2CDB1224F1ABFCE23D2412A6BA5?token=" + toKen +
 							"&order=dt&sort=asc&page=1&row=7&from=" + this.value1 + "&to=" + this.value2)
@@ -617,7 +748,7 @@
 					this.xzhou = []
 					this.shouji = []
 					this.weixin = []
-					this.zhifubo= []
+					this.zhifubo = []
 					this.$echarts.init(document.getElementById("myEcharts1")).dispose();
 					this.$axios.get("admin/api/report/C66DF2CDB1224F1ABFCE23D2412A6BA5?token=" + toKen +
 							"&order=dt&sort=asc&page=1&row=30&from=" + this.value1 + "&to=" + this.value2)
@@ -638,7 +769,7 @@
 					this.xzhou = []
 					this.shouji = []
 					this.weixin = []
-					this.zhifubo= []
+					this.zhifubo = []
 					this.$echarts.init(document.getElementById("myEcharts1")).dispose();
 					this.$axios.get("admin/api/report/CA2D285CB59A4E9B8DCDC529762D7DE1?token=" + toKen +
 							"&order=dt&sort=asc&page=1&row=12&from=" + this.value1 + "&to=" + this.value2)
@@ -675,6 +806,87 @@
 						this.drawChart1();
 					})
 			},
+			getDateMes1(id) {
+				//token去掉引号
+				let toKen = this.token.replace(/\"/g, "")
+				console.log(id)
+				if (id == 1) {
+					this.oneDt = []
+					this.jqkNum = []
+					this.lxkNum = []
+					this.czkNum = []
+					this.wlkNum = []
+					this.value1 = ''
+					this.value2 = ''
+					// this.$echarts.init(document.getElementById("myEcharts4")).dispose();
+					this.$axios.get("admin/api/report/6B52A176C758419699BC8E2113094232?token=" + toKen +
+							"&order=dt&sort=asc&page=1&row=7")
+						.then(res => {
+							console.log(res.data.data)
+							if (res.status == 200) {
+								this.zhexian4 = res.data.data
+								for (let i in this.zhexian4) {
+									this.oneDt.push(this.zhexian4[i].dt)
+									this.jqkNum.push(this.zhexian4[i].cards_type_1_count)
+									this.lxkNum.push(this.zhexian4[i].cards_type_3_count)
+									this.czkNum.push(this.zhexian4[i].cards_count)
+									this.wlkNum.push(this.zhexian4[i].cards_type_2_count)
+								}
+							}
+							this.drawChart4();
+						})
+				} else if (id == 2) {
+					this.oneDt = []
+					this.jqkNum = []
+					this.lxkNum = []
+					this.czkNum = []
+					this.wlkNum = []
+					this.value1 = ''
+					this.value2 = ''
+					this.$echarts.init(document.getElementById("myEcharts4")).dispose();
+					this.$axios.get("admin/api/report/0686D43D0CFE4EB8955BAB813B663FAD?token=" + toKen +
+							"&order=dt&sort=asc&page=1&row=30")
+						.then(res => {
+							console.log(res.data.data)
+							if (res.status == 200) {
+								this.zhexian4 = res.data.data
+								for (let i in this.zhexian4) {
+									this.oneDt.push(this.zhexian4[i].dt)
+									this.jqkNum.push(this.zhexian4[i].cards_type_1_count)
+									this.lxkNum.push(this.zhexian4[i].cards_type_3_count)
+									this.czkNum.push(this.zhexian4[i].cards_count)
+									this.wlkNum.push(this.zhexian4[i].cards_type_2_count)
+								}
+							}
+							this.drawChart4();
+						})
+				} else if (id == 3) {
+					this.oneDt = []
+					this.jqkNum = []
+					this.lxkNum = []
+					this.czkNum = []
+					this.wlkNum = []
+					this.value1 = ''
+					this.value2 = ''
+					this.$echarts.init(document.getElementById("myEcharts4")).dispose();
+					this.$axios.get("admin/api/report/74AD058E9AB04435AD2AD77F1F02846B?token=" + toKen +
+							"&order=dt&sort=asc&page=1&row=12")
+						.then(res => {
+							console.log(res.data.data)
+							if (res.status == 200) {
+								this.zhexian4 = res.data.data
+								for (let i in this.zhexian4) {
+									this.oneDt.push(this.zhexian4[i].dt)
+									this.jqkNum.push(this.zhexian4[i].cards_type_1_count)
+									this.lxkNum.push(this.zhexian4[i].cards_type_3_count)
+									this.czkNum.push(this.zhexian4[i].cards_count)
+									this.wlkNum.push(this.zhexian4[i].cards_type_2_count)
+								}
+							}
+							this.drawChart4();
+						})
+				}
+			},
 			getDateMes(id) {
 				//token去掉引号
 				let toKen = this.token.replace(/\"/g, "")
@@ -683,7 +895,7 @@
 					this.xzhou = []
 					this.shouji = []
 					this.weixin = []
-					this.zhifubo= []
+					this.zhifubo = []
 					this.value1 = ''
 					this.value2 = ''
 					this.$echarts.init(document.getElementById("myEcharts1")).dispose();
@@ -706,7 +918,7 @@
 					this.xzhou = []
 					this.shouji = []
 					this.weixin = []
-					this.zhifubo= []
+					this.zhifubo = []
 					this.value1 = ''
 					this.value2 = ''
 					this.$echarts.init(document.getElementById("myEcharts1")).dispose();
@@ -729,7 +941,7 @@
 					this.xzhou = []
 					this.shouji = []
 					this.weixin = []
-					this.zhifubo= []
+					this.zhifubo = []
 					this.value1 = ''
 					this.value2 = ''
 					this.$echarts.init(document.getElementById("myEcharts1")).dispose();
@@ -864,19 +1076,19 @@
 					series: [{
 							name: '手机用户',
 							type: 'line',
-							data: [8313, 5632, 4641, 6734, 2421],
+							data: 0,
 							smooth: true,
 						},
 						{
 							name: '微信用户',
 							type: 'line',
-							data: [2313, 3432, 4641, 1234, 3421],
+							data: 0,
 							smooth: true,
 						},
 						{
 							name: '支付宝用户',
 							type: 'line',
-							data: [6413, 432, 1541, 2434, 3321],
+							data: 0,
 							smooth: true,
 						}
 					]
@@ -897,7 +1109,7 @@
 
 					},
 					legend: {
-						data: ['手机用户', '微信用户', '支付宝用户'],
+						data: ['鉴权卡数量', '网络卡数量', '离线卡数量'],
 						orient: 'horizontal', //垂直显示
 						y: 'bottom', //延Y轴居中
 						x: 'center', //居右显示
@@ -914,7 +1126,7 @@
 
 					},
 					xAxis: {
-						data: ['2020-10-1', '2020-9-7', '2020-7-5', '2020-9-7', '2020-9-13'],
+						data: this.oneDt,
 						fontSize: 18,
 					},
 					yAxis: {
@@ -922,21 +1134,21 @@
 						name: '单位:人数'
 					},
 					series: [{
-							name: '手机用户',
+							name: '鉴权卡数量',
 							type: 'line',
-							data: [8313, 5632, 4641, 6734, 2421],
+							data: this.jqkNum,
 							smooth: true,
 						},
 						{
-							name: '微信用户',
+							name: '网络卡数量',
 							type: 'line',
-							data: [2313, 3432, 4641, 1234, 3421],
+							data: this.wlkNum,
 							smooth: true,
 						},
 						{
-							name: '支付宝用户',
+							name: '离线卡数量',
 							type: 'line',
-							data: [6413, 432, 1541, 2434, 3321],
+							data: this.lxkNum,
 							smooth: true,
 						}
 					]
@@ -984,19 +1196,19 @@
 					series: [{
 							name: '手机用户',
 							type: 'line',
-							data: [8313, 5632, 4641, 6734, 2421],
+							data: 0,
 							smooth: true,
 						},
 						{
 							name: '微信用户',
 							type: 'line',
-							data: [2313, 3432, 4641, 1234, 3421],
+							data: 0,
 							smooth: true,
 						},
 						{
 							name: '支付宝用户',
 							type: 'line',
-							data: [6413, 432, 1541, 2434, 3321],
+							data: 0,
 							smooth: true,
 						}
 					]
@@ -1066,7 +1278,7 @@
 					},
 					legend: {
 						orient: 'vertical',
-						data: ['鉴权卡总数', '储值卡总数', '离线卡总数'],
+						data: ['鉴权卡总数', '网络卡总数', '离线卡总数'],
 						y: 'center',
 						x: 'right', //居右显示
 						itemGap: 50, //图例间隔
@@ -1093,15 +1305,15 @@
 							show: false
 						},
 						data: [{
-								value: 1335,
+								value: this.jianquankaNum,
 								name: '鉴权卡总数'
 							},
 							{
-								value: 3310,
-								name: '储值卡总数'
+								value: this.wangluokaNum,
+								name: '网络卡总数'
 							},
 							{
-								value: 2310,
+								value: this.lixianNum,
 								name: '离线卡总数'
 							},
 						]
@@ -1148,15 +1360,15 @@
 							show: false
 						},
 						data: [{
-								value: 335,
+								value: 0,
 								name: '鉴权卡余额'
 							},
 							{
-								value: 3310,
+								value: this.chuzhiAmount,
 								name: '储值卡余额'
 							},
 							{
-								value: 2310,
+								value: 0,
 								name: '离线卡余额'
 							},
 						]
@@ -1203,11 +1415,11 @@
 							show: false
 						},
 						data: [{
-								value: 9666,
+								value: 0,
 								name: '总数'
 							},
 							{
-								value: 6710,
+								value: 0,
 								name: '钱包'
 							},
 						]
@@ -1254,11 +1466,11 @@
 							show: false
 						},
 						data: [{
-								value: 9666,
+								value: 0,
 								name: '总数'
 							},
 							{
-								value: 3310,
+								value: 0,
 								name: '支付宝'
 							},
 						]
@@ -1305,11 +1517,11 @@
 							show: false
 						},
 						data: [{
-								value: 9666,
+								value: 0,
 								name: '总数'
 							},
 							{
-								value: 2310,
+								value: 0,
 								name: '微信'
 							},
 						]
@@ -1358,25 +1570,25 @@
 					series: [{
 							name: '无感支付总数',
 							type: 'line',
-							data: [8313, 5632, 4641, 6734, 2421],
+							data: 0,
 							smooth: true,
 						},
 						{
 							name: '钱包支付',
 							type: 'line',
-							data: [2313, 3432, 4641, 1234, 3421],
+							data: 0,
 							smooth: true,
 						},
 						{
 							name: '微信支付',
 							type: 'line',
-							data: [6313, 3232, 1641, 7234, 5421],
+							data: 0,
 							smooth: true,
 						},
 						{
 							name: '支付宝支付',
 							type: 'line',
-							data: [6413, 432, 1541, 2434, 3321],
+							data: 0,
 							smooth: true,
 						}
 					]
@@ -1416,7 +1628,7 @@
 		display: flex;
 		flex-direction: row;
 		width: 80%;
-		justify-content: space-between;
+		justify-content: center;
 		height: 70px;
 
 	}
@@ -1424,17 +1636,17 @@
 	.kanbanConTopW1 {
 		font-size: 16px;
 	}
-	
+
 	.dateSel>>>.el-date-editor.el-input {
 		width: 150px;
 	}
-	
-	.dateSel>>>.el-input__icon{
+
+	.dateSel>>>.el-input__icon {
 		line-height: 0px;
 	}
-	
+
 	.dateSel>>>.el-input__inner {
-		height:34px;
+		height: 34px;
 		border: none;
 		text-align: center;
 	}
@@ -1444,6 +1656,15 @@
 		height: 20px;
 		border-radius: 10px;
 		background-color: #1e69fe;
+		text-align: center;
+		color: white;
+	}
+
+	.orangebox {
+		width: 50px;
+		height: 20px;
+		border-radius: 10px;
+		background-color: orange;
 		text-align: center;
 		color: white;
 	}
@@ -1483,7 +1704,7 @@
 		flex-direction: row;
 		justify-content: space-between;
 	}
-	
+
 	.kanbanBotBotRTitle>>>.el-button--primary {
 		color: #FFF;
 		background-color: #0000FF;

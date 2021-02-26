@@ -2,7 +2,7 @@
 	<div class="oneCard-right">
 		<div class="UserAssets-right-top">
 			<div class="user-left">
-				<span class="user-word">充电报表</span>
+				<span class="user-word">停车报表</span>
 			</div>
 			<div class="users-right">
 				<myhead></myhead>
@@ -12,32 +12,13 @@
 			<div class="UserAssets-right-text">
 				<div class="date">
 					<div v-for="item in dateList">
-						<span :class="{ chooseB:item.id == isBg }" @click="daybao(item.id),changeBg(item.id)">{{item.name}}</span>
+						<span :class="{ chooseB:item.id == isBg }" @click="changeBg(item.id)">{{item.name}}</span>
 					</div>
 				</div>
 				<div class="dateSel">
 					<template>
-						<div class="block" v-show="isBg == 1">
-							<!-- 	<el-date-picker v-model="value1" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyyMMdd" @change="chooseDate">
-							</el-date-picker> -->
-							<el-date-picker v-model="value1" type="date" placeholder="开始日期" value-format="yyyyMMdd" @change="chooseDate1">
-							</el-date-picker>
-							至
-							<el-date-picker v-model="value2" type="date" placeholder="结束日期" value-format="yyyyMMdd" @change="chooseDate2">
-							</el-date-picker>
-						</div>
-						<div class="block" v-show="isBg == 3">
-							<el-date-picker v-model="value1" type="month" placeholder="开始月份" value-format="yyyyMM" @change="chooseDate1">
-							</el-date-picker>
-							至
-							<el-date-picker v-model="value2" type="month" placeholder="结束月份" value-format="yyyyMM" @change="chooseDate2">
-							</el-date-picker>
-						</div>
-						<div class="block" v-show="isBg == 5">
-							<el-date-picker v-model="value1" type="year" placeholder="开始年份" value-format="yyyy" @change="chooseDate1">
-							</el-date-picker>
-							至
-							<el-date-picker v-model="value2" type="year" placeholder="结束年份" value-format="yyyy" @change="chooseDate2">
+						<div class="block">
+							<el-date-picker v-model="value1" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
 							</el-date-picker>
 						</div>
 					</template>
@@ -47,16 +28,16 @@
 					<input type="text" placeholder="请输入关键字" class="searchText">
 				</div>
 				<div>
-					<el-button type="primary" icon="el-icon-search" @click="searchData()">查询</el-button>
+					<el-button type="primary" icon="el-icon-search" @click="getUserMes">查询</el-button>
 				</div>
-				<!-- <div class="whiteBut">
+				<div class="whiteBut">
 					<img src="../../assets/images/export.png" style="width: 14px;height: 14px;">
 					导出
 				</div>
 				<div class="whiteBut">
 					<img src="../../assets/images/print.png" style="width: 14px;height: 14px;">
 					打印
-				</div> -->
+				</div>
 			</div>
 		</div>
 		<div style="height: 700px;">
@@ -74,22 +55,39 @@
 						<td class="td2">优惠</td>
 						<td class="td2">图表</td>
 					</tr>
-					<tr class="dataTable" v-for="item in cardList">
-						<td>{{item.dt}}</td>
-						<td>{{item.owner}}</td>
-						<td>0</td>
-						<td>{{item.payment_service_13_count}}</td>
-						<td>{{item.payment_service_13_amount}}</td>
-						<td>{{item.payment_service_13_pay}}</td>
-						<td>{{item.refund_service_13_state_1_redund}}</td>
+					<tr class="dataTable" v-for="item in 10">
+						<td>2020-01-06</td>
+						<td>1369</td>
+						<td>23123</td>
+						<td>223</td>
+						<td>123</td>
+						<td>1321</td>
+						<td>223</td>
 						<td>123</td>
 						<td>1321</td>
 						<td>
-							<img src="../../assets/images/The chart.png" @click="dialogVisible = true,charts(e),getindex(item.dt,item.owner,item.owner,item.payment_service_13_count,item.payment_service_13_amount,item.payment_service_13_pay,item.refund_service_13_state_1_redund)" style="cursor: pointer;">
+							<img src="../../assets/images/The chart.png" @click="dialogVisible = true,charts(e)" style="cursor: pointer;">
 						</td>
 					</tr>
 				</table>
 			</div>
+			<!-- <div v-show="changeList == false" class="tubiaobox">
+					<div class="tubBox" v-for="(item,i) in my">
+						<div class="tubBoxTitleBox">
+							<div class="tubBoxTitle">
+								<div class="tubBoxTitleW">用户总增长趋势</div>
+								<div @click="dialogVisible = true,changeTitle(item.title,item.name,i)">
+									<img src="../../assets/layui/images/face/26.gif">
+								</div>
+							</div>
+						</div>
+						<div class="tubBoxConBox" :id="item.name"></div>
+						<el-dialog :title="tanchuT" :visible.sync="dialogVisible" width="80%" v-if="e==i">
+							<div class="tanchubox" :id="item.name">
+							</div>
+						</el-dialog>
+					</div>
+			</div> -->
 			<el-dialog title="123" :visible.sync="dialogVisible" width="70%">
 				<div class="tanchuTubiao" id="myEcharts">
 					<!-- <div class="Ttitle"></div> -->
@@ -148,8 +146,16 @@
 						id: 1
 					},
 					{
+						name: '周',
+						id: 2
+					},
+					{
 						name: '月',
 						id: 3
+					},
+					{
+						name: '季',
+						id: 4
 					},
 					{
 						name: '年',
@@ -168,11 +174,10 @@
 				pagenum: 1, //分页
 				pagenum2: 1, //分页
 				token: '', //token令牌
-				pagesize: 10, //每次查询条数
+				pagesize: 7, //每次查询条数
 				type: 0,
 				input: '',
 				value1: '',
-				value2: '',
 				value: true,
 				e: 0,
 				typeList: [{
@@ -191,9 +196,7 @@
 						id: 3,
 						type: '支付宝'
 					}
-				],
-				//
-				fordata:[],
+				]
 			}
 		},
 		created() {
@@ -213,43 +216,12 @@
 				})
 				console.log(this.numList)
 			},
-			charts(a,b,c,d,e,f,g,h) {
+			charts(e) {
 				this.$nextTick(() => {
 					this.drawChart();
 				});
-				
-			},
-			getindex(a,b,c,d,e,f,g,h){
-				this.fordata = [a,b,c,d,e,f,g,h]
-				console.log(this.fordata)
-			},
-			changeBg(id) {
-				this.isBg = id;
-				this.value1 = '';
-				this.value2 = '';
-				console.log(this.isBg)
-			},
-			chooseDate1() {
-				console.log(this.value1)
-
-			},
-			chooseDate2() {
-				console.log(this.value2)
 			},
 			drawChart() {
-				//token去掉引号
-				let toKen = this.token.replace(/\"/g, "")
-				//console.log(toKen)
-				this.$axios.get("admin/api/report/BDD2490598E542E8A8FAE302F25D189C?token=" + toKen + "&page=" + this.pagenum + "&row=10")
-					.then(res => {
-						console.log(res)
-						// console.log(res.status)//打印状态码
-						if (res.status == 200) {
-							this.cardList = res.data.data //用户列表数据
-							this.total = res.data.total
-							// console.log(this.cardList)
-						}
-					})
 				// 基于准备好的dom，初始化echarts实例
 				let myChart = this.$echarts.init(document.getElementById("myEcharts"));
 				// 指定图表的配置项和数据
@@ -259,7 +231,7 @@
 					},
 					xAxis: {
 						type: 'category',
-						data: ['日期', '站点', '订单数', '停车费', '已缴费', '欠费', '退款', '优惠'],
+						data: ['订单总数', '订单金额', '分成金额', '比比清金额', '转账金额', '钱包分成'],
 						axisLabel: {
 							show: true,
 							textStyle: {
@@ -278,7 +250,7 @@
 						}
 					},
 					series: [{
-						data: [],
+						data: [2320, 1700, 3150, 2480, 4670, 1110],
 						type: 'bar',
 						barWidth: '60',
 						itemStyle: {
@@ -310,169 +282,76 @@
 				// 使用刚指定的配置项和数据显示图表。
 				myChart.setOption(option);
 			},
+			// changeTitle(title,name,i){
+			// 	this.e = i
+			// 	var na = name
+			// 	// let n =name+i
+			// 	// console.log(n)
+			// 	// this.$echarts.init(document.getElementById(na));
+			// 	// console.log(i)
+			// 	var hezi3 = document.getElementsByClassName("tubBoxConBox");
+			// 	hezi3[i].id = "ee";
+			// 	this.tanchuT = title
+			// 	// console.log(name)
+			// 	this.charts = name
+			// 	if(i==0){
+			// 		this.$nextTick(() => {
+			// 			this.drawChart();
+			// 		});
+			// 	}else if(i==1){
+			// 		this.$nextTick(() => {
+			// 			this.drawChart1();
+			// 		});
+			// 	}else if(i==2){
+			// 		this.$nextTick(() => {
+			// 			this.drawChart2();
+			// 		});
+			// 	}else if(i==3){
+			// 		this.$nextTick(() => {
+			// 			this.drawChart3();
+			// 		});
+			// 	}else if(i==4){
+			// 		this.$nextTick(() => {
+			// 			this.drawChart4();
+			// 		});
+			// 	}else if(i==5){
+			// 		this.$nextTick(() => {
+			// 			this.drawChart5();
+			// 		});
+			// 	}
+			// },
 			//获取用户卡信息列表
 			getUserMes() {
 				//token去掉引号
 				let toKen = this.token.replace(/\"/g, "")
 				//console.log(toKen)
-				this.$axios.get("admin/api/report/BDD2490598E542E8A8FAE302F25D189C?token=" + toKen + "&page=" + this.pagenum + "&row=10")
+				this.$axios.get("admin/api/cards/?token=" + toKen + "&page=" + this.pagenum + "&row=14")
 					.then(res => {
 						console.log(res)
 						// console.log(res.status)//打印状态码
 						if (res.status == 200) {
-							this.cardList = res.data.data //用户列表数据
-							this.total = res.data.total
-							// console.log(this.cardList)
-							// this.pagesize = 14
-						}
-					})
-			},
-			daybao(id) {
-				//让点击的id等于传进来的id
-				if (id != '') {
-					this.chooseId = id
-				}
-				this.pagenum = 1
-				if (this.chooseId == 1) {
-					//日报
-					let toKen = this.token.replace(/\"/g, "")
-					// console.log(toKen)
-					this.$axios.get("admin/api/report/BDD2490598E542E8A8FAE302F25D189C?token=" + toKen + "&page=" + this.pagenum + "&row=10")
-					.then(res => {
-						console.log(res)
-						// console.log(res.status)//打印状态码
-						if (res.status == 200) {
-							this.cardList = res.data.data //用户列表数据
+							this.cardList = res.data.cards //用户列表数据
 							this.total = res.data.total
 							console.log(this.cardList)
-							// this.pagesize = 14
+							this.pagesize = 14
 						}
 					})
-				} else if (this.chooseId == 3) {
-					//月报
-					let toKen = this.token.replace(/\"/g, "")
-					// console.log(toKen)
-					this.$axios.get("/admin/api/report/0906FC695A394B5B8DE1E56DDFEC4F6B?token=" + toKen + "&page=" + this.pagenum +
-							"&row=10")
-						.then(res => {
-							if (res.status == 200) {
-								this.cardList = res.data.data //用户列表数据
-								this.total = res.data.total
-								console.log(this.cardList)
-							}
-						})
-				} else if (this.chooseId == 5) {
-					//年报
-					let toKen = this.token.replace(/\"/g, "")
-					// console.log(toKen)
-					this.$axios.get("/admin/api/report/F6C2F765EF4D4250AE23095D7ED3E8D2?token=" + toKen + "&page=" + this.pagenum +
-							"&row=10")
-						.then(res => {
-							if (res.status == 200) {
-								this.cardList = res.data.data //用户列表数据
-								this.total = res.data.total
-								console.log(this.cardList)
-							}
-						})
-				}
-
 			},
-			searchData() {
-				if (this.isBg == 1) {
-					//日报
-					let toKen = this.token.replace(/\"/g, "")
-					// console.log(toKen)
-					this.$axios.get("/admin/api/report/BDD2490598E542E8A8FAE302F25D189C?token=" + toKen + "&page=" + this.pagenum +
-							"&row=10&from=" + this.value1 + "&to=" + this.value2)
-						.then(res => {
-							if (res.status == 200) {
-								this.cardList = res.data.data //用户列表数据
-								this.total = res.data.total
-								console.log(this.cardList)
-							}
-						})
-				} else if (this.isBg == 3) {
-					//月报
-					let toKen = this.token.replace(/\"/g, "")
-					// console.log(toKen)
-					this.$axios.get("/admin/api/report/0906FC695A394B5B8DE1E56DDFEC4F6B?token=" + toKen + "&page=" + this.pagenum +
-							"&row=10&from=" + this.value1 + "&to=" + this.value2)
-						.then(res => {
-							if (res.status == 200) {
-								this.cardList = res.data.data //用户列表数据
-								this.total = res.data.total
-								console.log(this.cardList)
-							}
-						})
-				} else if (this.isBg == 5) {
-					//年报
-					let toKen = this.token.replace(/\"/g, "")
-					// console.log(toKen)
-					this.$axios.get("/admin/api/report/F6C2F765EF4D4250AE23095D7ED3E8D2?token=" + toKen + "&page=" + this.pagenum +
-							"&row=10&from=" + this.value1 + "&to=" + this.value2)
-						.then(res => {
-							if (res.status == 200) {
-								this.cardList = res.data.data //用户列表数据
-								this.total = res.data.total
-								console.log(this.cardList)
-							}
-						})
-				}
-			},
-			//监听页码值改变
-			// handleCurrentChange(newPage) {
-
-			// 	this.pagenum = newPage
-			// 	this.getUserMes()
-			// },
-			//监听页码值改变
-			handleCurrentChange(newPage) {
-				this.pagenum = newPage
-				if (this.chooseId == 1) {
-					//日报
-					let toKen = this.token.replace(/\"/g, "")
-					// console.log(toKen)
-					this.$axios.get("/admin/api/report/BDD2490598E542E8A8FAE302F25D189C?token=" + toKen + "&page=" + this.pagenum +
-							"&row=10&from=" + this.value1 + "&to=" + this.value2)
-						.then(res => {
-							if (res.status == 200) {
-								this.cardList = res.data.data //用户列表数据
-								this.total = res.data.total
-								console.log(this.cardList)
-							}
-						})
-				} else if (this.chooseId == 3) {
-					//月报
-					let toKen = this.token.replace(/\"/g, "")
-					// console.log(toKen)
-					this.$axios.get("/admin/api/report/0906FC695A394B5B8DE1E56DDFEC4F6B?token=" + toKen + "&page=" + this.pagenum +
-							"&row=10&from=" + this.value1 + "&to=" + this.value2)
-						.then(res => {
-							if (res.status == 200) {
-								this.cardList = res.data.data //用户列表数据
-								this.total = res.data.total
-								console.log(this.cardList)
-							}
-						})
-				} else if (this.chooseId == 5) {
-					//年报
-					let toKen = this.token.replace(/\"/g, "")
-					// console.log(toKen)
-					this.$axios.get("/admin/api/report/F6C2F765EF4D4250AE23095D7ED3E8D2?token=" + toKen + "&page=" + this.pagenum +
-							"&row=10&from=" + this.value1 + "&to=" + this.value2)
-						.then(res => {
-							if (res.status == 200) {
-								this.cardList = res.data.data //用户列表数据
-								this.total = res.data.total
-								console.log(this.cardList)
-							}
-						})
-				}
-			},
-			
 			changeIcon() {
 				this.changeList = !this.changeList
 				console.log(this.changeList)
+			},
+
+			changeBg(id) {
+				this.isBg = id;
+			},
+
+
+			//监听页码值改变
+			handleCurrentChange(newPage) {
+
+				this.pagenum = newPage
+				this.getUserMes()
 			},
 		}
 	}
@@ -584,7 +463,6 @@
 
 	.dataTable td {
 		font-size: 16px;
-		line-height: 58px;
 		text-align: center;
 		color: #7c7c7c;
 		border: solid 1px #cddeff;
@@ -630,7 +508,7 @@
 
 	.tableClass {
 		width: 95%;
-		/* height: 100%; */
+		height: 100%;
 		margin: 0 auto;
 		margin-top: 20px;
 	}
@@ -886,7 +764,7 @@
 	}
 
 	.date {
-		width: 300px;
+		width: 350px;
 		height: 40px;
 		display: flex;
 		flex-direction: row;
@@ -906,7 +784,7 @@
 	}
 
 	.date div {
-		width: 33.3%;
+		width: 20%;
 		height: 40px;
 		text-align: center;
 		cursor: pointer;
@@ -1154,7 +1032,7 @@
 	}
 
 	.UserAssets-right-text {
-		width: 1140px;
+		width: 1300px;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;

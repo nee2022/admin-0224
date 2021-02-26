@@ -17,7 +17,7 @@
 									<div>
 										<img src="../assets/images/Prepaid plan.png" />
 									</div>
-									<span class="menu-word">数据试图</span>
+									<span class="menu-word">数据视图</span>
 								</div>
 							</template>
 							<el-menu-item-group>
@@ -179,16 +179,16 @@
 								</div>
 							</template>
 							<el-menu-item-group>
-								<!-- <el-menu-item index="5-1">
-									<router-link to="/taocan">
+								<el-menu-item index="5-1">
+									<router-link to="/motoOperators">
 										<div class="menu-op">
 											<div>
 												<img src="../assets/images/Prepaid plan.png">
 											</div>
-											<span class="menu-word">资源报表</span>
+											<span class="menu-word">运营商报表</span>
 										</div>
 									</router-link>
-								</el-menu-item> -->
+								</el-menu-item>
 								<el-menu-item index="5-2">
 									<router-link to="/motoBaobiao">
 										<div class="menu-op">

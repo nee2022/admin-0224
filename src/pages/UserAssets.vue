@@ -434,8 +434,8 @@
 									</div>
 								</router-link>
 							</el-menu-item>
-							<!-- <el-menu-item index="9-2">
-								<router-link to="/pay">
+							<el-menu-item index="9-2">
+								<router-link to="/yikatongTJ">
 									<div class="menu-op">
 										<div>
 											<img src="../assets/images/The purse to pay.png">
@@ -445,7 +445,7 @@
 								</router-link>
 							</el-menu-item>
 							<el-menu-item index="9-3">
-								<router-link to="/ailpay">
+								<router-link to="/conponTJ">
 									<div class="menu-op">
 										<div>
 											<img src="../assets/images/alipay.png">
@@ -455,7 +455,7 @@
 								</router-link>
 							</el-menu-item>
 							<el-menu-item index="9-4">
-								<router-link to="/wechatpay">
+								<router-link to="/tancanTJ">
 									<div class="menu-op">
 										<div>
 											<img src="../assets/images/wechat.png">
@@ -464,7 +464,7 @@
 									</div>
 								</router-link>
 							</el-menu-item>
-							<el-menu-item index="9-5">
+							<!-- <el-menu-item index="9-5">
 								<router-link to="/wechatpay">
 									<div class="menu-op">
 										<div>

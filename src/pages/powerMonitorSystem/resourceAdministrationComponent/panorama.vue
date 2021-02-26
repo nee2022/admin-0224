@@ -1,5 +1,5 @@
 <template>
-  <div>dataBoard</div>
+  <div>全景图</div>
 </template>
 
 <script>

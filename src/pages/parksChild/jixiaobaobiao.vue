@@ -2,7 +2,7 @@
 	<div class="oneCard-right">
 		<div class="UserAssets-right-top">
 			<div class="user-left">
-				<span class="user-word">充电报表</span>
+				<span class="user-word">绩效报表</span>
 			</div>
 			<div class="users-right">
 				<myhead></myhead>
@@ -49,47 +49,65 @@
 				<div>
 					<el-button type="primary" icon="el-icon-search" @click="searchData()">查询</el-button>
 				</div>
-				<!-- <div class="whiteBut">
+				<div class="whiteBut">
 					<img src="../../assets/images/export.png" style="width: 14px;height: 14px;">
 					导出
 				</div>
 				<div class="whiteBut">
 					<img src="../../assets/images/print.png" style="width: 14px;height: 14px;">
 					打印
-				</div> -->
+				</div>
 			</div>
 		</div>
 		<div style="height: 700px;">
 			<div style="height: 680px;">
 				<table class="tableClass">
 					<tr class="firstTr">
-						<td class="td1">日期</td>
-						<td class="td2">商户名</td>
-						<td class="td2">站点</td>
-						<td class="td2">订单数</td>
-						<td class="td2">停车费</td>
-						<td class="td2">已缴费</td>
-						<td class="td2">欠费</td>
-						<td class="td2">退款</td>
-						<td class="td2">优惠</td>
+						<td class="td1">ID</td>
+						<td class="td2">用户名</td>
+						<td class="td2">姓名</td>
+						<td class="td2">手机号</td>
+						<td class="td2">取证次数</td>
+						<td class="td2">账单数量</td>
+						<td class="td2">账单金额</td>
+						<td class="td2">支付金额</td>
 						<td class="td2">图表</td>
 					</tr>
-					<tr class="dataTable" v-for="item in cardList">
-						<td>{{item.dt}}</td>
-						<td>{{item.owner}}</td>
-						<td>0</td>
-						<td>{{item.payment_service_13_count}}</td>
-						<td>{{item.payment_service_13_amount}}</td>
-						<td>{{item.payment_service_13_pay}}</td>
-						<td>{{item.refund_service_13_state_1_redund}}</td>
-						<td>123</td>
-						<td>1321</td>
+					<tr class="dataTable" v-for="item in cardList" v-show="cardList !== ''">
+						<td>{{item.id}}</td>
+						<td>{{item.username}}</td>
+						<td>{{item.fullname}}</td>
+						<td>{{item.telephone}}</td>
+						<td>{{item.pdr_count}}</td>
+						<td>{{item.payment_count}}</td>
+						<td>{{item.payment_amount}}</td>
+						<td>{{item.payment_pay}}</td>
 						<td>
-							<img src="../../assets/images/The chart.png" @click="dialogVisible = true,charts(e),getindex(item.dt,item.owner,item.owner,item.payment_service_13_count,item.payment_service_13_amount,item.payment_service_13_pay,item.refund_service_13_state_1_redund)" style="cursor: pointer;">
+							<img src="../../assets/images/The chart.png" @click="dialogVisible = true,charts(e)" style="cursor: pointer;">
 						</td>
+					</tr>
+					<tr v-show="cardList == ''">
+						<td colspan="10" class="notMsg">暂无信息</td>
 					</tr>
 				</table>
 			</div>
+			<!-- <div v-show="changeList == false" class="tubiaobox">
+					<div class="tubBox" v-for="(item,i) in my">
+						<div class="tubBoxTitleBox">
+							<div class="tubBoxTitle">
+								<div class="tubBoxTitleW">用户总增长趋势</div>
+								<div @click="dialogVisible = true,changeTitle(item.title,item.name,i)">
+									<img src="../../assets/layui/images/face/26.gif">
+								</div>
+							</div>
+						</div>
+						<div class="tubBoxConBox" :id="item.name"></div>
+						<el-dialog :title="tanchuT" :visible.sync="dialogVisible" width="80%" v-if="e==i">
+							<div class="tanchubox" :id="item.name">
+							</div>
+						</el-dialog>
+					</div>
+			</div> -->
 			<el-dialog title="123" :visible.sync="dialogVisible" width="70%">
 				<div class="tanchuTubiao" id="myEcharts">
 					<!-- <div class="Ttitle"></div> -->
@@ -121,6 +139,7 @@
 				dayList: [],
 				numList: [],
 				tanchuT: '',
+				chooseId: 1,
 				userList: [{
 						day: '2021-01-07',
 						num: 1000
@@ -148,8 +167,16 @@
 						id: 1
 					},
 					{
+						name: '周',
+						id: 2
+					},
+					{
 						name: '月',
 						id: 3
+					},
+					{
+						name: '季',
+						id: 4
 					},
 					{
 						name: '年',
@@ -160,6 +187,8 @@
 				total: 1, //数据总条数
 				isActive: true,
 				isBg: 1,
+				startTime: '',
+				endTime: '',
 				dialogVisible: false,
 				addDialogVisible: false,
 				add: false,
@@ -191,14 +220,12 @@
 						id: 3,
 						type: '支付宝'
 					}
-				],
-				//
-				fordata:[],
+				]
 			}
 		},
 		created() {
 			this.token = localStorage.getItem('token')
-			this.getUserMes()
+			this.first()
 		},
 		mounted() {
 
@@ -213,22 +240,16 @@
 				})
 				console.log(this.numList)
 			},
-			charts(a,b,c,d,e,f,g,h) {
+			charts(e) {
 				this.$nextTick(() => {
 					this.drawChart();
 				});
-				
 			},
-			getindex(a,b,c,d,e,f,g,h){
-				this.fordata = [a,b,c,d,e,f,g,h]
-				console.log(this.fordata)
-			},
-			changeBg(id) {
-				this.isBg = id;
-				this.value1 = '';
-				this.value2 = '';
-				console.log(this.isBg)
-			},
+			// chooseDate() {
+			// 	console.log(this.value1)
+			// 	this.startTime = this.value1[0]
+			// 	this.endTime = this.value1[1]
+			// },
 			chooseDate1() {
 				console.log(this.value1)
 
@@ -237,19 +258,6 @@
 				console.log(this.value2)
 			},
 			drawChart() {
-				//token去掉引号
-				let toKen = this.token.replace(/\"/g, "")
-				//console.log(toKen)
-				this.$axios.get("admin/api/report/BDD2490598E542E8A8FAE302F25D189C?token=" + toKen + "&page=" + this.pagenum + "&row=10")
-					.then(res => {
-						console.log(res)
-						// console.log(res.status)//打印状态码
-						if (res.status == 200) {
-							this.cardList = res.data.data //用户列表数据
-							this.total = res.data.total
-							// console.log(this.cardList)
-						}
-					})
 				// 基于准备好的dom，初始化echarts实例
 				let myChart = this.$echarts.init(document.getElementById("myEcharts"));
 				// 指定图表的配置项和数据
@@ -259,11 +267,11 @@
 					},
 					xAxis: {
 						type: 'category',
-						data: ['日期', '站点', '订单数', '停车费', '已缴费', '欠费', '退款', '优惠'],
+						data: ['订单总数', '订单金额', '分成金额', '比比清金额', '转账金额', '钱包分成'],
 						axisLabel: {
 							show: true,
 							textStyle: {
-								fontSize:16
+								fontSize: 16
 							}
 						}
 					},
@@ -273,12 +281,12 @@
 						axisLabel: {
 							show: true,
 							textStyle: {
-								fontSize:16
+								fontSize: 16
 							}
 						}
 					},
 					series: [{
-						data: [],
+						data: [2320, 1700, 3150, 2480, 4670, 1110],
 						type: 'bar',
 						barWidth: '60',
 						itemStyle: {
@@ -310,79 +318,35 @@
 				// 使用刚指定的配置项和数据显示图表。
 				myChart.setOption(option);
 			},
-			//获取用户卡信息列表
-			getUserMes() {
-				//token去掉引号
-				let toKen = this.token.replace(/\"/g, "")
-				//console.log(toKen)
-				this.$axios.get("admin/api/report/BDD2490598E542E8A8FAE302F25D189C?token=" + toKen + "&page=" + this.pagenum + "&row=10")
-					.then(res => {
-						console.log(res)
-						// console.log(res.status)//打印状态码
-						if (res.status == 200) {
-							this.cardList = res.data.data //用户列表数据
-							this.total = res.data.total
-							// console.log(this.cardList)
-							// this.pagesize = 14
-						}
-					})
+			changeIcon() {
+				this.changeList = !this.changeList
 			},
-			daybao(id) {
-				//让点击的id等于传进来的id
-				if (id != '') {
-					this.chooseId = id
-				}
-				this.pagenum = 1
-				if (this.chooseId == 1) {
-					//日报
-					let toKen = this.token.replace(/\"/g, "")
-					// console.log(toKen)
-					this.$axios.get("admin/api/report/BDD2490598E542E8A8FAE302F25D189C?token=" + toKen + "&page=" + this.pagenum + "&row=10")
+
+			changeBg(id) {
+				this.isBg = id;
+				this.value1 = '';
+				this.value2 = '';
+				console.log(this.isBg)
+			},
+			first() {
+				let toKen = this.token.replace(/\"/g, "")
+				// console.log(toKen)
+				this.$axios.get("/admin/api/report/CCC86C79D64211EAB961FA163EC6B4B1?token=" + toKen + "&page=" + this.pagenum +
+						"&row=10")
 					.then(res => {
-						console.log(res)
-						// console.log(res.status)//打印状态码
 						if (res.status == 200) {
 							this.cardList = res.data.data //用户列表数据
 							this.total = res.data.total
 							console.log(this.cardList)
-							// this.pagesize = 14
 						}
 					})
-				} else if (this.chooseId == 3) {
-					//月报
-					let toKen = this.token.replace(/\"/g, "")
-					// console.log(toKen)
-					this.$axios.get("/admin/api/report/0906FC695A394B5B8DE1E56DDFEC4F6B?token=" + toKen + "&page=" + this.pagenum +
-							"&row=10")
-						.then(res => {
-							if (res.status == 200) {
-								this.cardList = res.data.data //用户列表数据
-								this.total = res.data.total
-								console.log(this.cardList)
-							}
-						})
-				} else if (this.chooseId == 5) {
-					//年报
-					let toKen = this.token.replace(/\"/g, "")
-					// console.log(toKen)
-					this.$axios.get("/admin/api/report/F6C2F765EF4D4250AE23095D7ED3E8D2?token=" + toKen + "&page=" + this.pagenum +
-							"&row=10")
-						.then(res => {
-							if (res.status == 200) {
-								this.cardList = res.data.data //用户列表数据
-								this.total = res.data.total
-								console.log(this.cardList)
-							}
-						})
-				}
-
 			},
 			searchData() {
 				if (this.isBg == 1) {
 					//日报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("/admin/api/report/BDD2490598E542E8A8FAE302F25D189C?token=" + toKen + "&page=" + this.pagenum +
+					this.$axios.get("/admin/api/report/CCC86C79D64211EAB961FA163EC6B4B1?token=" + toKen + "&page=" + this.pagenum +
 							"&row=10&from=" + this.value1 + "&to=" + this.value2)
 						.then(res => {
 							if (res.status == 200) {
@@ -395,7 +359,7 @@
 					//月报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("/admin/api/report/0906FC695A394B5B8DE1E56DDFEC4F6B?token=" + toKen + "&page=" + this.pagenum +
+					this.$axios.get("/admin/api/report/913B61BDD64411EAB961FA163EC6B4B1?token=" + toKen + "&page=" + this.pagenum +
 							"&row=10&from=" + this.value1 + "&to=" + this.value2)
 						.then(res => {
 							if (res.status == 200) {
@@ -408,7 +372,7 @@
 					//年报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("/admin/api/report/F6C2F765EF4D4250AE23095D7ED3E8D2?token=" + toKen + "&page=" + this.pagenum +
+					this.$axios.get("/admin/api/report/92694694D64411EAB961FA163EC6B4B1?token=" + toKen + "&page=" + this.pagenum +
 							"&row=10&from=" + this.value1 + "&to=" + this.value2)
 						.then(res => {
 							if (res.status == 200) {
@@ -419,12 +383,54 @@
 						})
 				}
 			},
-			//监听页码值改变
-			// handleCurrentChange(newPage) {
+			daybao(id) {
+				//让点击的id等于传进来的id
+				if (id != '') {
+					this.chooseId = id
+				}
+				this.pagenum = 1
+				if (this.chooseId == 1) {
+					//日报
+					let toKen = this.token.replace(/\"/g, "")
+					// console.log(toKen)
+					this.$axios.get("/admin/api/report/CCC86C79D64211EAB961FA163EC6B4B1?token=" + toKen + "&page=" + this.pagenum +
+							"&row=10")
+						.then(res => {
+							if (res.status == 200) {
+								this.cardList = res.data.data //用户列表数据
+								this.total = res.data.total
+								console.log(this.cardList)
+							}
+						})
+				} else if (this.chooseId == 3) {
+					//月报
+					let toKen = this.token.replace(/\"/g, "")
+					// console.log(toKen)
+					this.$axios.get("/admin/api/report/913B61BDD64411EAB961FA163EC6B4B1?token=" + toKen + "&page=" + this.pagenum +
+							"&row=10")
+						.then(res => {
+							if (res.status == 200) {
+								this.cardList = res.data.data //用户列表数据
+								this.total = res.data.total
+								console.log(this.cardList)
+							}
+						})
+				} else if (this.chooseId == 5) {
+					//年报
+					let toKen = this.token.replace(/\"/g, "")
+					// console.log(toKen)
+					this.$axios.get("/admin/api/report/92694694D64411EAB961FA163EC6B4B1?token=" + toKen + "&page=" + this.pagenum +
+							"&row=10")
+						.then(res => {
+							if (res.status == 200) {
+								this.cardList = res.data.data //用户列表数据
+								this.total = res.data.total
+								console.log(this.cardList)
+							}
+						})
+				}
 
-			// 	this.pagenum = newPage
-			// 	this.getUserMes()
-			// },
+			},
 			//监听页码值改变
 			handleCurrentChange(newPage) {
 				this.pagenum = newPage
@@ -432,7 +438,7 @@
 					//日报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("/admin/api/report/BDD2490598E542E8A8FAE302F25D189C?token=" + toKen + "&page=" + this.pagenum +
+					this.$axios.get("/admin/api/report/CCC86C79D64211EAB961FA163EC6B4B1?token=" + toKen + "&page=" + this.pagenum +
 							"&row=10&from=" + this.value1 + "&to=" + this.value2)
 						.then(res => {
 							if (res.status == 200) {
@@ -445,7 +451,7 @@
 					//月报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("/admin/api/report/0906FC695A394B5B8DE1E56DDFEC4F6B?token=" + toKen + "&page=" + this.pagenum +
+					this.$axios.get("/admin/api/report/913B61BDD64411EAB961FA163EC6B4B1?token=" + toKen + "&page=" + this.pagenum +
 							"&row=10&from=" + this.value1 + "&to=" + this.value2)
 						.then(res => {
 							if (res.status == 200) {
@@ -458,7 +464,7 @@
 					//年报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("/admin/api/report/F6C2F765EF4D4250AE23095D7ED3E8D2?token=" + toKen + "&page=" + this.pagenum +
+					this.$axios.get("/admin/api/report/92694694D64411EAB961FA163EC6B4B1?token=" + toKen + "&page=" + this.pagenum +
 							"&row=10&from=" + this.value1 + "&to=" + this.value2)
 						.then(res => {
 							if (res.status == 200) {
@@ -468,11 +474,6 @@
 							}
 						})
 				}
-			},
-			
-			changeIcon() {
-				this.changeList = !this.changeList
-				console.log(this.changeList)
 			},
 		}
 	}
@@ -584,7 +585,6 @@
 
 	.dataTable td {
 		font-size: 16px;
-		line-height: 58px;
 		text-align: center;
 		color: #7c7c7c;
 		border: solid 1px #cddeff;
@@ -628,9 +628,13 @@
 		border-right: solid 1px #cddeff;
 	}
 
+	.dateSel>>>.el-date-editor.el-input {
+		width: 150px;
+	}
+
 	.tableClass {
 		width: 95%;
-		/* height: 100%; */
+		height: 100%;
 		margin: 0 auto;
 		margin-top: 20px;
 	}
@@ -886,7 +890,7 @@
 	}
 
 	.date {
-		width: 300px;
+		width: 350px;
 		height: 40px;
 		display: flex;
 		flex-direction: row;
@@ -906,10 +910,15 @@
 	}
 
 	.date div {
-		width: 33.3%;
+		width: 20%;
 		height: 40px;
 		text-align: center;
 		cursor: pointer;
+	}
+
+	.notMsg {
+		text-align: center;
+		font-size: 18px;
 	}
 
 	.imgBoxOff {
@@ -940,8 +949,18 @@
 
 	.dateSel>>>.el-input__inner {
 		height: 40px;
-		border-radius: 5px;
+		border: none;
+		text-align: center;
+	}
+
+	.block {
+		width: 350px;
 		border: solid 1px #1e69fe;
+		border-radius: 5px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
 	}
 
 	.el-table td div {
@@ -1154,7 +1173,7 @@
 	}
 
 	.UserAssets-right-text {
-		width: 1140px;
+		width: 1300px;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;

@@ -2,7 +2,7 @@
 	<div class="oneCard-right">
 		<div class="UserAssets-right-top">
 			<div class="user-left">
-				<span class="user-word">用户统计</span>
+				<span class="user-word">一卡通统计</span>
 			</div>
 			<div class="users-right">
 				<myhead></myhead>
@@ -65,34 +65,31 @@
 				<table class="tableClass">
 					<tr class="firstTr">
 						<td class="td1">日期</td>
-						<td class="td2">用户数</td>
-						<td class="td2">钱包充值金额</td>
-						<td class="td2">钱包支付金额</td>
+						<td class="td2">储值卡数</td>
 						<td class="td3">
 							<div class="tBox">
-								<div class="tbox2">用户分布</div>
+								<div class="tbox2">卡类型</div>
 								<div class="tBox1">
-									<div>手机用户数</div>
-									<div>微信用户数</div>
-									<div>支付宝用户数</div>
+									<div>鉴权卡</div>
+									<div>网络卡</div>
+									<div>离线卡</div>
 								</div>
 							</div>
 						</td>
-						<td class="td6">认证用户数</td>
+						<td class="td6">储值卡余额</td>
 					</tr>
 					<tr class="dataTable" v-for="item in cardList">
 						<td class="dateColor">{{item.dt}}</td>
-						<td>{{item.users_count}}</td>
-						<td>{{item.payment_service_1_amount}}</td>
-						<td>{{item.payment_gateway_userpay_pay}}</td>
+						<td>{{item.cards_count}}</td>
+						<!-- <td>{{item.payment_gateway_userpay_pay}}</td> -->
 						<td>
 							<div class="tbodyBox">
-								<div>{{item.users_type_1_count}}</div>
-								<div>{{item.users_type_2_count}}</div>
-								<div>{{item.users_type_3_count}}</div>
+								<div>{{item.cards_type_1_count}}</div>
+								<div>{{item.cards_type_2_count}}</div>
+								<div>{{item.cards_type_3_count}}</div>
 							</div>
 						</td>
-						<td>{{item.users_audit_count}}</td>
+						<td>{{item.cards_amount}}</td>
 					</tr>
 				</table>
 			</div>
@@ -221,32 +218,27 @@
 				my:[{
 					name:'myEcharts0',
 					id:1,
-					title:'用户总数'
+					title:'储值卡数'
 				},
 				{
 					name:'myEcharts1',
 					id:2,
-					title:'钱包充值金额'
+					title:'离线卡数量'
 				},
 				{
 					name:'myEcharts2',
 					id:3,
-					title:'钱包支付金额'
+					title:'网络卡数量'
 				},
 				{
 					name:'myEcharts3',
 					id:4,
-					title:'手机用户数'
+					title:'鉴权卡数量'
 				},
 				{
 					name:'myEcharts4',
 					id:5,
-					title:'微信用户数'
-				},
-				{
-					name:'myEcharts5',
-					id:6,
-					title:'支付宝用户数'
+					title:'储值卡余额'
 				}],
 				userList: [{
 						day: '2021-01-07',
@@ -368,7 +360,7 @@
 						this.value1 = ''
 						this.value2 = ''
 						this.value3= ''
-						this.$axios.get("/admin/api/report/C66DF2CDB1224F1ABFCE23D2412A6BA5?token=" + toKen + "&page=" + this.pagenum +
+						this.$axios.get("/admin/api/report/6B52A176C758419699BC8E2113094232?token=" + toKen + "&page=" + this.pagenum +
 								"&row=10")
 							.then(res => {
 								if (res.status == 200) {
@@ -382,7 +374,7 @@
 						this.value1 = ''
 						this.value2 = ''
 						this.value3= ''
-						this.$axios.get("/admin/api/report/CA2D285CB59A4E9B8DCDC529762D7DE1?token=" + toKen + "&page=" + this.pagenum +
+						this.$axios.get("/admin/api/report/0686D43D0CFE4EB8955BAB813B663FAD?token=" + toKen + "&page=" + this.pagenum +
 								"&row=10")
 							.then(res => {
 								if (res.status == 200) {
@@ -395,7 +387,7 @@
 						this.value1 = ''
 						this.value2 = ''
 						this.value3= ''
-						this.$axios.get("/admin/api/report/5BC0A870FBA04474A9675D75CB43A7A3?token=" + toKen + "&page=" + this.pagenum +
+						this.$axios.get("/admin/api/report/74AD058E9AB04435AD2AD77F1F02846B?token=" + toKen + "&page=" + this.pagenum +
 								"&row=10")
 							.then(res => {
 								if (res.status == 200) {
@@ -411,13 +403,12 @@
 						this.value2 = ''
 						this.value3= ''
 						this.xzhou = []
-						this.shouji = []
-						this.weixin = []
-						this.zhifubo = []
-						this.userNum = []
-						this.chong = []
-						this.pay = []
-						this.$axios.get("/admin/api/report/C66DF2CDB1224F1ABFCE23D2412A6BA5?token=" + toKen + "&page=" + this.pagenum +
+						this.cardNum = []
+						this.cardAmount = []
+						this.lxkNum = []
+						this.wlkNum = []
+						this.jqkNum = []
+						this.$axios.get("/admin/api/report/6B52A176C758419699BC8E2113094232?token=" + toKen + "&page=" + this.pagenum +
 								"&row=10")
 							.then(res => {
 								if (res.status == 200) {
@@ -426,12 +417,11 @@
 									for (let i in this.cardList) {
 										// 请求回来的日期,手机用户数,微信用户数等
 										this.xzhou.push(this.cardList[i].dt)
-										this.shouji.push(this.cardList[i].users_type_1_count)
-										this.weixin.push(this.cardList[i].users_type_2_count)
-										this.zhifubo.push(this.cardList[i].users_type_3_count)
-										this.userNum.push(this.cardList[i].users_count)
-										this.chong.push(this.cardList[i].payment_service_1_amount)
-										this.pay.push(this.cardList[i].payment_gateway_userpay_pay)
+										this.cardNum.push(this.cardList[i].cards_count)
+										this.cardAmount.push(this.cardList[i].cards_amount)
+										this.lxkNum.push(this.cardList[i].cards_type_3_count)
+										this.wlkNum.push(this.cardList[i].cards_type_2_count)
+										this.jqkNum.push(this.cardList[i].cards_type_1_count)
 									}
 									console.log(this.cardList)
 									this.drawChart();
@@ -447,13 +437,12 @@
 						this.value2 = ''
 						this.value3= ''
 						this.xzhou = []
-						this.shouji = []
-						this.weixin = []
-						this.zhifubo = []
-						this.userNum = []
-						this.chong = []
-						this.pay = []
-						this.$axios.get("/admin/api/report/CA2D285CB59A4E9B8DCDC529762D7DE1?token=" + toKen + "&page=" + this.pagenum +
+						this.cardNum = []
+						this.cardAmount = []
+						this.lxkNum = []
+						this.wlkNum = []
+						this.jqkNum = []
+						this.$axios.get("/admin/api/report/0686D43D0CFE4EB8955BAB813B663FAD?token=" + toKen + "&page=" + this.pagenum +
 								"&row=10")
 							.then(res => {
 								if (res.status == 200) {
@@ -462,12 +451,11 @@
 									for (let i in this.cardList) {
 										// 请求回来的日期,手机用户数,微信用户数等
 										this.xzhou.push(this.cardList[i].dt)
-										this.shouji.push(this.cardList[i].users_type_1_count)
-										this.weixin.push(this.cardList[i].users_type_2_count)
-										this.zhifubo.push(this.cardList[i].users_type_3_count)
-										this.userNum.push(this.cardList[i].users_count)
-										this.chong.push(this.cardList[i].payment_service_1_amount)
-										this.pay.push(this.cardList[i].payment_gateway_userpay_pay)
+										this.cardNum.push(this.cardList[i].cards_count)
+										this.cardAmount.push(this.cardList[i].cards_amount)
+										this.lxkNum.push(this.cardList[i].cards_type_3_count)
+										this.wlkNum.push(this.cardList[i].cards_type_2_count)
+										this.jqkNum.push(this.cardList[i].cards_type_1_count)
 									}
 									console.log(this.cardList)
 									this.drawChart();
@@ -483,13 +471,12 @@
 						this.value2 = ''
 						this.value3= ''
 						this.xzhou = []
-						this.shouji = []
-						this.weixin = []
-						this.zhifubo = []
-						this.userNum = []
-						this.chong = []
-						this.pay = []
-						this.$axios.get("/admin/api/report/5BC0A870FBA04474A9675D75CB43A7A3?token=" + toKen + "&page=" + this.pagenum +
+						this.cardNum = []
+						this.cardAmount = []
+						this.lxkNum = []
+						this.wlkNum = []
+						this.jqkNum = []
+						this.$axios.get("/admin/api/report/74AD058E9AB04435AD2AD77F1F02846B?token=" + toKen + "&page=" + this.pagenum +
 								"&row=10")
 							.then(res => {
 								if (res.status == 200) {
@@ -498,12 +485,11 @@
 									for (let i in this.cardList) {
 										// 请求回来的日期,手机用户数,微信用户数等
 										this.xzhou.push(this.cardList[i].dt)
-										this.shouji.push(this.cardList[i].users_type_1_count)
-										this.weixin.push(this.cardList[i].users_type_2_count)
-										this.zhifubo.push(this.cardList[i].users_type_3_count)
-										this.userNum.push(this.cardList[i].users_count)
-										this.chong.push(this.cardList[i].payment_service_1_amount)
-										this.pay.push(this.cardList[i].payment_gateway_userpay_pay)
+										this.cardNum.push(this.cardList[i].cards_count)
+										this.cardAmount.push(this.cardList[i].cards_amount)
+										this.lxkNum.push(this.cardList[i].cards_type_3_count)
+										this.wlkNum.push(this.cardList[i].cards_type_2_count)
+										this.jqkNum.push(this.cardList[i].cards_type_1_count)
 									}
 									console.log(this.cardList)
 									this.drawChart();
@@ -526,15 +512,14 @@
 						this.value1 = ''
 						this.value2 = ''
 						this.value3= ''
-						this.xzhou = []
-						this.shouji = []
 						this.pagenum = 1
-						this.weixin = []
-						this.zhifubo = []
-						this.userNum = []
-						this.chong = []
-						this.pay = []
-						this.$axios.get("/admin/api/report/C66DF2CDB1224F1ABFCE23D2412A6BA5?token=" + toKen + "&page=" + this.pagenum +
+						this.xzhou = []
+						this.cardNum = []
+						this.cardAmount = []
+						this.lxkNum = []
+						this.wlkNum = []
+						this.jqkNum = []
+						this.$axios.get("/admin/api/report/6B52A176C758419699BC8E2113094232?token=" + toKen + "&page=" + this.pagenum +
 								"&row=10")
 							.then(res => {
 								if (res.status == 200) {
@@ -555,13 +540,12 @@
 						this.value3= ''
 						this.pagenum = 1
 						this.xzhou = []
-						this.shouji = []
-						this.weixin = []
-						this.zhifubo = []
-						this.userNum = []
-						this.chong = []
-						this.pay = []
-						this.$axios.get("/admin/api/report/CA2D285CB59A4E9B8DCDC529762D7DE1?token=" + toKen + "&page=" + this.pagenum +
+						this.cardNum = []
+						this.cardAmount = []
+						this.lxkNum = []
+						this.wlkNum = []
+						this.jqkNum = []
+						this.$axios.get("/admin/api/report/0686D43D0CFE4EB8955BAB813B663FAD?token=" + toKen + "&page=" + this.pagenum +
 								"&row=10")
 							.then(res => {
 								if (res.status == 200) {
@@ -582,13 +566,12 @@
 						this.value3= ''
 						this.pagenum = 1
 						this.xzhou = []
-						this.shouji = []
-						this.weixin = []
-						this.zhifubo = []
-						this.userNum = []
-						this.chong = []
-						this.pay = []
-						this.$axios.get("/admin/api/report/5BC0A870FBA04474A9675D75CB43A7A3?token=" + toKen + "&page=" + this.pagenum +
+						this.cardNum = []
+						this.cardAmount = []
+						this.lxkNum = []
+						this.wlkNum = []
+						this.jqkNum = []
+						this.$axios.get("/admin/api/report/74AD058E9AB04435AD2AD77F1F02846B?token=" + toKen + "&page=" + this.pagenum +
 								"&row=10")
 							.then(res => {
 								if (res.status == 200) {
@@ -610,13 +593,12 @@
 						this.value2 = ''
 						this.value3= ''
 						this.xzhou = []
-						this.shouji = []
-						this.weixin = []
-						this.zhifubo = []
-						this.userNum = []
-						this.chong = []
-						this.pay = []
-						this.$axios.get("/admin/api/report/C66DF2CDB1224F1ABFCE23D2412A6BA5?token=" + toKen + "&page=" + this.pagenum +
+						this.cardNum = []
+						this.cardAmount = []
+						this.lxkNum = []
+						this.wlkNum = []
+						this.jqkNum = []
+						this.$axios.get("/admin/api/report/6B52A176C758419699BC8E2113094232?token=" + toKen + "&page=" + this.pagenum +
 								"&row=10")
 							.then(res => {
 								if (res.status == 200) {
@@ -625,12 +607,11 @@
 									for (let i in this.cardList) {
 										// 请求回来的日期,手机用户数,微信用户数等
 										this.xzhou.push(this.cardList[i].dt)
-										this.shouji.push(this.cardList[i].users_type_1_count)
-										this.weixin.push(this.cardList[i].users_type_2_count)
-										this.zhifubo.push(this.cardList[i].users_type_3_count)
-										this.userNum.push(this.cardList[i].users_count)
-										this.chong.push(this.cardList[i].payment_service_1_amount)
-										this.pay.push(this.cardList[i].payment_gateway_userpay_pay)
+										this.cardNum.push(this.cardList[i].cards_count)
+										this.cardAmount.push(this.cardList[i].cards_amount)
+										this.lxkNum.push(this.cardList[i].cards_type_3_count)
+										this.wlkNum.push(this.cardList[i].cards_type_2_count)
+										this.jqkNum.push(this.cardList[i].cards_type_1_count)
 									}
 									console.log(this.cardList)
 									this.drawChart();
@@ -646,13 +627,12 @@
 						this.value2 = ''
 						this.value3= ''
 						this.xzhou = []
-						this.shouji = []
-						this.weixin = []
-						this.zhifubo = []
-						this.userNum = []
-						this.chong = []
-						this.pay = []
-						this.$axios.get("/admin/api/report/CA2D285CB59A4E9B8DCDC529762D7DE1?token=" + toKen + "&page=" + this.pagenum +
+						this.cardNum = []
+						this.cardAmount = []
+						this.lxkNum = []
+						this.wlkNum = []
+						this.jqkNum = []
+						this.$axios.get("/admin/api/report/0686D43D0CFE4EB8955BAB813B663FAD?token=" + toKen + "&page=" + this.pagenum +
 								"&row=10")
 							.then(res => {
 								if (res.status == 200) {
@@ -661,12 +641,11 @@
 									for (let i in this.cardList) {
 										// 请求回来的日期,手机用户数,微信用户数等
 										this.xzhou.push(this.cardList[i].dt)
-										this.shouji.push(this.cardList[i].users_type_1_count)
-										this.weixin.push(this.cardList[i].users_type_2_count)
-										this.zhifubo.push(this.cardList[i].users_type_3_count)
-										this.userNum.push(this.cardList[i].users_count)
-										this.chong.push(this.cardList[i].payment_service_1_amount)
-										this.pay.push(this.cardList[i].payment_gateway_userpay_pay)
+										this.cardNum.push(this.cardList[i].cards_count)
+										this.cardAmount.push(this.cardList[i].cards_amount)
+										this.lxkNum.push(this.cardList[i].cards_type_3_count)
+										this.wlkNum.push(this.cardList[i].cards_type_2_count)
+										this.jqkNum.push(this.cardList[i].cards_type_1_count)
 									}
 									console.log(this.cardList)
 									this.drawChart();
@@ -682,13 +661,12 @@
 						this.value2 = ''
 						this.value3= ''
 						this.xzhou = []
-						this.shouji = []
-						this.weixin = []
-						this.zhifubo = []
-						this.userNum = []
-						this.chong = []
-						this.pay = []
-						this.$axios.get("/admin/api/report/5BC0A870FBA04474A9675D75CB43A7A3?token=" + toKen + "&page=" + this.pagenum +
+						this.cardNum = []
+						this.cardAmount = []
+						this.lxkNum = []
+						this.wlkNum = []
+						this.jqkNum = []
+						this.$axios.get("/admin/api/report/74AD058E9AB04435AD2AD77F1F02846B?token=" + toKen + "&page=" + this.pagenum +
 								"&row=10")
 							.then(res => {
 								if (res.status == 200) {
@@ -697,12 +675,11 @@
 									for (let i in this.cardList) {
 										// 请求回来的日期,手机用户数,微信用户数等
 										this.xzhou.push(this.cardList[i].dt)
-										this.shouji.push(this.cardList[i].users_type_1_count)
-										this.weixin.push(this.cardList[i].users_type_2_count)
-										this.zhifubo.push(this.cardList[i].users_type_3_count)
-										this.userNum.push(this.cardList[i].users_count)
-										this.chong.push(this.cardList[i].payment_service_1_amount)
-										this.pay.push(this.cardList[i].payment_gateway_userpay_pay)
+										this.cardNum.push(this.cardList[i].cards_count)
+										this.cardAmount.push(this.cardList[i].cards_amount)
+										this.lxkNum.push(this.cardList[i].cards_type_3_count)
+										this.wlkNum.push(this.cardList[i].cards_type_2_count)
+										this.jqkNum.push(this.cardList[i].cards_type_1_count)
 									}
 									console.log(this.cardList)
 									this.drawChart();
@@ -724,13 +701,12 @@
 					if(this.isBg == 1){
 						
 						this.xzhou = []
-						this.shouji = []
-						this.weixin = []
-						this.zhifubo = []
-						this.userNum = []
-						this.chong = []
-						this.pay = []
-						this.$axios.get("/admin/api/report/C66DF2CDB1224F1ABFCE23D2412A6BA5?token=" + toKen + "&page=" + this.pagenum +
+						this.cardNum = []
+						this.cardAmount = []
+						this.lxkNum = []
+						this.wlkNum = []
+						this.jqkNum = []
+						this.$axios.get("/admin/api/report/6B52A176C758419699BC8E2113094232?token=" + toKen + "&page=" + this.pagenum +
 								"&row=10&from=" + this.value1 + "&to=" + this.value2)
 							.then(res => {
 								if (res.status == 200) {
@@ -748,13 +724,12 @@
 					}else if(this.isBg == 3){
 					
 						this.xzhou = []
-						this.shouji = []
-						this.weixin = []
-						this.zhifubo = []
-						this.userNum = []
-						this.chong = []
-						this.pay = []
-						this.$axios.get("/admin/api/report/CA2D285CB59A4E9B8DCDC529762D7DE1?token=" + toKen + "&page=" + this.pagenum +
+						this.cardNum = []
+						this.cardAmount = []
+						this.lxkNum = []
+						this.wlkNum = []
+						this.jqkNum = []
+						this.$axios.get("/admin/api/report/0686D43D0CFE4EB8955BAB813B663FAD?token=" + toKen + "&page=" + this.pagenum +
 								"&row=10&from=" + this.value1 + "&to=" + this.value2)
 							.then(res => {
 								if (res.status == 200) {
@@ -772,13 +747,12 @@
 					}else if(this.isBg == 5){
 						
 						this.xzhou = []
-						this.shouji = []
-						this.weixin = []
-						this.zhifubo = []
-						this.userNum = []
-						this.chong = []
-						this.pay = []
-						this.$axios.get("/admin/api/report/5BC0A870FBA04474A9675D75CB43A7A3?token=" + toKen + "&page=" + this.pagenum +
+						this.cardNum = []
+						this.cardAmount = []
+						this.lxkNum = []
+						this.wlkNum = []
+						this.jqkNum = []
+						this.$axios.get("/admin/api/report/74AD058E9AB04435AD2AD77F1F02846B?token=" + toKen + "&page=" + this.pagenum +
 								"&row=10&from=" + this.value1 + "&to=" + this.value2)
 							.then(res => {
 								if (res.status == 200) {
@@ -797,14 +771,13 @@
 				}else if(this.changeList == false){
 					if(this.isBg == 1){
 						this.xzhou = []
-						this.shouji = []
-						this.weixin = []
-						this.zhifubo = []
-						this.userNum = []
-						this.chong = []
-						this.pay = []
+						this.cardNum = []
+						this.cardAmount = []
+						this.lxkNum = []
+						this.wlkNum = []
+						this.jqkNum = []
 						this.cardList = []
-						this.$axios.get("/admin/api/report/C66DF2CDB1224F1ABFCE23D2412A6BA5?token=" + toKen + "&from=" + this.value1 + "&to=" + this.value2)
+						this.$axios.get("/admin/api/report/6B52A176C758419699BC8E2113094232?token=" + toKen + "&from=" + this.value1 + "&to=" + this.value2)
 							.then(res => {
 								if (res.status == 200) {
 									this.cardList = res.data.data //用户列表数据
@@ -812,12 +785,11 @@
 									for (let i in this.cardList) {
 										// 请求回来的日期,手机用户数,微信用户数等
 										this.xzhou.push(this.cardList[i].dt)
-										this.shouji.push(this.cardList[i].users_type_1_count)
-										this.weixin.push(this.cardList[i].users_type_2_count)
-										this.zhifubo.push(this.cardList[i].users_type_3_count)
-										this.userNum.push(this.cardList[i].users_count)
-										this.chong.push(this.cardList[i].payment_service_1_amount)
-										this.pay.push(this.cardList[i].payment_gateway_userpay_pay)
+										this.cardNum.push(this.cardList[i].cards_count)
+										this.cardAmount.push(this.cardList[i].cards_amount)
+										this.lxkNum.push(this.cardList[i].cards_type_3_count)
+										this.wlkNum.push(this.cardList[i].cards_type_2_count)
+										this.jqkNum.push(this.cardList[i].cards_type_1_count)
 									}
 									console.log(res.data.data)
 									this.drawChart();
@@ -831,13 +803,12 @@
 					}else if(this.isBg == 3){
 						this.cardList = []
 						this.xzhou = []
-						this.shouji = []
-						this.weixin = []
-						this.zhifubo = []
-						this.userNum = []
-						this.chong = []
-						this.pay = []
-						this.$axios.get("/admin/api/report/CA2D285CB59A4E9B8DCDC529762D7DE1?token=" + toKen + "&from=" + this.value1 + "&to=" + this.value2)
+						this.cardNum = []
+						this.cardAmount = []
+						this.lxkNum = []
+						this.wlkNum = []
+						this.jqkNum = []
+						this.$axios.get("/admin/api/report/0686D43D0CFE4EB8955BAB813B663FAD?token=" + toKen + "&from=" + this.value1 + "&to=" + this.value2)
 							.then(res => {
 								if (res.status == 200) {
 									this.cardList = res.data.data //用户列表数据
@@ -845,12 +816,11 @@
 									for (let i in this.cardList) {
 										// 请求回来的日期,手机用户数,微信用户数等
 										this.xzhou.push(this.cardList[i].dt)
-										this.shouji.push(this.cardList[i].users_type_1_count)
-										this.weixin.push(this.cardList[i].users_type_2_count)
-										this.zhifubo.push(this.cardList[i].users_type_3_count)
-										this.userNum.push(this.cardList[i].users_count)
-										this.chong.push(this.cardList[i].payment_service_1_amount)
-										this.pay.push(this.cardList[i].payment_gateway_userpay_pay)
+										this.cardNum.push(this.cardList[i].cards_count)
+										this.cardAmount.push(this.cardList[i].cards_amount)
+										this.lxkNum.push(this.cardList[i].cards_type_3_count)
+										this.wlkNum.push(this.cardList[i].cards_type_2_count)
+										this.jqkNum.push(this.cardList[i].cards_type_1_count)
 									}
 									console.log(this.cardList)
 									this.drawChart();
@@ -864,13 +834,12 @@
 					}else if(this.isBg == 5){
 						this.cardList = []
 						this.xzhou = []
-						this.shouji = []
-						this.weixin = []
-						this.zhifubo = []
-						this.userNum = []
-						this.chong = []
-						this.pay = []
-						this.$axios.get("/admin/api/report/5BC0A870FBA04474A9675D75CB43A7A3?token=" + toKen + "&from=" + this.value1 + "&to=" + this.value2)
+						this.cardNum = []
+						this.cardAmount = []
+						this.lxkNum = []
+						this.wlkNum = []
+						this.jqkNum = []
+						this.$axios.get("/admin/api/report/74AD058E9AB04435AD2AD77F1F02846B?token=" + toKen + "&from=" + this.value1 + "&to=" + this.value2)
 							.then(res => {
 								if (res.status == 200) {
 									this.cardList = res.data.data //用户列表数据
@@ -878,12 +847,11 @@
 									for (let i in this.cardList) {
 										// 请求回来的日期,手机用户数,微信用户数等
 										this.xzhou.push(this.cardList[i].dt)
-										this.shouji.push(this.cardList[i].users_type_1_count)
-										this.weixin.push(this.cardList[i].users_type_2_count)
-										this.zhifubo.push(this.cardList[i].users_type_3_count)
-										this.userNum.push(this.cardList[i].users_count)
-										this.chong.push(this.cardList[i].payment_service_1_amount)
-										this.pay.push(this.cardList[i].payment_gateway_userpay_pay)
+										this.cardNum.push(this.cardList[i].cards_count)
+										this.cardAmount.push(this.cardList[i].cards_amount)
+										this.lxkNum.push(this.cardList[i].cards_type_3_count)
+										this.wlkNum.push(this.cardList[i].cards_type_2_count)
+										this.jqkNum.push(this.cardList[i].cards_type_1_count)
 									}
 									console.log(this.cardList)
 									this.drawChart();
@@ -950,7 +918,7 @@
 
 					},
 					legend: {
-						data: ['用户数'],
+						data: ['储值卡数'],
 						orient: 'horizontal', //垂直显示
 						y: 'bottom', //延Y轴居中
 						x: 'center', //居右显示
@@ -974,9 +942,9 @@
 						name: '单位:人数'
 					},
 					series: [{
-						name: '用户数',
+						name: '储值卡数',
 						type: 'line',
-						data: this.userNum,
+						data: this.cardNum,
 						smooth: true,
 					}, ]
 				};
@@ -996,7 +964,7 @@
 
 					},
 					legend: {
-						data: ['钱包充值金额'],
+						data: ['离线卡数量'],
 						orient: 'horizontal', //垂直显示
 						y: 'bottom', //延Y轴居中
 						x: 'center', //居右显示
@@ -1020,9 +988,9 @@
 						name: '单位:元'
 					},
 					series: [{
-						name: '钱包充值金额',
+						name: '离线卡数量',
 						type: 'line',
-						data: this.chong,
+						data: this.lxkNum,
 						smooth: true,
 					}]
 				};
@@ -1042,7 +1010,7 @@
 
 					},
 					legend: {
-						data: ['钱包支付金额'],
+						data: ['网络卡数量'],
 						orient: 'horizontal', //垂直显示
 						y: 'bottom', //延Y轴居中
 						x: 'center', //居右显示
@@ -1066,9 +1034,9 @@
 						name: '单位:元'
 					},
 					series: [{
-						name: '钱包支付金额',
+						name: '网络卡数量',
 						type: 'line',
-						data: this.pay,
+						data: this.wlkNum,
 						smooth: true,
 					}, ]
 				};
@@ -1088,7 +1056,7 @@
 
 					},
 					legend: {
-						data: ['手机用户数'],
+						data: ['鉴权卡数量'],
 						orient: 'horizontal', //垂直显示
 						y: 'bottom', //延Y轴居中
 						x: 'center', //居右显示
@@ -1112,9 +1080,9 @@
 						name: '单位:人数'
 					},
 					series: [{
-						name: '手机用户数',
+						name: '鉴权卡数量',
 						type: 'line',
-						data: this.shouji,
+						data: this.jqkNum,
 						smooth: true,
 					}, ]
 				};
@@ -1134,7 +1102,7 @@
 				
 					},
 					legend: {
-						data: ['微信用户数'],
+						data: ['储值卡余额'],
 						orient: 'horizontal', //垂直显示
 						y: 'bottom', //延Y轴居中
 						x: 'center', //居右显示
@@ -1158,9 +1126,9 @@
 						name: '单位:人数'
 					},
 					series: [{
-						name: '微信用户数',
+						name: '储值卡余额',
 						type: 'line',
-						data: this.weixin,
+						data: this.cardAmount,
 						smooth: true,
 					}, ]
 				};
@@ -1239,7 +1207,7 @@
 					//日报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("/admin/api/report/C66DF2CDB1224F1ABFCE23D2412A6BA5?token=" + toKen + "&page=" + this.pagenum +
+					this.$axios.get("/admin/api/report/6B52A176C758419699BC8E2113094232?token=" + toKen + "&page=" + this.pagenum +
 							"&row=10&from=" + this.value1 + "&to=" + this.value2)
 						.then(res => {
 							if (res.status == 200) {
@@ -1252,7 +1220,7 @@
 					//月报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("/admin/api/report/CA2D285CB59A4E9B8DCDC529762D7DE1?token=" + toKen + "&page=" + this.pagenum +
+					this.$axios.get("/admin/api/report/0686D43D0CFE4EB8955BAB813B663FAD?token=" + toKen + "&page=" + this.pagenum +
 							"&row=10&from=" + this.value1 + "&to=" + this.value2)
 						.then(res => {
 							if (res.status == 200) {
@@ -1265,7 +1233,7 @@
 					//年报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("/admin/api/report/5BC0A870FBA04474A9675D75CB43A7A3?token=" + toKen + "&page=" + this.pagenum +
+					this.$axios.get("/admin/api/report/74AD058E9AB04435AD2AD77F1F02846B?token=" + toKen + "&page=" + this.pagenum +
 							"&row=10&from=" + this.value1 + "&to=" + this.value2)
 						.then(res => {
 							if (res.status == 200) {

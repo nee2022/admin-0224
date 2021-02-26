@@ -85,7 +85,7 @@
 						<td>123</td>
 						<td>1321</td>
 						<td>
-							<img src="../../assets/images/The chart.png" @click="dialogVisible = true,charts(e),getindex(item.dt,item.owner,item.owner,item.payment_service_13_count,item.payment_service_13_amount,item.payment_service_13_pay,item.refund_service_13_state_1_redund)" style="cursor: pointer;">
+							<img src="../../assets/images/The chart.png" @click="dialogVisible = true,charts(e)" style="cursor: pointer;">
 						</td>
 					</tr>
 				</table>
@@ -191,9 +191,7 @@
 						id: 3,
 						type: '支付宝'
 					}
-				],
-				//
-				fordata:[],
+				]
 			}
 		},
 		created() {
@@ -213,15 +211,10 @@
 				})
 				console.log(this.numList)
 			},
-			charts(a,b,c,d,e,f,g,h) {
+			charts(e) {
 				this.$nextTick(() => {
 					this.drawChart();
 				});
-				
-			},
-			getindex(a,b,c,d,e,f,g,h){
-				this.fordata = [a,b,c,d,e,f,g,h]
-				console.log(this.fordata)
 			},
 			changeBg(id) {
 				this.isBg = id;
@@ -237,19 +230,6 @@
 				console.log(this.value2)
 			},
 			drawChart() {
-				//token去掉引号
-				let toKen = this.token.replace(/\"/g, "")
-				//console.log(toKen)
-				this.$axios.get("admin/api/report/BDD2490598E542E8A8FAE302F25D189C?token=" + toKen + "&page=" + this.pagenum + "&row=10")
-					.then(res => {
-						console.log(res)
-						// console.log(res.status)//打印状态码
-						if (res.status == 200) {
-							this.cardList = res.data.data //用户列表数据
-							this.total = res.data.total
-							// console.log(this.cardList)
-						}
-					})
 				// 基于准备好的dom，初始化echarts实例
 				let myChart = this.$echarts.init(document.getElementById("myEcharts"));
 				// 指定图表的配置项和数据
@@ -278,7 +258,7 @@
 						}
 					},
 					series: [{
-						data: [],
+						data: [2320, 1700, 3150, 2480, 4670, 1110],
 						type: 'bar',
 						barWidth: '60',
 						itemStyle: {
@@ -315,7 +295,7 @@
 				//token去掉引号
 				let toKen = this.token.replace(/\"/g, "")
 				//console.log(toKen)
-				this.$axios.get("admin/api/report/BDD2490598E542E8A8FAE302F25D189C?token=" + toKen + "&page=" + this.pagenum + "&row=10")
+				this.$axios.get("admin/api/report/64F7ABE046A84880B8B2213CB03A9259?token=" + toKen + "&page=" + this.pagenum + "&row=10")
 					.then(res => {
 						console.log(res)
 						// console.log(res.status)//打印状态码
@@ -337,7 +317,7 @@
 					//日报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("admin/api/report/BDD2490598E542E8A8FAE302F25D189C?token=" + toKen + "&page=" + this.pagenum + "&row=10")
+					this.$axios.get("admin/api/report/64F7ABE046A84880B8B2213CB03A9259?token=" + toKen + "&page=" + this.pagenum + "&row=10")
 					.then(res => {
 						console.log(res)
 						// console.log(res.status)//打印状态码
@@ -352,7 +332,7 @@
 					//月报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("/admin/api/report/0906FC695A394B5B8DE1E56DDFEC4F6B?token=" + toKen + "&page=" + this.pagenum +
+					this.$axios.get("/admin/api/report/5205FB66C9C643348FA5C97D1752C839?token=" + toKen + "&page=" + this.pagenum +
 							"&row=10")
 						.then(res => {
 							if (res.status == 200) {
@@ -365,7 +345,7 @@
 					//年报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("/admin/api/report/F6C2F765EF4D4250AE23095D7ED3E8D2?token=" + toKen + "&page=" + this.pagenum +
+					this.$axios.get("/admin/api/report/C2C647A9B5D241638E7FE4033C5A6999?token=" + toKen + "&page=" + this.pagenum +
 							"&row=10")
 						.then(res => {
 							if (res.status == 200) {
@@ -382,7 +362,7 @@
 					//日报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("/admin/api/report/BDD2490598E542E8A8FAE302F25D189C?token=" + toKen + "&page=" + this.pagenum +
+					this.$axios.get("/admin/api/report/64F7ABE046A84880B8B2213CB03A9259?token=" + toKen + "&page=" + this.pagenum +
 							"&row=10&from=" + this.value1 + "&to=" + this.value2)
 						.then(res => {
 							if (res.status == 200) {
@@ -395,7 +375,7 @@
 					//月报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("/admin/api/report/0906FC695A394B5B8DE1E56DDFEC4F6B?token=" + toKen + "&page=" + this.pagenum +
+					this.$axios.get("/admin/api/report/5205FB66C9C643348FA5C97D1752C839?token=" + toKen + "&page=" + this.pagenum +
 							"&row=10&from=" + this.value1 + "&to=" + this.value2)
 						.then(res => {
 							if (res.status == 200) {
@@ -408,7 +388,7 @@
 					//年报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("/admin/api/report/F6C2F765EF4D4250AE23095D7ED3E8D2?token=" + toKen + "&page=" + this.pagenum +
+					this.$axios.get("/admin/api/report/C2C647A9B5D241638E7FE4033C5A6999?token=" + toKen + "&page=" + this.pagenum +
 							"&row=10&from=" + this.value1 + "&to=" + this.value2)
 						.then(res => {
 							if (res.status == 200) {
@@ -432,7 +412,7 @@
 					//日报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("/admin/api/report/BDD2490598E542E8A8FAE302F25D189C?token=" + toKen + "&page=" + this.pagenum +
+					this.$axios.get("/admin/api/report/64F7ABE046A84880B8B2213CB03A9259?token=" + toKen + "&page=" + this.pagenum +
 							"&row=10&from=" + this.value1 + "&to=" + this.value2)
 						.then(res => {
 							if (res.status == 200) {
@@ -445,7 +425,7 @@
 					//月报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("/admin/api/report/0906FC695A394B5B8DE1E56DDFEC4F6B?token=" + toKen + "&page=" + this.pagenum +
+					this.$axios.get("/admin/api/report/5205FB66C9C643348FA5C97D1752C839?token=" + toKen + "&page=" + this.pagenum +
 							"&row=10&from=" + this.value1 + "&to=" + this.value2)
 						.then(res => {
 							if (res.status == 200) {
@@ -458,7 +438,7 @@
 					//年报
 					let toKen = this.token.replace(/\"/g, "")
 					// console.log(toKen)
-					this.$axios.get("/admin/api/report/F6C2F765EF4D4250AE23095D7ED3E8D2?token=" + toKen + "&page=" + this.pagenum +
+					this.$axios.get("/admin/api/report/C2C647A9B5D241638E7FE4033C5A6999?token=" + toKen + "&page=" + this.pagenum +
 							"&row=10&from=" + this.value1 + "&to=" + this.value2)
 						.then(res => {
 							if (res.status == 200) {
