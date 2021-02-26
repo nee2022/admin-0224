@@ -290,39 +290,7 @@
         </div>
         <div class="charstBox1" id="myEcharts3"></div>
       </div>
-      <div class="wulianBotBox1">
-        <div class="roadTopBox">
-          <div
-            style="display: flex;flex-direction: row;align-items: center;height: 50px;"
-          >
-            <div class="T_blue"></div>
-            <span class="T_span">欠费排名</span>
-          </div>
-          <div class="dateR2">
-            <div class="dateBox">
-              <div
-                class="blueBoxs"
-                v-for="item in day"
-                :class="{ BGactive: item.id == isActive5 }"
-                @click="changeBg5(item.id)"
-              >
-                {{ item.name }}
-              </div>
-            </div>
-            <div class="dateBox1">
-              <div
-                class="blueBoxs1"
-                v-for="item in shouList"
-                :class="{ BGactive: item.id == isActive6 }"
-                @click="changeBg6(item.id)"
-              >
-                {{ item.name }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="charstBox1" id="myEcharts4"></div>
-      </div>
+
       <div class="wulianBotBox1">
         <div class="roadTopBox">
           <div
@@ -354,7 +322,7 @@
             </div>
           </div>
         </div>
-        <div class="charstBox1" id="myEcharts5"></div>
+        <div class="charstBox1" id="myEcharts4"></div>
       </div>
     </div>
   </div>
@@ -397,7 +365,7 @@ export default {
           id: 1
         },
         {
-          name: "取证率",
+          name: "欠费",
           id: 2
         }
       ],
@@ -437,7 +405,6 @@ export default {
       this.drawChart2();
       this.drawChart3();
       this.drawChart4();
-      this.drawChart5();
     });
   },
   mounted() {
@@ -809,67 +776,6 @@ export default {
       };
       // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
-    },
-    drawChart5() {
-      // 基于准备好的dom，初始化echarts实例
-      let myChart = this.$echarts.init(document.getElementById("myEcharts5"));
-      // 指定图表的配置项和数据
-      var option = {
-        tooltip: {
-          show: true
-        },
-        xAxis: {
-          type: "category",
-          data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-          axisLabel: {
-            show: true,
-            textStyle: {
-              fontSize: 16
-            }
-          }
-        },
-        yAxis: {
-          type: "value",
-          name: "单位:元",
-          axisLabel: {
-            show: true,
-            textStyle: {
-              fontSize: 16
-            }
-          }
-        },
-        series: [
-          {
-            data: [2320, 1700, 3150, 2480, 4670, 1110, 3255, 6546, 2313, 4325],
-            type: "bar",
-            barWidth: "60",
-            itemStyle: {
-              normal: {
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  {
-                    offset: 1,
-                    color: "#015eea"
-                  },
-                  {
-                    offset: 0,
-                    color: "#00c0fa"
-                  }
-                ])
-              }
-            },
-            label: {
-              //label要加入normal才可生效,label即为x轴对应Y轴的值
-              normal: {
-                show: true,
-                color: "#00c0fa", //设置渐变时候控制不到颜色，只能通过全局textStyle来控制
-                position: "top"
-              }
-            }
-          }
-        ]
-      };
-      // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
     }
   }
 };
@@ -883,7 +789,7 @@ export default {
   background-color: white;
   border-top-left-radius: 50px;
   border-bottom-left-radius: 50px;
-  height: 3150px;
+  height: 2650px;
 }
 
 .BGactive {
