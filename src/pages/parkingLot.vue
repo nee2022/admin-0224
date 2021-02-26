@@ -24,7 +24,7 @@
           unique-opened
           v-model="option"
         >
-          <el-submenu index="6">
+          <el-submenu index="1">
             <template slot="title">
               <div class="menu-op">
                 <div>
@@ -56,7 +56,29 @@
               </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-          <el-menu-item index="1">
+          <el-submenu index="2">
+            <template slot="title">
+              <div class="menu-op">
+                <div>
+                  <img src="../assets/images/berth.png" />
+                </div>
+                <span class="menu-word">套餐管理</span>
+              </div>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item index="3-1">
+                <router-link to="/Pbaoyue">
+                  <div class="menu-op">
+                    <div>
+                      <img src="../assets/images/Monthly package.png" />
+                    </div>
+                    <span class="menu-word">包月套餐</span>
+                  </div>
+                </router-link>
+              </el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-menu-item index="3">
             <template slot="title">
               <router-link to="/parkingChang">
                 <div class="menu-op">
@@ -68,7 +90,19 @@
               </router-link>
             </template>
           </el-menu-item>
-          <el-submenu index="2">
+          <el-menu-item index="4">
+            <template slot="title">
+              <router-link to="/jifeiguize">
+                <div class="menu-op">
+                  <div>
+                    <img src="../assets/images/Accounting rules.png" />
+                  </div>
+                  <span class="menu-word-2">计费规则</span>
+                </div>
+              </router-link>
+            </template>
+          </el-menu-item>
+          <el-submenu index="5">
             <template slot="title">
               <div class="menu-op">
                 <div>
@@ -140,41 +174,7 @@
               </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-          <el-submenu index="3">
-            <template slot="title">
-              <div class="menu-op">
-                <div>
-                  <img src="../assets/images/berth.png" />
-                </div>
-                <span class="menu-word">套餐管理</span>
-              </div>
-            </template>
-            <el-menu-item-group>
-              <el-menu-item index="3-1">
-                <router-link to="/Pbaoyue">
-                  <div class="menu-op">
-                    <div>
-                      <img src="../assets/images/Monthly package.png" />
-                    </div>
-                    <span class="menu-word">包月套餐</span>
-                  </div>
-                </router-link>
-              </el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-          <el-menu-item index="4">
-            <template slot="title">
-              <router-link to="/jifeiguize">
-                <div class="menu-op">
-                  <div>
-                    <img src="../assets/images/Accounting rules.png" />
-                  </div>
-                  <span class="menu-word-2">计费规则</span>
-                </div>
-              </router-link>
-            </template>
-          </el-menu-item>
-          <el-submenu index="5">
+          <el-submenu index="6">
             <template slot="title">
               <div class="menu-op">
                 <div>
