@@ -45,7 +45,7 @@
             >查询</el-button
           >
         </div>
-        <div class="whiteBut">
+        <!-- <div class="whiteBut">
           <img
             src="../../assets/images/export.png"
             style="width: 14px;height: 14px;"
@@ -58,7 +58,7 @@
             style="width: 14px;height: 14px;"
           />
           打印
-        </div>
+        </div> -->
       </div>
     </div>
     <div style="height: 700px;">
