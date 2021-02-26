@@ -139,18 +139,12 @@ export default {
           name: "日",
           id: 1
         },
-        {
-          name: "周",
-          id: 2
-        },
+
         {
           name: "月",
           id: 3
         },
-        {
-          name: "季",
-          id: 4
-        },
+
         {
           name: "年",
           id: 5
@@ -305,18 +299,12 @@ export default {
           this.tableChangeInfo.code = "9977F528758B4C46A4E8B11EB43B8229";
           this.tableChangeInfo.itemName = "日期";
           break;
-        case 2:
-          this.tableChangeInfo.code = "9977F528758B4C46A4E8B11EB43B8229";
-          this.tableChangeInfo.itemName = "周期";
-          break;
+
         case 3:
           this.tableChangeInfo.code = "8E312965EFFC4C19AA55848FB8324A7D";
           this.tableChangeInfo.itemName = "月度";
           break;
-        case 4:
-          this.tableChangeInfo.code = "9977F528758B4C46A4E8B11EB43B8229";
-          this.tableChangeInfo.itemName = "季度";
-          break;
+
         case 5:
           this.tableChangeInfo.code = "D3C90CFC37F34BF6AF87D1B618BAF7B1";
           this.tableChangeInfo.itemName = "年度";
@@ -741,7 +729,7 @@ export default {
 }
 
 .date {
-  width: 350px;
+  width: 300px;
   height: 40px;
   display: flex;
   flex-direction: row;
@@ -761,7 +749,7 @@ export default {
 }
 
 .date div {
-  width: 20%;
+  width: 33.333%;
   height: 40px;
   text-align: center;
   cursor: pointer;
