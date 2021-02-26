@@ -1,12 +1,9 @@
-
-import Router from 'vue-router'
-import routes from './router'
+import Router from "vue-router";
+import routes from "./router";
 
 const router = new Router({
-    routes
-})
+  routes
+});
 // const token  = JSON.parse(localStorage.getItem('token'))
 
-
-
-export default routes
+export default routes;

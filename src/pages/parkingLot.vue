@@ -45,7 +45,7 @@
                 </router-link>
               </el-menu-item>
               <el-menu-item index="6-2">
-                <router-link to="/roadMap">
+                <router-link to="/parkingLotRoadMap">
                   <div class="menu-op">
                     <div>
                       <img src="../assets/images/Monthly package.png" />
