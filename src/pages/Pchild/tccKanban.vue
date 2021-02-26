@@ -289,10 +289,15 @@ export default {
     return {
       resourceAndRecord: {},
       operationData: [],
+      chart2ChangeInfo: {
+        itemName: "年度",
+        code: "558FA4DDDFF445C3A3D263DB198D0DC4"
+      },
       tableChangeInfo: {
         itemName: "日期",
         code: "AC5FF95637CF4B4294A6B650535F5531"
       },
+      chart2Data: [],
       total: 1000,
       pagenum: 1,
       pagesize: 10,
@@ -352,11 +357,12 @@ export default {
   },
   created() {
     this.$nextTick(() => {
+      console.log("token");
+      console.log(this.token);
       this.drawChart1();
-      this.drawChart2();
+      this.getDataAndDrawChart2();
+
       this.drawChart3();
-      this.drawChart4();
-      this.drawChart5();
     });
   },
   mounted() {
@@ -366,6 +372,23 @@ export default {
     // this.getParkingLot();
   },
   methods: {
+    getDataAndDrawChart2() {
+      let url =
+        "/admin/api/report/" +
+        this.chart2ChangeInfo.code +
+        "/?token=" +
+        this.token +
+        "&page=1&row=10&order=payment_service_22_pay&sort=desc";
+
+      this.$axios.get(url).then(res => {
+        if (res.status == 200) {
+          this.chart2Data = res.data.data;
+          console.log("this.chart2Data");
+          console.log(this.chart2Data);
+          this.drawChart2();
+        }
+      });
+    },
     getResourceAndRecord() {
       let url =
         "admin/api/report/0349EAB0ED324C708F440D32D2F1C95B" +
@@ -382,34 +405,6 @@ export default {
         }
       });
     },
-    // getParkingLot() {
-    //   let url =
-    //     "admin/api/report/B2C5FC2773A547978676B2759487B921" +
-    //     "/?token=" +
-    //     this.token +
-    //     "&page=" +
-    //     this.pagenum1 +
-    //     "&row=" +
-    //     this.pagesize1 +
-    //     "&order=pdr_amount&sort=desc";
-
-    //   this.$axios.get(url).then(res => {
-    //     if (res.status == 200) {
-    //       this.parkingLot = res.data.data;
-
-    //       for (let i = 0; i < this.pagesize1; i++) {
-    //         this.parkingLot[i].descId =
-    //           (this.pagenum1 - 1) * this.pagesize1 + i + 1;
-    //       }
-    //       if (this.pagenum1 === 1) {
-    //         this.maxPdrAmount = res.data.data[0].pdr_amount;
-    //         console.log("res");
-    //         console.log(this.maxPdrA);
-    //       }
-    //       this.total1 = res.data.total || 0;
-    //     }
-    //   });
-    // },
     getRoadParkingOperationReportData() {
       let currentDate = this.getCurrentDate();
       let lastWeekDate = this.getLastWeekDate();
@@ -436,6 +431,7 @@ export default {
         }
       });
     },
+
     getCurrentDate() {
       let dateString = new Date().toLocaleDateString();
       let dateArray = dateString.split("/");
@@ -555,8 +551,52 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+          data: [
+            this.chart2Data[0].name,
+            this.chart2Data[1].name,
+            this.chart2Data[2].name,
+            this.chart2Data[3].name,
+            this.chart2Data[4].name,
+            this.chart2Data[5].name,
+            this.chart2Data[6].name,
+            this.chart2Data[7].name,
+            this.chart2Data[8].name,
+            this.chart2Data[9].name
+          ],
           axisLabel: {
+            formatter: function(params) {
+              var newParamsName = ""; // 最终拼接成的字符串
+              var paramsNameNumber = params.length; // 实际标签的个数
+              var provideNumber = 4; // 每行能显示的字的个数
+              var rowNumber = Math.ceil(paramsNameNumber / provideNumber); // 换行的话，需要显示几行，向上取整
+              /**
+               * 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
+               */
+              // 条件等同于rowNumber>1
+              if (paramsNameNumber > provideNumber) {
+                /** 循环每一行,p表示行 */
+                for (var p = 0; p < rowNumber; p++) {
+                  var tempStr = ""; // 表示每一次截取的字符串
+                  var start = p * provideNumber; // 开始截取的位置
+                  var end = start + provideNumber; // 结束截取的位置
+                  // 此处特殊处理最后一行的索引值
+                  if (p == rowNumber - 1) {
+                    // 最后一次不换行
+                    tempStr = params.substring(start, paramsNameNumber);
+                  } else {
+                    // 每一次拼接字符串并换行
+                    tempStr = params.substring(start, end) + "\n";
+                  }
+                  newParamsName += tempStr; // 最终拼成的字符串
+                }
+              } else {
+                // 将旧标签的值赋给新标签
+                newParamsName = params;
+              }
+              //将最终的字符串返回
+              return newParamsName;
+            },
+
             show: true,
             textStyle: {
               fontSize: 16
@@ -575,7 +615,18 @@ export default {
         },
         series: [
           {
-            data: [2320, 1700, 3150, 2480, 4670, 1110, 3255, 6546, 2313, 4325],
+            data: [
+              this.chart2Data[0].payment_service_22_pay,
+              this.chart2Data[1].payment_service_22_pay,
+              this.chart2Data[2].payment_service_22_pay,
+              this.chart2Data[3].payment_service_22_pay,
+              this.chart2Data[4].payment_service_22_pay,
+              this.chart2Data[5].payment_service_22_pay,
+              this.chart2Data[6].payment_service_22_pay,
+              this.chart2Data[7].payment_service_22_pay,
+              this.chart2Data[8].payment_service_22_pay,
+              this.chart2Data[9].payment_service_22_pay
+            ],
             type: "bar",
             barWidth: "60",
             itemStyle: {
@@ -659,128 +710,6 @@ export default {
               normal: {
                 show: true,
                 color: "#4285ec", //设置渐变时候控制不到颜色，只能通过全局textStyle来控制
-                position: "top"
-              }
-            }
-          }
-        ]
-      };
-      // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
-    },
-    drawChart4() {
-      // 基于准备好的dom，初始化echarts实例
-      let myChart = this.$echarts.init(document.getElementById("myEcharts4"));
-      // 指定图表的配置项和数据
-      var option = {
-        tooltip: {
-          show: true
-        },
-        xAxis: {
-          type: "category",
-          data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-          axisLabel: {
-            show: true,
-            textStyle: {
-              fontSize: 16
-            }
-          }
-        },
-        yAxis: {
-          type: "value",
-          name: "单位:元",
-          axisLabel: {
-            show: true,
-            textStyle: {
-              fontSize: 16
-            }
-          }
-        },
-        series: [
-          {
-            data: [2320, 1700, 3150, 2480, 4670, 1110, 3255, 6546, 2313, 4325],
-            type: "bar",
-            barWidth: "60",
-            itemStyle: {
-              normal: {
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  {
-                    offset: 1,
-                    color: "#84f5de"
-                  },
-                  {
-                    offset: 0,
-                    color: "#4cc5f8"
-                  }
-                ])
-              }
-            },
-            label: {
-              //label要加入normal才可生效,label即为x轴对应Y轴的值
-              normal: {
-                show: true,
-                color: "#4cc5f8", //设置渐变时候控制不到颜色，只能通过全局textStyle来控制
-                position: "top"
-              }
-            }
-          }
-        ]
-      };
-      // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
-    },
-    drawChart5() {
-      // 基于准备好的dom，初始化echarts实例
-      let myChart = this.$echarts.init(document.getElementById("myEcharts5"));
-      // 指定图表的配置项和数据
-      var option = {
-        tooltip: {
-          show: true
-        },
-        xAxis: {
-          type: "category",
-          data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-          axisLabel: {
-            show: true,
-            textStyle: {
-              fontSize: 16
-            }
-          }
-        },
-        yAxis: {
-          type: "value",
-          name: "单位:元",
-          axisLabel: {
-            show: true,
-            textStyle: {
-              fontSize: 16
-            }
-          }
-        },
-        series: [
-          {
-            data: [2320, 1700, 3150, 2480, 4670, 1110, 3255, 6546, 2313, 4325],
-            type: "bar",
-            barWidth: "60",
-            itemStyle: {
-              normal: {
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  {
-                    offset: 1,
-                    color: "#015eea"
-                  },
-                  {
-                    offset: 0,
-                    color: "#00c0fa"
-                  }
-                ])
-              }
-            },
-            label: {
-              //label要加入normal才可生效,label即为x轴对应Y轴的值
-              normal: {
-                show: true,
-                color: "#00c0fa", //设置渐变时候控制不到颜色，只能通过全局textStyle来控制
                 position: "top"
               }
             }
