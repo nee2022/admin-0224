@@ -218,7 +218,7 @@
                 class="blueBoxs"
                 v-for="item in chart2ChangeInfo.dateArray"
                 :class="{ BGactive: item.id == isActive1 }"
-                @click="changeBg1(item.id, item.code)"
+                @click="changeBg1(item.id, item.code, item.current)"
               >
                 {{ item.itemName }}
               </div>
@@ -298,16 +298,19 @@ export default {
           {
             id: 1,
             itemName: "今年",
+            current: "",
             code: "558FA4DDDFF445C3A3D263DB198D0DC4"
           },
           {
             id: 2,
             itemName: "本月",
+            current: "",
             code: "A41A020D527542F69A4EF1D7FAA9E404"
           },
           {
             id: 3,
             itemName: "今天",
+            current: "",
             code: "91B6D649D2CA4710AF58F04C98C06ACC"
           }
         ],
@@ -405,15 +408,19 @@ export default {
       if (dateArray[1].length === 1) {
         dateArray[1] = "0" + dateArray[1];
       }
-      this.currentDate.currentYear = dateArray.join("").slice(0, 4);
-      this.currentDate.currentMonth = dateArray.join("").slice(0, 6);
-      this.currentDate.currentDay = dateArray.join("");
+      this.chart2ChangeInfo.dateArray[0].current = dateArray
+        .join("")
+        .slice(0, 4);
+      this.chart2ChangeInfo.dateArray[1].current = dateArray
+        .join("")
+        .slice(0, 6);
+      this.chart2ChangeInfo.dateArray[2].current = dateArray.join("");
     },
-    getDataAndDrawChart2(
+    getDataAndDrawChart2({
       code = this.chart2ChangeInfo.dateArray[0].code,
       order = this.chart2ChangeInfo.typeArray[0].order,
-      fromAndTo = this.currentDate.currentYear
-    ) {
+      fromAndTo = this.chart2ChangeInfo.dateArray[0].current
+    } = {}) {
       let url =
         "/admin/api/report/" +
         code +
@@ -431,8 +438,8 @@ export default {
       this.$axios.get(url).then(res => {
         if (res.status == 200) {
           this.chart2Data = res.data.data;
-          console.log("chart2Data");
-          console.log(this.chart2Data);
+          // console.log("chart2Data");
+          // console.log(this.chart2Data);
           this.drawChart2();
         }
       });
@@ -491,14 +498,15 @@ export default {
     changeBg(id) {
       this.isActive = id;
     },
-    changeBg1(id, code) {
+    changeBg1(id, code, fromAndTo) {
       this.isActive1 = id;
       // console.log("code");
       // console.log(code);
-      this.getDataAndDrawChart2(code);
+      this.getDataAndDrawChart2({ code, fromAndTo });
     },
-    changeBg2(id, code) {
+    changeBg2(id, order) {
       this.isActive2 = id;
+      this.getDataAndDrawChart2({ order });
     },
     changeBg3(id) {
       this.isActive3 = id;
@@ -594,16 +602,16 @@ export default {
         xAxis: {
           type: "category",
           data: [
-            this.chart2Data[0].name,
-            this.chart2Data[1].name,
-            this.chart2Data[2].name,
-            this.chart2Data[3].name,
-            this.chart2Data[4].name,
-            this.chart2Data[5].name,
-            this.chart2Data[6].name,
-            this.chart2Data[7].name,
-            this.chart2Data[8].name,
-            this.chart2Data[9].name
+            this.chart2Data[0].name || "暂无",
+            this.chart2Data[1].name || "暂无",
+            this.chart2Data[2].name || "暂无",
+            this.chart2Data[3].name || "暂无",
+            this.chart2Data[4].name || "暂无",
+            this.chart2Data[5].name || "暂无",
+            this.chart2Data[6].name || "暂无",
+            this.chart2Data[7].name || "暂无",
+            this.chart2Data[8].name || "暂无",
+            this.chart2Data[9].name || "暂无"
           ],
           axisLabel: {
             formatter: function(params) {
