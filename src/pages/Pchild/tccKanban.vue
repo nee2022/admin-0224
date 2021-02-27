@@ -109,7 +109,7 @@
           <div class="boxBoxs">
             <div class="boxWord">已缴</div>
             <div class="boxNum1">
-              {{ resourceAndRecord.payment_service_22_pay }}
+              {{ resourceAndRecord.pdr_paid }}
             </div>
           </div>
           <div class="boxBoxs">
@@ -216,7 +216,7 @@
             <div class="dateBox">
               <div
                 class="blueBoxs"
-                v-for="item in chart2ChangeInfo"
+                v-for="item in chart2ChangeInfo.dateArray"
                 :class="{ BGactive: item.id == isActive1 }"
                 @click="changeBg1(item.id, item.code)"
               >
@@ -226,9 +226,9 @@
             <div class="dateBox1">
               <div
                 class="blueBoxs1"
-                v-for="item in chart2ChangeInfoType"
+                v-for="item in chart2ChangeInfo.typeArray"
                 :class="{ BGactive: item.id == isActive2 }"
-                @click="changeBg2(item.id)"
+                @click="changeBg2(item.id, item.order)"
               >
                 {{ item.itemName }}
               </div>
@@ -284,40 +284,45 @@ export default {
     return {
       resourceAndRecord: {},
       operationData: [],
-      chart2ChangeInfoType: [
-        {
-          id: 1,
-          itemName: "收入"
-        },
-        {
-          id: 2,
-          itemName: "欠费"
-        }
-      ],
-      chart2ChangeInfo: [
-        {
-          id: 1,
-          itemName: "今年",
-          code: "558FA4DDDFF445C3A3D263DB198D0DC4"
-        },
-        {
-          id: 2,
-          itemName: "本月",
-          code: "A41A020D527542F69A4EF1D7FAA9E404"
-        },
-        {
-          id: 3,
-          itemName: "今天",
-          code: "91B6D649D2CA4710AF58F04C98C06ACC"
-        }
-      ],
-      chart3ChangeInfo: {
-        itemName: "年度",
-        code: "D3C90CFC37F34BF6AF87D1B618BAF7B1"
+      currentDate: {
+        currentYear: "",
+        currentMonth: "",
+        currentDay: ""
       },
-      tableChangeInfo: {
-        itemName: "日期",
-        code: "AC5FF95637CF4B4294A6B650535F5531"
+      chart2ChangeInfo: {
+        axiosParameter: {
+          code: "558FA4DDDFF445C3A3D263DB198D0DC4",
+          order: "pdr_paid"
+        },
+        dateArray: [
+          {
+            id: 1,
+            itemName: "今年",
+            code: "558FA4DDDFF445C3A3D263DB198D0DC4"
+          },
+          {
+            id: 2,
+            itemName: "本月",
+            code: "A41A020D527542F69A4EF1D7FAA9E404"
+          },
+          {
+            id: 3,
+            itemName: "今天",
+            code: "91B6D649D2CA4710AF58F04C98C06ACC"
+          }
+        ],
+        typeArray: [
+          {
+            id: 1,
+            order: "pdr_paid",
+            itemName: "实收"
+          },
+          {
+            id: 2,
+            order: "pdr_amount",
+            itemName: "应收"
+          }
+        ]
       },
       chart2Data: [],
       total: 1000,
@@ -340,11 +345,11 @@ export default {
 
       shouList: [
         {
-          name: "收入",
+          name: "实收",
           id: 1
         },
         {
-          name: "欠费",
+          name: "应收",
           id: 2
         }
       ],
@@ -378,26 +383,36 @@ export default {
       ]
     };
   },
+
   created() {
+    this.setCurrentDate();
     this.$nextTick(() => {
-      console.log("token");
-      console.log(this.token);
       this.drawChart1();
       this.getDataAndDrawChart2();
-
       this.drawChart3();
     });
   },
   mounted() {
     this.token = localStorage.getItem("token").replace(/\"/g, "");
     this.getResourceAndRecord();
-    this.getRoadParkingOperationReportData();
+    // this.getRoadParkingOperationReportData();
     // this.getParkingLot();
   },
   methods: {
+    setCurrentDate() {
+      let dateString = new Date().toLocaleDateString();
+      let dateArray = dateString.split("/");
+      if (dateArray[1].length === 1) {
+        dateArray[1] = "0" + dateArray[1];
+      }
+      this.currentDate.currentYear = dateArray.join("").slice(0, 4);
+      this.currentDate.currentMonth = dateArray.join("").slice(0, 6);
+      this.currentDate.currentDay = dateArray.join("");
+    },
     getDataAndDrawChart2(
-      code = this.chart2ChangeInfo[0].code,
-      order = "payment_service_22_pay"
+      code = this.chart2ChangeInfo.dateArray[0].code,
+      order = this.chart2ChangeInfo.typeArray[0].order,
+      fromAndTo = this.currentDate.currentYear
     ) {
       let url =
         "/admin/api/report/" +
@@ -406,29 +421,17 @@ export default {
         this.token +
         "&page=1&row=10&order=" +
         order +
+        "&from=" +
+        fromAndTo +
+        "&to=" +
+        fromAndTo +
         "&sort=desc";
-
+      console.log("url");
+      console.log(url);
       this.$axios.get(url).then(res => {
         if (res.status == 200) {
           this.chart2Data = res.data.data;
-          console.log("this.chart2Data");
-          console.log(this.chart2Data);
-          this.drawChart2();
-        }
-      });
-    },
-    getDataAndDrawChart3() {
-      let url =
-        "/admin/api/report/" +
-        this.chart3ChangeInfo.code +
-        "/?token=" +
-        this.token +
-        "&page=1&row=10&order=payment_service_22_pay&sort=desc";
-
-      this.$axios.get(url).then(res => {
-        if (res.status == 200) {
-          this.chart2Data = res.data.data;
-          console.log("this.chart2Data");
+          console.log("chart2Data");
           console.log(this.chart2Data);
           this.drawChart2();
         }
@@ -450,41 +453,32 @@ export default {
         }
       });
     },
-    getRoadParkingOperationReportData() {
-      let currentDate = this.getCurrentDate();
-      let lastWeekDate = this.getLastWeekDate();
+    // getRoadParkingOperationReportData() {
+    //   let currentDate = this.getCurrentDate();
+    //   let lastWeekDate = this.getLastWeekDate();
 
-      let url =
-        "/admin/api/report/" +
-        this.tableChangeInfo.code +
-        "/?token=" +
-        this.token +
-        "&from=" +
-        lastWeekDate +
-        "&to=" +
-        currentDate +
-        "&order=dt&sort=asc";
-      // console.log("url");
-      // console.log(url);
-      this.$axios.get(url).then(res => {
-        if (res.status == 200) {
-          this.operationData = res.data.data;
-          console.log("res");
-          console.log(this.operationData);
-          console.log("res");
-          this.total = res.data.total || 0;
-        }
-      });
-    },
+    //   let url =
+    //     "/admin/api/report/" +
+    //     this.tableChangeInfo.code +
+    //     "/?token=" +
+    //     this.token +
+    //     "&from=" +
+    //     lastWeekDate +
+    //     "&to=" +
+    //     currentDate +
+    //     "&order=dt&sort=asc";
+    //   // console.log("url");
+    //   // console.log(url);
+    //   this.$axios.get(url).then(res => {
+    //     if (res.status == 200) {
+    //       this.operationData = res.data.data;
+    //       // console.log("res");
+    //       // console.log(this.operationData);
+    //       this.total = res.data.total || 0;
+    //     }
+    //   });
+    // },
 
-    getCurrentDate() {
-      let dateString = new Date().toLocaleDateString();
-      let dateArray = dateString.split("/");
-      if (dateArray[1].length === 1) {
-        dateArray[1] = "0" + dateArray[1];
-      }
-      return dateArray.join("");
-    },
     getLastWeekDate() {
       let lastWeekDateTime = new Date().getTime() - 3600 * 1000 * 24 * 6;
       let dateString = new Date(lastWeekDateTime).toLocaleDateString();
@@ -499,8 +493,8 @@ export default {
     },
     changeBg1(id, code) {
       this.isActive1 = id;
-      console.log("code");
-      console.log(code);
+      // console.log("code");
+      // console.log(code);
       this.getDataAndDrawChart2(code);
     },
     changeBg2(id, code) {
@@ -664,16 +658,16 @@ export default {
         series: [
           {
             data: [
-              this.chart2Data[0].payment_service_22_pay,
-              this.chart2Data[1].payment_service_22_pay,
-              this.chart2Data[2].payment_service_22_pay,
-              this.chart2Data[3].payment_service_22_pay,
-              this.chart2Data[4].payment_service_22_pay,
-              this.chart2Data[5].payment_service_22_pay,
-              this.chart2Data[6].payment_service_22_pay,
-              this.chart2Data[7].payment_service_22_pay,
-              this.chart2Data[8].payment_service_22_pay,
-              this.chart2Data[9].payment_service_22_pay
+              this.chart2Data[0].pdr_paid,
+              this.chart2Data[1].pdr_paid,
+              this.chart2Data[2].pdr_paid,
+              this.chart2Data[3].pdr_paid,
+              this.chart2Data[4].pdr_paid,
+              this.chart2Data[5].pdr_paid,
+              this.chart2Data[6].pdr_paid,
+              this.chart2Data[7].pdr_paid,
+              this.chart2Data[8].pdr_paid,
+              this.chart2Data[9].pdr_paid
             ],
             type: "bar",
             barWidth: "60",
