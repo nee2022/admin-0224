@@ -158,11 +158,6 @@
                     @change="chooseDate"
                   >
                   </el-date-picker>
-                  <!-- <el-date-picker v-model="value1" type="date" placeholder="开始日期" value-format="yyyyMMdd" @change="chooseDate1">
-									</el-date-picker>
-									至
-									<el-date-picker v-model="value2" type="date" placeholder="结束日期" value-format="yyyyMMdd" @change="chooseDate2">
-									</el-date-picker> -->
                 </div>
                 <div class="block" v-show="isBg == 2">
                   <el-date-picker
@@ -221,21 +216,21 @@
             <div class="dateBox">
               <div
                 class="blueBoxs"
-                v-for="item in day"
+                v-for="item in chart2ChangeInfo"
                 :class="{ BGactive: item.id == isActive1 }"
-                @click="changeBg1(item.id)"
+                @click="changeBg1(item.id, item.code)"
               >
-                {{ item.name }}
+                {{ item.itemName }}
               </div>
             </div>
             <div class="dateBox1">
               <div
                 class="blueBoxs1"
-                v-for="item in shouList"
+                v-for="item in chart2ChangeInfoType"
                 :class="{ BGactive: item.id == isActive2 }"
                 @click="changeBg2(item.id)"
               >
-                {{ item.name }}
+                {{ item.itemName }}
               </div>
             </div>
           </div>
@@ -289,9 +284,36 @@ export default {
     return {
       resourceAndRecord: {},
       operationData: [],
-      chart2ChangeInfo: {
+      chart2ChangeInfoType: [
+        {
+          id: 1,
+          itemName: "收入"
+        },
+        {
+          id: 2,
+          itemName: "欠费"
+        }
+      ],
+      chart2ChangeInfo: [
+        {
+          id: 1,
+          itemName: "今年",
+          code: "558FA4DDDFF445C3A3D263DB198D0DC4"
+        },
+        {
+          id: 2,
+          itemName: "本月",
+          code: "A41A020D527542F69A4EF1D7FAA9E404"
+        },
+        {
+          id: 3,
+          itemName: "今天",
+          code: "91B6D649D2CA4710AF58F04C98C06ACC"
+        }
+      ],
+      chart3ChangeInfo: {
         itemName: "年度",
-        code: "558FA4DDDFF445C3A3D263DB198D0DC4"
+        code: "D3C90CFC37F34BF6AF87D1B618BAF7B1"
       },
       tableChangeInfo: {
         itemName: "日期",
@@ -315,6 +337,7 @@ export default {
       value1: "",
       value2: "",
       value3: "",
+
       shouList: [
         {
           name: "收入",
@@ -372,10 +395,32 @@ export default {
     // this.getParkingLot();
   },
   methods: {
-    getDataAndDrawChart2() {
+    getDataAndDrawChart2(
+      code = this.chart2ChangeInfo[0].code,
+      order = "payment_service_22_pay"
+    ) {
       let url =
         "/admin/api/report/" +
-        this.chart2ChangeInfo.code +
+        code +
+        "/?token=" +
+        this.token +
+        "&page=1&row=10&order=" +
+        order +
+        "&sort=desc";
+
+      this.$axios.get(url).then(res => {
+        if (res.status == 200) {
+          this.chart2Data = res.data.data;
+          console.log("this.chart2Data");
+          console.log(this.chart2Data);
+          this.drawChart2();
+        }
+      });
+    },
+    getDataAndDrawChart3() {
+      let url =
+        "/admin/api/report/" +
+        this.chart3ChangeInfo.code +
         "/?token=" +
         this.token +
         "&page=1&row=10&order=payment_service_22_pay&sort=desc";
@@ -452,10 +497,13 @@ export default {
     changeBg(id) {
       this.isActive = id;
     },
-    changeBg1(id) {
+    changeBg1(id, code) {
       this.isActive1 = id;
+      console.log("code");
+      console.log(code);
+      this.getDataAndDrawChart2(code);
     },
-    changeBg2(id) {
+    changeBg2(id, code) {
       this.isActive2 = id;
     },
     changeBg3(id) {
