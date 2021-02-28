@@ -449,8 +449,20 @@ export default {
       this.$axios.get(url).then(res => {
         if (res.status == 200) {
           this.chart2Data = res.data.data;
-          console.log("chart2Data");
-          console.log(this.chart2Data);
+          if (this.chart2Data.length < 10) {
+            let newArrayLength = 10 - this.chart2Data.length;
+            let newArray = [];
+            for (let i = 0; i < newArrayLength; i++) {
+              // console.log("for");
+              newArray.push({ name: "暂无", pdr_paid: 0, pdr_amount: 0 });
+              // console.log(newArray);
+            }
+            this.chart2Data = this.chart2Data.concat(newArray);
+            // console.log("newArray");
+            // console.log(newArray);
+            // console.log("this.chart2Data");
+            // console.log(this.chart2Data);
+          }
           this.drawChart2();
         }
       });
