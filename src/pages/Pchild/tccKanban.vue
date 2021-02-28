@@ -449,20 +449,13 @@ export default {
       this.$axios.get(url).then(res => {
         if (res.status == 200) {
           this.chart2Data = res.data.data;
-          if (this.chart2Data.length < 10) {
-            let newArrayLength = 10 - this.chart2Data.length;
-            let newArray = [];
-            for (let i = 0; i < newArrayLength; i++) {
-              // console.log("for");
-              newArray.push({ name: "暂无", pdr_paid: 0, pdr_amount: 0 });
-              // console.log(newArray);
-            }
-            this.chart2Data = this.chart2Data.concat(newArray);
-            // console.log("newArray");
-            // console.log(newArray);
-            // console.log("this.chart2Data");
-            // console.log(this.chart2Data);
-          }
+          // console.log("this.chart2Data");
+          // console.log(this.chart2Data);
+          this.formatterToEchartData(
+            this.chart2Data,
+            this.chart2ChangeInfo.axiosParameter.order
+          );
+
           this.drawChart2();
         }
       });
@@ -518,6 +511,34 @@ export default {
       }
       return dateArray.join("");
     },
+    formatterToEchartData(data, type) {
+      if (data.length < this.pagesize) {
+        let newArrayLength = this.pagesize - data.length;
+        let newArray = [];
+        for (let i = 0; i < newArrayLength; i++) {
+          // console.log("for");
+          newArray.push({ name: "暂无", pdr_paid: 0, pdr_amount: 0 });
+          // console.log(newArray);
+        }
+
+        data = data.concat(newArray);
+        // console.log("newArray");
+        // console.log(newArray);
+        // console.log("data");
+        // console.log(data);
+      }
+      if (type === "pdr_paid") {
+        for (let i = 0; i < this.pagesize; i++) {
+          data[i].pdrData = data[i].pdr_paid;
+        }
+      }
+      if (type === "pdr_amount") {
+        for (let i = 0; i < this.pagesize; i++) {
+          data[i].pdrData = data[i].pdr_amount;
+        }
+      }
+      this.chart2Data = data;
+    },
     changeBg(id) {
       this.isActive = id;
     },
@@ -532,7 +553,14 @@ export default {
     },
     changeBg2(id, order) {
       this.isActive2 = id;
-      this.getDataAndDrawChart2({ order });
+      // console.log("{id,order}")
+      // console.log({id,order})
+      this.setAxiosParameter({
+        current: this.chart2ChangeInfo.axiosParameter.current,
+        code: this.chart2ChangeInfo.axiosParameter.code,
+        order
+      });
+      this.getDataAndDrawChart2();
     },
     changeBg3(id) {
       this.isActive3 = id;
@@ -628,16 +656,16 @@ export default {
         xAxis: {
           type: "category",
           data: [
-            this.chart2Data[0].name || "暂无",
-            this.chart2Data[1].name || "暂无",
-            this.chart2Data[2].name || "暂无",
-            this.chart2Data[3].name || "暂无",
-            this.chart2Data[4].name || "暂无",
-            this.chart2Data[5].name || "暂无",
-            this.chart2Data[6].name || "暂无",
-            this.chart2Data[7].name || "暂无",
-            this.chart2Data[8].name || "暂无",
-            this.chart2Data[9].name || "暂无"
+            this.chart2Data[0].name,
+            this.chart2Data[1].name,
+            this.chart2Data[2].name,
+            this.chart2Data[3].name,
+            this.chart2Data[4].name,
+            this.chart2Data[5].name,
+            this.chart2Data[6].name,
+            this.chart2Data[7].name,
+            this.chart2Data[8].name,
+            this.chart2Data[9].name
           ],
           axisLabel: {
             formatter: function(params) {
@@ -692,16 +720,16 @@ export default {
         series: [
           {
             data: [
-              this.chart2Data[0].pdr_paid,
-              this.chart2Data[1].pdr_paid,
-              this.chart2Data[2].pdr_paid,
-              this.chart2Data[3].pdr_paid,
-              this.chart2Data[4].pdr_paid,
-              this.chart2Data[5].pdr_paid,
-              this.chart2Data[6].pdr_paid,
-              this.chart2Data[7].pdr_paid,
-              this.chart2Data[8].pdr_paid,
-              this.chart2Data[9].pdr_paid
+              this.chart2Data[0].pdrData,
+              this.chart2Data[1].pdrData,
+              this.chart2Data[2].pdrData,
+              this.chart2Data[3].pdrData,
+              this.chart2Data[4].pdrData,
+              this.chart2Data[5].pdrData,
+              this.chart2Data[6].pdrData,
+              this.chart2Data[7].pdrData,
+              this.chart2Data[8].pdrData,
+              this.chart2Data[9].pdrData
             ],
             type: "bar",
             barWidth: "60",
