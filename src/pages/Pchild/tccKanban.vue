@@ -284,15 +284,11 @@ export default {
     return {
       resourceAndRecord: {},
       operationData: [],
-      currentDate: {
-        currentYear: "",
-        currentMonth: "",
-        currentDay: ""
-      },
       chart2ChangeInfo: {
         axiosParameter: {
-          code: "558FA4DDDFF445C3A3D263DB198D0DC4",
-          order: "pdr_paid"
+          code: "",
+          order: "",
+          current: ""
         },
         dateArray: [
           {
@@ -388,18 +384,20 @@ export default {
   },
 
   created() {
-    this.setCurrentDate();
-    this.$nextTick(() => {
-      this.drawChart1();
-      this.getDataAndDrawChart2();
-      this.drawChart3();
-    });
-  },
-  mounted() {
     this.token = localStorage.getItem("token").replace(/\"/g, "");
     this.getResourceAndRecord();
     // this.getRoadParkingOperationReportData();
     // this.getParkingLot();
+  },
+  mounted() {
+    this.setCurrentDate();
+    this.setAxiosParameter();
+    // console.log("start");
+    this.$nextTick(() => {
+      this.drawChart1();
+      this.getDataAndDrawChart2(this.chart2ChangeInfo.axiosParameter);
+      this.drawChart3();
+    });
   },
   methods: {
     setCurrentDate() {
@@ -415,12 +413,16 @@ export default {
         .join("")
         .slice(0, 6);
       this.chart2ChangeInfo.dateArray[2].current = dateArray.join("");
+      // console.log("this.chart2ChangeInfo.dateArray");
+      // console.log(this.chart2ChangeInfo.dateArray);
     },
-    getDataAndDrawChart2({
-      code = this.chart2ChangeInfo.dateArray[0].code,
-      order = this.chart2ChangeInfo.typeArray[0].order,
-      fromAndTo = this.chart2ChangeInfo.dateArray[0].current
-    } = {}) {
+    setAxiosParameter() {
+      this.chart2ChangeInfo.axiosParameter.current = this.chart2ChangeInfo.dateArray[0].current;
+      this.chart2ChangeInfo.axiosParameter.code = this.chart2ChangeInfo.dateArray[0].code;
+      this.chart2ChangeInfo.axiosParameter.order = this.chart2ChangeInfo.typeArray[0].order;
+      console.log(this.chart2ChangeInfo.axiosParametert);
+    },
+    getDataAndDrawChart2({ code, order, current }) {
       let url =
         "/admin/api/report/" +
         code +
@@ -429,9 +431,9 @@ export default {
         "&page=1&row=10&order=" +
         order +
         "&from=" +
-        fromAndTo +
+        current +
         "&to=" +
-        fromAndTo +
+        current +
         "&sort=desc";
       console.log("url");
       console.log(url);
