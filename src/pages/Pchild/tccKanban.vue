@@ -218,7 +218,13 @@
                 class="blueBoxs"
                 v-for="item in chart2ChangeInfo.dateArray"
                 :class="{ BGactive: item.id == isActive1 }"
-                @click="changeBg1(item.id, item.code, item.current)"
+                @click="
+                  changeBg1({
+                    id: item.id,
+                    code: item.code,
+                    current: item.current
+                  })
+                "
               >
                 {{ item.itemName }}
               </div>
@@ -391,11 +397,14 @@ export default {
   },
   mounted() {
     this.setCurrentDate();
-    this.setAxiosParameter();
-    // console.log("start");
+    this.setAxiosParameter({
+      current: this.chart2ChangeInfo.dateArray[0].current,
+      code: this.chart2ChangeInfo.dateArray[0].code,
+      order: this.chart2ChangeInfo.typeArray[0].order
+    });
     this.$nextTick(() => {
       this.drawChart1();
-      this.getDataAndDrawChart2(this.chart2ChangeInfo.axiosParameter);
+      this.getDataAndDrawChart2();
       this.drawChart3();
     });
   },
@@ -416,13 +425,13 @@ export default {
       // console.log("this.chart2ChangeInfo.dateArray");
       // console.log(this.chart2ChangeInfo.dateArray);
     },
-    setAxiosParameter() {
-      this.chart2ChangeInfo.axiosParameter.current = this.chart2ChangeInfo.dateArray[0].current;
-      this.chart2ChangeInfo.axiosParameter.code = this.chart2ChangeInfo.dateArray[0].code;
-      this.chart2ChangeInfo.axiosParameter.order = this.chart2ChangeInfo.typeArray[0].order;
-      console.log(this.chart2ChangeInfo.axiosParametert);
+    setAxiosParameter({ current, code, order }) {
+      this.chart2ChangeInfo.axiosParameter.current = current;
+      this.chart2ChangeInfo.axiosParameter.code = code;
+      this.chart2ChangeInfo.axiosParameter.order = order;
     },
-    getDataAndDrawChart2({ code, order, current }) {
+    getDataAndDrawChart2() {
+      let { code, order, current } = this.chart2ChangeInfo.axiosParameter;
       let url =
         "/admin/api/report/" +
         code +
@@ -440,8 +449,8 @@ export default {
       this.$axios.get(url).then(res => {
         if (res.status == 200) {
           this.chart2Data = res.data.data;
-          // console.log("chart2Data");
-          // console.log(this.chart2Data);
+          console.log("chart2Data");
+          console.log(this.chart2Data);
           this.drawChart2();
         }
       });
@@ -500,11 +509,14 @@ export default {
     changeBg(id) {
       this.isActive = id;
     },
-    changeBg1(id, code, fromAndTo) {
+    changeBg1({ id, code, current }) {
       this.isActive1 = id;
-      // console.log("code");
-      // console.log(code);
-      this.getDataAndDrawChart2({ code, fromAndTo });
+      this.setAxiosParameter({
+        code,
+        current,
+        order: this.chart2ChangeInfo.axiosParameter.order
+      });
+      this.getDataAndDrawChart2();
     },
     changeBg2(id, order) {
       this.isActive2 = id;
