@@ -138,11 +138,11 @@
             <div class="dateBox3">
               <div
                 class="blueBoxs"
-                v-for="item in dateList"
+                v-for="item in chart1ChangeInfo.dateArray"
                 :class="{ BGactive: item.id == isActive }"
                 @click="changeBg(item.id)"
               >
-                {{ item.name }}
+                {{ item.itemName }}
               </div>
             </div>
             <div class="dateSel">
@@ -290,6 +290,34 @@ export default {
     return {
       resourceAndRecord: {},
       operationData: [],
+      chart1ChangeInfo: {
+        axiosParameter: {
+          code: "",
+          id: "",
+          currentArray: []
+        },
+        dateArray: [
+          {
+            id: 1,
+            itemName: "近一周",
+            currentArray: [],
+            code: "025BC0A1E99A4C01858488BA68803998"
+          },
+          {
+            id: 2,
+            itemName: "近六月",
+            currentArray: [],
+            code: "025BC0A1E99A4C01858488BA68803998"
+          },
+          {
+            id: 3,
+            itemName: "近五年",
+            currentArray: [],
+            code: "91B6D649D2CA4710AF58F04C98C06ACC"
+          }
+        ]
+      },
+      chart1Data: [],
       chart2ChangeInfo: {
         axiosParameter: {
           code: "",
@@ -409,19 +437,56 @@ export default {
     });
   },
   methods: {
+    // getCurrentDate() {
+    //   let dateString = new Date().toLocaleDateString();
+    //   let dateArray = dateString.split("/");
+    //   if (dateArray[1].length === 1) {
+    //     dateArray[1] = "0" + dateArray[1];
+    //   }
+    //   return dateArray;
+    // },
     setCurrentDate() {
-      let dateString = new Date().toLocaleDateString();
-      let dateArray = dateString.split("/");
-      if (dateArray[1].length === 1) {
-        dateArray[1] = "0" + dateArray[1];
-      }
-      this.chart2ChangeInfo.dateArray[0].current = dateArray
+      let currentArray = this.getPastDateArray({ type: "day", spanTime: "1" });
+      // console.log("currentArray");
+      // console.log(currentArray);
+      let lastWeekArray = this.getPastDateArray({ type: "day", spanTime: "7" });
+      // console.log("lastWeekArray");
+      // console.log(lastWeekArray);
+      let lastSixMonthArray = this.getPastDateArray({
+        type: "month",
+        spanTime: "6"
+      });
+      // console.log("lastSixMonthArray");
+      // console.log(lastSixMonthArray);
+      let lastFiveYearArray = this.getPastDateArray({
+        type: "year",
+        spanTime: "5"
+      });
+      // console.log("lastFiveYearArray");
+      // console.log(lastFiveYearArray);
+      this.chart1ChangeInfo.dateArray[0].currentArray = [
+        lastWeekArray.join(""),
+        currentArray.join("")
+      ];
+      this.chart1ChangeInfo.dateArray[1].currentArray = [
+        lastSixMonthArray.join("").slice(0, 6),
+        currentArray.join("").slice(0, 6)
+      ];
+      this.chart1ChangeInfo.dateArray[2].currentArray = [
+        lastFiveYearArray.join("").slice(0, 4),
+        currentArray.join("").slice(0, 4)
+      ];
+
+      this.chart2ChangeInfo.dateArray[0].current = currentArray
         .join("")
         .slice(0, 4);
-      this.chart2ChangeInfo.dateArray[1].current = dateArray
+      this.chart2ChangeInfo.dateArray[1].current = currentArray
         .join("")
         .slice(0, 6);
-      this.chart2ChangeInfo.dateArray[2].current = dateArray.join("");
+      this.chart2ChangeInfo.dateArray[2].current = currentArray.join("");
+      console.log("chartChangeInfo");
+      console.log(this.chart1ChangeInfo);
+      console.log(this.chart2ChangeInfo);
       // console.log("this.chart2ChangeInfo.dateArray");
       // console.log(this.chart2ChangeInfo.dateArray);
     },
@@ -476,40 +541,29 @@ export default {
         }
       });
     },
-    // getRoadParkingOperationReportData() {
-    //   let currentDate = this.getCurrentDate();
-    //   let lastWeekDate = this.getLastWeekDate();
 
-    //   let url =
-    //     "/admin/api/report/" +
-    //     this.tableChangeInfo.code +
-    //     "/?token=" +
-    //     this.token +
-    //     "&from=" +
-    //     lastWeekDate +
-    //     "&to=" +
-    //     currentDate +
-    //     "&order=dt&sort=asc";
-    //   // console.log("url");
-    //   // console.log(url);
-    //   this.$axios.get(url).then(res => {
-    //     if (res.status == 200) {
-    //       this.operationData = res.data.data;
-    //       // console.log("res");
-    //       // console.log(this.operationData);
-    //       this.total = res.data.total || 0;
-    //     }
-    //   });
-    // },
-
-    getLastWeekDate() {
-      let lastWeekDateTime = new Date().getTime() - 3600 * 1000 * 24 * 6;
-      let dateString = new Date(lastWeekDateTime).toLocaleDateString();
-      let dateArray = dateString.split("/");
+    getPastDateArray({ type, spanTime }) {
+      if (type === "day") {
+        var dt = new Date().getTime() - 3600 * 1000 * 24 * (spanTime - 1);
+        dt = new Date(dt).toLocaleDateString();
+      } else if (type === "month") {
+        var dt = new Date();
+        dt.setMonth(dt.getMonth() - (spanTime - 1));
+        dt = new Date(dt).toLocaleDateString();
+      } else if (type === "year") {
+        var dt = new Date();
+        dt.setFullYear(dt.getFullYear() - (spanTime - 1));
+        dt = new Date(dt).toLocaleDateString();
+      }
+      let dateArray = dt.split("/");
       if (dateArray[1].length === 1) {
         dateArray[1] = "0" + dateArray[1];
       }
-      return dateArray.join("");
+      if (dateArray[2].length === 1) {
+        dateArray[2] = "0" + dateArray[2];
+      }
+
+      return dateArray;
     },
     formatterToEchartData(data, type) {
       if (data.length < this.pagesize) {
