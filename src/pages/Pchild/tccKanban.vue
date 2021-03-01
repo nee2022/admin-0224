@@ -426,8 +426,7 @@ export default {
     this.setCurrentDate();
     this.setChart1AxiosParameter({
       currentArray: this.chart1ChangeInfo.dateArray[0].currentArray,
-      code: this.chart1ChangeInfo.dateArray[0].code,
-      id: this.chart1ChangeInfo.dateArray[0].id
+      code: this.chart1ChangeInfo.dateArray[0].code
     });
     this.setChart2AxiosParameter({
       current: this.chart2ChangeInfo.dateArray[0].current,
@@ -494,10 +493,9 @@ export default {
       // console.log("this.chart2ChangeInfo.dateArray");
       // console.log(this.chart2ChangeInfo.dateArray);
     },
-    setChart1AxiosParameter({ currentArray, code, id }) {
+    setChart1AxiosParameter({ currentArray, code }) {
       this.chart1ChangeInfo.axiosParameter.currentArray = currentArray;
       this.chart1ChangeInfo.axiosParameter.code = code;
-      this.chart1ChangeInfo.axiosParameter.id = id;
     },
     setChart2AxiosParameter({ current, code, order }) {
       this.chart2ChangeInfo.axiosParameter.current = current;
@@ -524,9 +522,9 @@ export default {
           this.chart1Data = res.data.data;
           // console.log("this.chart2Data");
           // console.log(this.chart2Data);
-          this.formatterToEchartData(
+          this.formatterToCurveEchartData(
             this.chart1Data,
-            this.chart1ChangeInfo.axiosParameter.order
+            this.chart1ChangeInfo.axiosParameter.currentArray
           );
 
           this.drawChart1();
@@ -547,14 +545,14 @@ export default {
         "&to=" +
         current +
         "&sort=desc";
-      console.log("url");
-      console.log(url);
+      // console.log("url");
+      // console.log(url);
       this.$axios.get(url).then(res => {
         if (res.status == 200) {
           this.chart2Data = res.data.data;
           // console.log("this.chart2Data");
           // console.log(this.chart2Data);
-          this.formatterToEchartData(
+          this.formatterToBarEchartData(
             this.chart2Data,
             this.chart2ChangeInfo.axiosParameter.order
           );
@@ -603,7 +601,12 @@ export default {
 
       return dateArray;
     },
-    formatterToEchartData(data, type) {
+    formatterToCurveEchartData({ data, currentArray }) {
+      console.log("data");
+      console.log(data);
+      console.log(currentArray);
+    },
+    formatterToBarEchartData(data, type) {
       if (data.length < this.pagesize) {
         let newArrayLength = this.pagesize - data.length;
         let newArray = [];
