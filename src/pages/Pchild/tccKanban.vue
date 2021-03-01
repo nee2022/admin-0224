@@ -293,7 +293,6 @@ export default {
       chart1ChangeInfo: {
         axiosParameter: {
           code: "",
-          id: "",
           currentArray: []
         },
         dateArray: [
@@ -307,13 +306,13 @@ export default {
             id: 2,
             itemName: "近六月",
             currentArray: [],
-            code: "025BC0A1E99A4C01858488BA68803998"
+            code: "8807E28C31CE405084E9340B80B74A09"
           },
           {
             id: 3,
             itemName: "近五年",
             currentArray: [],
-            code: "91B6D649D2CA4710AF58F04C98C06ACC"
+            code: "DD43DB30C64C42CA9286630D83EAFF1C"
           }
         ]
       },
@@ -436,7 +435,7 @@ export default {
       order: this.chart2ChangeInfo.typeArray[0].order
     });
     this.$nextTick(() => {
-      this.drawChart1();
+      this.getDataAndDrawChart1();
       this.getDataAndDrawChart2();
       this.drawChart3();
     });
@@ -504,6 +503,35 @@ export default {
       this.chart2ChangeInfo.axiosParameter.current = current;
       this.chart2ChangeInfo.axiosParameter.code = code;
       this.chart2ChangeInfo.axiosParameter.order = order;
+    },
+    getDataAndDrawChart1() {
+      let { code, currentArray } = this.chart1ChangeInfo.axiosParameter;
+      let url =
+        "/admin/api/report/" +
+        code +
+        "/?token=" +
+        this.token +
+        "&order=dt" +
+        "&from=" +
+        +currentArray[0] +
+        "&to=" +
+        currentArray[1] +
+        "&sort=asc";
+      // console.log("url");
+      // console.log(url);
+      this.$axios.get(url).then(res => {
+        if (res.status == 200) {
+          this.chart1Data = res.data.data;
+          // console.log("this.chart2Data");
+          // console.log(this.chart2Data);
+          this.formatterToEchartData(
+            this.chart1Data,
+            this.chart1ChangeInfo.axiosParameter.order
+          );
+
+          this.drawChart1();
+        }
+      });
     },
     getDataAndDrawChart2() {
       let { code, order, current } = this.chart2ChangeInfo.axiosParameter;
@@ -581,7 +609,7 @@ export default {
         let newArray = [];
         for (let i = 0; i < newArrayLength; i++) {
           // console.log("for");
-          newArray.push({ name: "暂无", pdr_paid: 0, pdr_amount: 0 });
+          newArray.push({ name: "", pdr_paid: "", pdr_amount: "" });
           // console.log(newArray);
         }
 
