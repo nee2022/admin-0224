@@ -425,7 +425,12 @@ export default {
   },
   mounted() {
     this.setCurrentDate();
-    this.setAxiosParameter({
+    this.setChart1AxiosParameter({
+      currentArray: this.chart1ChangeInfo.dateArray[0].currentArray,
+      code: this.chart1ChangeInfo.dateArray[0].code,
+      id: this.chart1ChangeInfo.dateArray[0].id
+    });
+    this.setChart2AxiosParameter({
       current: this.chart2ChangeInfo.dateArray[0].current,
       code: this.chart2ChangeInfo.dateArray[0].code,
       order: this.chart2ChangeInfo.typeArray[0].order
@@ -490,7 +495,12 @@ export default {
       // console.log("this.chart2ChangeInfo.dateArray");
       // console.log(this.chart2ChangeInfo.dateArray);
     },
-    setAxiosParameter({ current, code, order }) {
+    setChart1AxiosParameter({ currentArray, code, id }) {
+      this.chart1ChangeInfo.axiosParameter.currentArray = currentArray;
+      this.chart1ChangeInfo.axiosParameter.code = code;
+      this.chart1ChangeInfo.axiosParameter.id = id;
+    },
+    setChart2AxiosParameter({ current, code, order }) {
       this.chart2ChangeInfo.axiosParameter.current = current;
       this.chart2ChangeInfo.axiosParameter.code = code;
       this.chart2ChangeInfo.axiosParameter.order = order;
@@ -598,7 +608,7 @@ export default {
     },
     changeBg1({ id, code, current }) {
       this.isActive1 = id;
-      this.setAxiosParameter({
+      this.setChart2AxiosParameter({
         code,
         current,
         order: this.chart2ChangeInfo.axiosParameter.order
@@ -609,7 +619,7 @@ export default {
       this.isActive2 = id;
       // console.log("{id,order}")
       // console.log({id,order})
-      this.setAxiosParameter({
+      this.setChart2AxiosParameter({
         current: this.chart2ChangeInfo.axiosParameter.current,
         code: this.chart2ChangeInfo.axiosParameter.code,
         order
