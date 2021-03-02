@@ -109,7 +109,7 @@
           <div class="boxBoxs">
             <div class="boxWord">已缴</div>
             <div class="boxNum1">
-              {{ resourceAndRecord.pdr_paid }}
+              0
             </div>
           </div>
           <div class="boxBoxs">
@@ -249,6 +249,45 @@
         </div>
         <div class="charstBox1" id="myEcharts2"></div>
       </div>
+      <div class="wulianBotBox1">
+        <div class="roadTopBox">
+          <div
+            style="display: flex;flex-direction: row;align-items: center;height: 50px;"
+          >
+            <div class="T_blue"></div>
+            <span class="T_span">运营商排名</span>
+          </div>
+          <div class="dateR2">
+            <div class="dateBox">
+              <div
+                class="blueBoxs"
+                v-for="item in chart3ChangeInfo.dateArray"
+                :class="{ BGactive: item.id == isActive3 }"
+                @click="
+                  changeBg3({
+                    id: item.id,
+                    code: item.code,
+                    current: item.current
+                  })
+                "
+              >
+                {{ item.itemName }}
+              </div>
+            </div>
+            <div class="dateBox1">
+              <div
+                class="blueBoxs1"
+                v-for="item in chart3ChangeInfo.typeArray"
+                :class="{ BGactive: item.id == isActive4 }"
+                @click="changeBg4(item.id, item.order)"
+              >
+                {{ item.itemName }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="charstBox1" id="myEcharts3"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -349,18 +388,21 @@ export default {
             id: 1,
             itemName: "今年",
             current: "",
+            // code: "558FA4DDDFF445C3A3D263DB198D0DC4"
             code: "D3C90CFC37F34BF6AF87D1B618BAF7B1"
           },
           {
             id: 2,
             itemName: "本月",
             current: "",
+            // code: "A41A020D527542F69A4EF1D7FAA9E404"
             code: "8E312965EFFC4C19AA55848FB8324A7D"
           },
           {
             id: 3,
             itemName: "今天",
             current: "",
+            // code: "91B6D649D2CA4710AF58F04C98C06ACC"
             code: "9977F528758B4C46A4E8B11EB43B8229"
           }
         ],
@@ -409,15 +451,20 @@ export default {
       currentArray: this.chart1ChangeInfo.dateArray[0].currentArray,
       code: this.chart1ChangeInfo.dateArray[0].code
     });
-
     this.setChart2AxiosParameter({
       current: this.chart2ChangeInfo.dateArray[0].current,
       code: this.chart2ChangeInfo.dateArray[0].code,
       order: this.chart2ChangeInfo.typeArray[0].order
     });
+    this.setChart3AxiosParameter({
+      current: this.chart3ChangeInfo.dateArray[0].current,
+      code: this.chart3ChangeInfo.dateArray[0].code,
+      order: this.chart3ChangeInfo.typeArray[0].order
+    });
     this.$nextTick(() => {
       this.getDataAndDrawChart1();
       this.getDataAndDrawChart2();
+      this.getDataAndDrawChart3();
     });
   },
   methods: {
@@ -518,12 +565,38 @@ export default {
       this.$axios.get(url).then(res => {
         if (res.status == 200) {
           this.chart2Data = res.data.data;
-          this.formatterToBarEchartData(
+          this.formatterToEchart2Data(
             this.chart2Data,
             this.chart2ChangeInfo.axiosParameter.order
           );
 
           this.drawChart2();
+        }
+      });
+    },
+    getDataAndDrawChart3() {
+      let { code, order, current } = this.chart3ChangeInfo.axiosParameter;
+      let url =
+        "/admin/api/report/" +
+        code +
+        "/?token=" +
+        this.token +
+        "&page=1&row=10&order=" +
+        order +
+        "&from=" +
+        current +
+        "&to=" +
+        current +
+        "&sort=desc";
+      this.$axios.get(url).then(res => {
+        if (res.status == 200) {
+          this.chart3Data = res.data.data;
+          this.formatterToEchart3Data(
+            this.chart3Data,
+            this.chart3ChangeInfo.axiosParameter.order
+          );
+
+          this.drawChart3();
         }
       });
     },
@@ -696,7 +769,7 @@ export default {
       }
       return this.formattedChart1Data;
     },
-    formatterToBarEchartData(data, type) {
+    formatterToEchart2Data(data, type) {
       if (data.length < this.pagesize) {
         let newArrayLength = this.pagesize - data.length;
         let newArray = [];
@@ -718,6 +791,28 @@ export default {
       }
       this.chart2Data = data;
     },
+    formatterToEchart3Data(data, type) {
+      if (data.length < this.pagesize) {
+        let newArrayLength = this.pagesize - data.length;
+        let newArray = [];
+        for (let i = 0; i < newArrayLength; i++) {
+          newArray.push({ name: "", pdr_paid: "", pdr_amount: "" });
+        }
+
+        data = data.concat(newArray);
+      }
+      if (type === "pdr_paid") {
+        for (let i = 0; i < this.pagesize; i++) {
+          data[i].pdrData = data[i].pdr_paid;
+        }
+      }
+      if (type === "pdr_amount") {
+        for (let i = 0; i < this.pagesize; i++) {
+          data[i].pdrData = data[i].pdr_amount;
+        }
+      }
+      this.chart3Data = data;
+    },
     changeBg({ id, code, currentArray }) {
       this.isActive = id;
       this.formattedChart1Data = [];
@@ -732,13 +827,7 @@ export default {
     },
     changeBg1({ id, code, current }) {
       this.isActive1 = id;
-      this.formattedChart1Data = [];
-      this.decomposerFormattedChart1Data = {
-        dtArray: [],
-        pdr_amountArray: [],
-        pdr_paidArray: [],
-        pdr_countArray: []
-      };
+
       this.setChart2AxiosParameter({
         code,
         current,
@@ -755,23 +844,23 @@ export default {
       });
       this.getDataAndDrawChart2();
     },
-    changeBg3(id) {
+    changeBg3({ id, code, current }) {
       this.isActive3 = id;
+      this.setChart3AxiosParameter({
+        code,
+        current,
+        order: this.chart3ChangeInfo.axiosParameter.order
+      });
+      this.getDataAndDrawChart3();
     },
-    changeBg4(id) {
+    changeBg4(id, order) {
       this.isActive4 = id;
-    },
-    changeBg5(id) {
-      this.isActive5 = id;
-    },
-    changeBg6(id) {
-      this.isActive3 = id;
-    },
-    changeBg7(id) {
-      this.isActive4 = id;
-    },
-    changeBg8(id) {
-      this.isActive5 = id;
+      this.setChart3AxiosParameter({
+        current: this.chart3ChangeInfo.axiosParameter.current,
+        code: this.chart3ChangeInfo.axiosParameter.code,
+        order
+      });
+      this.getDataAndDrawChart3();
     },
     chooseDate1() {},
     chooseDate() {
@@ -922,6 +1011,122 @@ export default {
               this.chart2Data[7].pdrData,
               this.chart2Data[8].pdrData,
               this.chart2Data[9].pdrData
+            ],
+            type: "bar",
+            barWidth: "60",
+            itemStyle: {
+              normal: {
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 1,
+                    color: "#9929ea"
+                  },
+                  {
+                    offset: 0,
+                    color: "#5808fb"
+                  }
+                ])
+              }
+            },
+            label: {
+              //label要加入normal才可生效,label即为x轴对应Y轴的值
+              normal: {
+                show: true,
+                color: "#5808fb", //设置渐变时候控制不到颜色，只能通过全局textStyle来控制
+                position: "top"
+              }
+            }
+          }
+        ]
+      };
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+    },
+    drawChart3() {
+      // 基于准备好的dom，初始化echarts实例
+      let myChart = this.$echarts.init(document.getElementById("myEcharts3"));
+      // 指定图表的配置项和数据
+      var option = {
+        tooltip: {
+          show: true
+        },
+        xAxis: {
+          type: "category",
+          data: [
+            this.chart3Data[0].name,
+            this.chart3Data[1].name,
+            this.chart3Data[2].name,
+            this.chart3Data[3].name,
+            this.chart3Data[4].name,
+            this.chart3Data[5].name,
+            this.chart3Data[6].name,
+            this.chart3Data[7].name,
+            this.chart3Data[8].name,
+            this.chart3Data[9].name
+          ],
+          axisLabel: {
+            formatter: function(params) {
+              var newParamsName = ""; // 最终拼接成的字符串
+              var paramsNameNumber = params.length; // 实际标签的个数
+              var provideNumber = 4; // 每行能显示的字的个数
+              var rowNumber = Math.ceil(paramsNameNumber / provideNumber); // 换行的话，需要显示几行，向上取整
+              /**
+               * 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
+               */
+              // 条件等同于rowNumber>1
+              if (paramsNameNumber > provideNumber) {
+                /** 循环每一行,p表示行 */
+                for (var p = 0; p < rowNumber; p++) {
+                  var tempStr = ""; // 表示每一次截取的字符串
+                  var start = p * provideNumber; // 开始截取的位置
+                  var end = start + provideNumber; // 结束截取的位置
+                  // 此处特殊处理最后一行的索引值
+                  if (p == rowNumber - 1) {
+                    // 最后一次不换行
+                    tempStr = params.substring(start, paramsNameNumber);
+                  } else {
+                    // 每一次拼接字符串并换行
+                    tempStr = params.substring(start, end) + "\n";
+                  }
+                  newParamsName += tempStr; // 最终拼成的字符串
+                }
+              } else {
+                // 将旧标签的值赋给新标签
+                newParamsName = params;
+              }
+              //将最终的字符串返回
+              return newParamsName;
+            },
+
+            show: true,
+            textStyle: {
+              fontSize: 16
+            }
+          }
+        },
+        yAxis: {
+          type: "value",
+          name: "单位:元",
+          axisLabel: {
+            show: true,
+            textStyle: {
+              fontSize: 16
+            }
+          }
+        },
+        series: [
+          {
+            data: [
+              this.chart3Data[0].pdrData,
+              this.chart3Data[1].pdrData,
+              this.chart3Data[2].pdrData,
+              this.chart3Data[3].pdrData,
+              this.chart3Data[4].pdrData,
+              this.chart3Data[5].pdrData,
+              this.chart3Data[6].pdrData,
+              this.chart3Data[7].pdrData,
+              this.chart3Data[8].pdrData,
+              this.chart3Data[9].pdrData
             ],
             type: "bar",
             barWidth: "60",

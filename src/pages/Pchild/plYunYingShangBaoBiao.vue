@@ -207,8 +207,6 @@ export default {
       this.$axios.get(url).then(res => {
         if (res.status == 200) {
           this.tableData = res.data.data;
-          console.log("res");
-          console.log(this.tableData);
           this.total = res.data.total || 0;
         }
       });
