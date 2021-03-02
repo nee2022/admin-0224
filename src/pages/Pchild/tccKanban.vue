@@ -140,7 +140,13 @@
                 class="blueBoxs"
                 v-for="item in chart1ChangeInfo.dateArray"
                 :class="{ BGactive: item.id == isActive }"
-                @click="changeBg(item.id)"
+                @click="
+                  changeBg({
+                    id: item.id,
+                    code: item.code,
+                    currentArray: item.currentArray
+                  })
+                "
               >
                 {{ item.itemName }}
               </div>
@@ -325,8 +331,6 @@ export default {
         pdr_paidArray: [],
         pdr_countArray: []
       },
-      chart1DataX: [],
-      chart1DataY: [],
       chart2ChangeInfo: {
         axiosParameter: {
           code: "",
@@ -584,10 +588,11 @@ export default {
       return dateArray;
     },
     formatterToCurveEchartData({ currentArray }) {
+      // 近一周时，生成的this.formattedChart1Data
+
       if (currentArray[0].length === 8) {
         for (let i = 0; i < 7; i++) {
           let arrItem = this.getPastDateArray({ type: "day", spanTime: i + 1 });
-          // console.log(arrItem);
           // 初始化this.formattedChart1Data
           this.formattedChart1Data.push({
             dateArray: arrItem,
@@ -596,7 +601,84 @@ export default {
             pdr_amount: 0,
             pdr_paid: 0
           });
-          // console.log(this.formattedChart1Data);
+        }
+        //将this.chart1Data中的值传递给this.formattedChart1Data
+        if (this.chart1DataTotal) {
+          for (let i = 0; i < this.chart1Data.length; i++) {
+            let id = this.chart1Data[i].dt;
+            for (let j = 0; j < this.formattedChart1Data.length; j++) {
+              if (this.formattedChart1Data[j].dt == id) {
+                this.formattedChart1Data[j].pdr_count = this.chart1Data[
+                  i
+                ].pdr_count;
+                this.formattedChart1Data[j].pdr_amount = this.chart1Data[
+                  i
+                ].pdr_amount;
+                this.formattedChart1Data[j].pdr_paid = this.chart1Data[
+                  i
+                ].pdr_paid;
+              }
+            }
+          }
+        }
+      }
+      // 近六月时，生成的this.formattedChart1Data
+      if (currentArray[0].length === 6) {
+        for (let i = 0; i < 6; i++) {
+          let arrItem = this.getPastDateArray({
+            type: "month",
+            spanTime: i + 1
+          });
+          //arrItem抛除日期
+          arrItem.pop();
+          // 初始化this.formattedChart1Data
+          this.formattedChart1Data.push({
+            dateArray: arrItem,
+            dt: arrItem.join(""),
+            pdr_count: 0,
+            pdr_amount: 0,
+            pdr_paid: 0
+          });
+        }
+        //将this.chart1Data中的值传递给this.formattedChart1Data
+        if (this.chart1DataTotal) {
+          for (let i = 0; i < this.chart1Data.length; i++) {
+            let id = this.chart1Data[i].dt;
+            for (let j = 0; j < this.formattedChart1Data.length; j++) {
+              if (this.formattedChart1Data[j].dt == id) {
+                this.formattedChart1Data[j].pdr_count = this.chart1Data[
+                  i
+                ].pdr_count;
+                this.formattedChart1Data[j].pdr_amount = this.chart1Data[
+                  i
+                ].pdr_amount;
+                this.formattedChart1Data[j].pdr_paid = this.chart1Data[
+                  i
+                ].pdr_paid;
+              }
+            }
+          }
+        }
+      }
+      // 近五年时，生成的this.formattedChart1Data
+      if (currentArray[0].length === 4) {
+        for (let i = 0; i < 6; i++) {
+          let arrItem = this.getPastDateArray({
+            type: "year",
+            spanTime: i + 1
+          });
+          // 初始化this.formattedChart1Data
+          //arrItem抛除日期
+          arrItem.pop();
+          //arrItem抛除月份
+          arrItem.pop();
+          this.formattedChart1Data.push({
+            dateArray: arrItem,
+            dt: arrItem.join(""),
+            pdr_count: 0,
+            pdr_amount: 0,
+            pdr_paid: 0
+          });
         }
         //将this.chart1Data中的值传递给this.formattedChart1Data
         if (this.chart1DataTotal) {
@@ -628,7 +710,6 @@ export default {
         this.decomposerFormattedChart1Data.pdr_paidArray.push(
           this.formattedChart1Data[i].pdr_paid
         );
-        console.log(this.formattedChart1Data[i].pdr_count);
         this.decomposerFormattedChart1Data.pdr_countArray.push(
           this.formattedChart1Data[i].pdr_count
         );
@@ -657,11 +738,27 @@ export default {
       }
       this.chart2Data = data;
     },
-    changeBg(id) {
+    changeBg({ id, code, currentArray }) {
       this.isActive = id;
+      this.formattedChart1Data = [];
+      this.decomposerFormattedChart1Data = {
+        dtArray: [],
+        pdr_amountArray: [],
+        pdr_paidArray: [],
+        pdr_countArray: []
+      };
+      this.setChart1AxiosParameter({ code, currentArray });
+      this.getDataAndDrawChart1();
     },
     changeBg1({ id, code, current }) {
       this.isActive1 = id;
+      this.formattedChart1Data = [];
+      this.decomposerFormattedChart1Data = {
+        dtArray: [],
+        pdr_amountArray: [],
+        pdr_paidArray: [],
+        pdr_countArray: []
+      };
       this.setChart2AxiosParameter({
         code,
         current,
@@ -671,12 +768,6 @@ export default {
     },
     changeBg2(id, order) {
       this.isActive2 = id;
-      this.setChart2AxiosParameter({
-        current: this.chart2ChangeInfo.axiosParameter.current,
-        code: this.chart2ChangeInfo.axiosParameter.code,
-        order
-      });
-      this.getDataAndDrawChart2();
     },
     changeBg3(id) {
       this.isActive3 = id;
