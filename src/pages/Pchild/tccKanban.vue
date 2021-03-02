@@ -249,39 +249,6 @@
         </div>
         <div class="charstBox1" id="myEcharts2"></div>
       </div>
-      <div class="wulianBotBox1">
-        <div class="roadTopBox">
-          <div
-            style="display: flex;flex-direction: row;align-items: center;height: 50px;"
-          >
-            <div class="T_blue"></div>
-            <span class="T_span">运营商排名</span>
-          </div>
-          <div class="dateR2">
-            <div class="dateBox">
-              <div
-                class="blueBoxs"
-                v-for="item in day"
-                :class="{ BGactive: item.id == isActive3 }"
-                @click="changeBg3(item.id)"
-              >
-                {{ item.name }}
-              </div>
-            </div>
-            <div class="dateBox1">
-              <div
-                class="blueBoxs1"
-                v-for="item in shouList"
-                :class="{ BGactive: item.id == isActive4 }"
-                @click="changeBg4(item.id)"
-              >
-                {{ item.name }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="charstBox1" id="myEcharts3"></div>
-      </div>
     </div>
   </div>
 </template>
@@ -371,7 +338,46 @@ export default {
         ]
       },
       chart2Data: [],
-      total: 1000,
+      chart3ChangeInfo: {
+        axiosParameter: {
+          code: "",
+          order: "",
+          current: ""
+        },
+        dateArray: [
+          {
+            id: 1,
+            itemName: "今年",
+            current: "",
+            code: "D3C90CFC37F34BF6AF87D1B618BAF7B1"
+          },
+          {
+            id: 2,
+            itemName: "本月",
+            current: "",
+            code: "8E312965EFFC4C19AA55848FB8324A7D"
+          },
+          {
+            id: 3,
+            itemName: "今天",
+            current: "",
+            code: "9977F528758B4C46A4E8B11EB43B8229"
+          }
+        ],
+        typeArray: [
+          {
+            id: 1,
+            order: "pdr_paid",
+            itemName: "实收"
+          },
+          {
+            id: 2,
+            order: "pdr_amount",
+            itemName: "应收"
+          }
+        ]
+      },
+      chart3Data: [],
       pagenum: 1,
       pagesize: 10,
       isActive: 1,
@@ -387,46 +393,7 @@ export default {
       isBg2: 1,
       value1: "",
       value2: "",
-      value3: "",
-
-      shouList: [
-        {
-          name: "实收",
-          id: 1
-        },
-        {
-          name: "应收",
-          id: 2
-        }
-      ],
-      day: [
-        {
-          name: "今年",
-          id: 1
-        },
-        {
-          name: "本月",
-          id: 2
-        },
-        {
-          name: "今天",
-          id: 3
-        }
-      ],
-      dateList: [
-        {
-          name: "近一周",
-          id: 1
-        },
-        {
-          name: "近一月",
-          id: 2
-        },
-        {
-          name: "近一年",
-          id: 3
-        }
-      ]
+      value3: ""
     };
   },
 
@@ -451,7 +418,6 @@ export default {
     this.$nextTick(() => {
       this.getDataAndDrawChart1();
       this.getDataAndDrawChart2();
-      this.drawChart3();
     });
   },
   methods: {
@@ -486,6 +452,14 @@ export default {
         .join("")
         .slice(0, 6);
       this.chart2ChangeInfo.dateArray[2].current = currentArray.join("");
+
+      this.chart3ChangeInfo.dateArray[0].current = currentArray
+        .join("")
+        .slice(0, 4);
+      this.chart3ChangeInfo.dateArray[1].current = currentArray
+        .join("")
+        .slice(0, 6);
+      this.chart3ChangeInfo.dateArray[2].current = currentArray.join("");
     },
     setChart1AxiosParameter({ currentArray, code }) {
       this.chart1ChangeInfo.axiosParameter.currentArray = currentArray;
@@ -495,6 +469,11 @@ export default {
       this.chart2ChangeInfo.axiosParameter.current = current;
       this.chart2ChangeInfo.axiosParameter.code = code;
       this.chart2ChangeInfo.axiosParameter.order = order;
+    },
+    setChart3AxiosParameter({ current, code, order }) {
+      this.chart3ChangeInfo.axiosParameter.current = current;
+      this.chart3ChangeInfo.axiosParameter.code = code;
+      this.chart3ChangeInfo.axiosParameter.order = order;
     },
     getDataAndDrawChart1() {
       let { code, currentArray } = this.chart1ChangeInfo.axiosParameter;
@@ -548,6 +527,7 @@ export default {
         }
       });
     },
+
     getResourceAndRecord() {
       let url =
         "admin/api/report/0349EAB0ED324C708F440D32D2F1C95B" +
@@ -857,7 +837,6 @@ export default {
       // 使用刚指定的配置项和数据显示图表。
       myChart.setOption(option);
     },
-
     drawChart2() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("myEcharts2"));
@@ -965,68 +944,6 @@ export default {
               normal: {
                 show: true,
                 color: "#5808fb", //设置渐变时候控制不到颜色，只能通过全局textStyle来控制
-                position: "top"
-              }
-            }
-          }
-        ]
-      };
-      // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
-    },
-
-    drawChart3() {
-      // 基于准备好的dom，初始化echarts实例
-      let myChart = this.$echarts.init(document.getElementById("myEcharts3"));
-      // 指定图表的配置项和数据
-      var option = {
-        tooltip: {
-          show: true
-        },
-        xAxis: {
-          type: "category",
-          data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-          axisLabel: {
-            show: true,
-            textStyle: {
-              fontSize: 16
-            }
-          }
-        },
-        yAxis: {
-          type: "value",
-          name: "单位:元",
-          axisLabel: {
-            show: true,
-            textStyle: {
-              fontSize: 16
-            }
-          }
-        },
-        series: [
-          {
-            data: [2320, 1700, 3150, 2480, 4670, 1110, 3255, 6546, 2313, 4325],
-            type: "bar",
-            barWidth: "60",
-            itemStyle: {
-              normal: {
-                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  {
-                    offset: 1,
-                    color: "#0bbafb"
-                  },
-                  {
-                    offset: 0,
-                    color: "#4285ec"
-                  }
-                ])
-              }
-            },
-            label: {
-              //label要加入normal才可生效,label即为x轴对应Y轴的值
-              normal: {
-                show: true,
-                color: "#4285ec", //设置渐变时候控制不到颜色，只能通过全局textStyle来控制
                 position: "top"
               }
             }
