@@ -768,6 +768,12 @@ export default {
     },
     changeBg2(id, order) {
       this.isActive2 = id;
+      this.setChart2AxiosParameter({
+        current: this.chart2ChangeInfo.axiosParameter.current,
+        code: this.chart2ChangeInfo.axiosParameter.code,
+        order
+      });
+      this.getDataAndDrawChart2();
     },
     changeBg3(id) {
       this.isActive3 = id;
