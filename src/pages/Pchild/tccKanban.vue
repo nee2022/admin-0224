@@ -442,8 +442,6 @@ export default {
   created() {
     this.token = localStorage.getItem("token").replace(/\"/g, "");
     this.getResourceAndRecord();
-    // this.getRoadParkingOperationReportData();
-    // this.getParkingLot();
   },
   mounted() {
     this.setCurrentDate();
