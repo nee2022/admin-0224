@@ -319,6 +319,14 @@ export default {
       chart1Data: [],
       chart1DataTotal: 0,
       formattedChart1Data: [],
+      decomposerFormattedChart1Data: {
+        dtArray: [],
+        pdr_amountArray: [],
+        pdr_paidArray: [],
+        pdr_countArray: []
+      },
+      chart1DataX: [],
+      chart1DataY: [],
       chart2ChangeInfo: {
         axiosParameter: {
           code: "",
@@ -430,6 +438,7 @@ export default {
       currentArray: this.chart1ChangeInfo.dateArray[0].currentArray,
       code: this.chart1ChangeInfo.dateArray[0].code
     });
+
     this.setChart2AxiosParameter({
       current: this.chart2ChangeInfo.dateArray[0].current,
       code: this.chart2ChangeInfo.dateArray[0].code,
@@ -577,29 +586,53 @@ export default {
     formatterToCurveEchartData({ currentArray }) {
       if (currentArray[0].length === 8) {
         for (let i = 0; i < 7; i++) {
-          let arrItem = this.getPastDateArray({ type: "day", spanTime: i });
-
+          let arrItem = this.getPastDateArray({ type: "day", spanTime: i + 1 });
+          // console.log(arrItem);
+          // 初始化this.formattedChart1Data
           this.formattedChart1Data.push({
             dateArray: arrItem,
             dt: arrItem.join(""),
-            value: 0
+            pdr_count: 0,
+            pdr_amount: 0,
+            pdr_paid: 0
           });
           // console.log(this.formattedChart1Data);
         }
+        //将this.chart1Data中的值传递给this.formattedChart1Data
         if (this.chart1DataTotal) {
           for (let i = 0; i < this.chart1Data.length; i++) {
             let id = this.chart1Data[i].dt;
             for (let j = 0; j < this.formattedChart1Data.length; j++) {
               if (this.formattedChart1Data[j].dt == id) {
-                this.formattedChart1Data[j].value = this.chart1Data[
+                this.formattedChart1Data[j].pdr_count = this.chart1Data[
                   i
                 ].pdr_count;
+                this.formattedChart1Data[j].pdr_amount = this.chart1Data[
+                  i
+                ].pdr_amount;
+                this.formattedChart1Data[j].pdr_paid = this.chart1Data[
+                  i
+                ].pdr_paid;
               }
             }
           }
         }
       }
-
+      for (let i = 0; i < this.formattedChart1Data.length; i++) {
+        this.decomposerFormattedChart1Data.dtArray.push(
+          this.formattedChart1Data[i].dt
+        );
+        this.decomposerFormattedChart1Data.pdr_amountArray.push(
+          this.formattedChart1Data[i].pdr_amount
+        );
+        this.decomposerFormattedChart1Data.pdr_paidArray.push(
+          this.formattedChart1Data[i].pdr_paid
+        );
+        console.log(this.formattedChart1Data[i].pdr_count);
+        this.decomposerFormattedChart1Data.pdr_countArray.push(
+          this.formattedChart1Data[i].pdr_count
+        );
+      }
       return this.formattedChart1Data;
     },
     formatterToBarEchartData(data, type) {
@@ -696,7 +729,7 @@ export default {
           // padding: [20, 10],
         },
         xAxis: {
-          data: [1, 2, 3, 4, 5],
+          data: this.decomposerFormattedChart1Data.dtArray.reverse(),
           fontSize: 18
         },
         yAxis: {
@@ -707,19 +740,19 @@ export default {
           {
             name: "应收",
             type: "line",
-            data: [2, 432, 54, 1, 4],
+            data: this.decomposerFormattedChart1Data.pdr_amountArray.reverse(),
             smooth: true
           },
           {
             name: "实收",
             type: "line",
-            data: [22, 452, 524, 11, 54],
+            data: this.decomposerFormattedChart1Data.pdr_paidArray.reverse(),
             smooth: true
           },
           {
             name: "欠费",
             type: "line",
-            data: [252, 432, 244, 1214, 412],
+            data: this.decomposerFormattedChart1Data.pdr_countArray.reverse(),
             smooth: true
           }
         ]
