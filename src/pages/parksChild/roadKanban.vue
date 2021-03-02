@@ -316,7 +316,7 @@
               <div
                 class="blueBoxs"
                 v-for="item in chart4ChangeInfo.dateArray"
-                :class="{ BGactive: item.id == isActive1 }"
+                :class="{ BGactive: item.id == isActive5 }"
                 @click="
                   changeBg5({
                     id: item.id,
@@ -332,7 +332,7 @@
               <div
                 class="blueBoxs1"
                 v-for="item in chart4ChangeInfo.typeArray"
-                :class="{ BGactive: item.id == isActive2 }"
+                :class="{ BGactive: item.id == isActive6 }"
                 @click="changeBg6(item.id, item.order)"
               >
                 {{ item.itemName }}
@@ -959,7 +959,6 @@ export default {
         for (let i = 0; i < newArrayLength; i++) {
           newArray.push({ name: "", pdr_paid: "", pdr_amount: "" });
         }
-
         data = data.concat(newArray);
       }
       if (type === "pdr_paid") {
@@ -1025,18 +1024,18 @@ export default {
     },
     changeBg5({ id, code, current }) {
       this.isActive5 = id;
-      this.setChart3AxiosParameter({
+      this.setChart4AxiosParameter({
         code,
         current,
-        order: this.chart3ChangeInfo.axiosParameter.order
+        order: this.chart4ChangeInfo.axiosParameter.order
       });
       this.getDataAndDrawChart4();
     },
     changeBg6(id, order) {
       this.isActive6 = id;
-      this.setChart3AxiosParameter({
-        current: this.chart3ChangeInfo.axiosParameter.current,
-        code: this.chart3ChangeInfo.axiosParameter.code,
+      this.setChart4AxiosParameter({
+        current: this.chart4ChangeInfo.axiosParameter.current,
+        code: this.chart4ChangeInfo.axiosParameter.code,
         order
       });
       this.getDataAndDrawChart4();
