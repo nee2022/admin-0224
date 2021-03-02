@@ -231,7 +231,7 @@
             style="display: flex;flex-direction: row;align-items: center;height: 50px;"
           >
             <div class="T_blue"></div>
-            <span class="T_span">停车场排名</span>
+            <span class="T_span">道路站点排名</span>
           </div>
           <div class="dateR2">
             <div class="dateBox">
@@ -316,7 +316,7 @@
               <div
                 class="blueBoxs"
                 v-for="item in chart4ChangeInfo.dateArray"
-                :class="{ BGactive: item.id == isActive5 }"
+                :class="{ BGactive: item.id == isActive1 }"
                 @click="
                   changeBg5({
                     id: item.id,
@@ -332,7 +332,7 @@
               <div
                 class="blueBoxs1"
                 v-for="item in chart4ChangeInfo.typeArray"
-                :class="{ BGactive: item.id == isActive6 }"
+                :class="{ BGactive: item.id == isActive2 }"
                 @click="changeBg6(item.id, item.order)"
               >
                 {{ item.itemName }}
@@ -356,10 +356,6 @@ export default {
     return {
       resourceAndRecord: {},
       operationData: [],
-      tableChangeInfo: {
-        itemName: "日期",
-        code: "AC5FF95637CF4B4294A6B650535F5531"
-      },
       chart1ChangeInfo: {
         axiosParameter: {
           code: "",
@@ -370,19 +366,19 @@ export default {
             id: 1,
             itemName: "近一周",
             currentArray: [],
-            code: "025BC0A1E99A4C01858488BA68803998"
+            code: "AC5FF95637CF4B4294A6B650535F5531"
           },
           {
             id: 2,
             itemName: "近六月",
             currentArray: [],
-            code: "8807E28C31CE405084E9340B80B74A09"
+            code: "875C0991E0B6410589601DB6660634A4"
           },
           {
             id: 3,
             itemName: "近五年",
             currentArray: [],
-            code: "DD43DB30C64C42CA9286630D83EAFF1C"
+            code: "158F0EA53B25482B9E26D9C29637F239"
           }
         ]
       },
@@ -406,19 +402,19 @@ export default {
             id: 1,
             itemName: "今年",
             current: "",
-            code: "558FA4DDDFF445C3A3D263DB198D0DC4"
+            code: "B2C5FC2773A547978676B2759487B921"
           },
           {
             id: 2,
             itemName: "本月",
             current: "",
-            code: "A41A020D527542F69A4EF1D7FAA9E404"
+            code: "897E9584BBEE4094B76BDDD8005E29EC"
           },
           {
             id: 3,
             itemName: "今天",
             current: "",
-            code: "91B6D649D2CA4710AF58F04C98C06ACC"
+            code: "2981C087C584411FA19D0902C0F6F6FF"
           }
         ],
         typeArray: [
@@ -447,21 +443,21 @@ export default {
             itemName: "今年",
             current: "",
             // code: "558FA4DDDFF445C3A3D263DB198D0DC4"
-            code: "D3C90CFC37F34BF6AF87D1B618BAF7B1"
+            code: "64E962C6356B4C08A14615551D0D4300"
           },
           {
             id: 2,
             itemName: "本月",
             current: "",
             // code: "A41A020D527542F69A4EF1D7FAA9E404"
-            code: "8E312965EFFC4C19AA55848FB8324A7D"
+            code: "8449BE849B0B455AA6E3230AEE9D4851"
           },
           {
             id: 3,
             itemName: "今天",
             current: "",
             // code: "91B6D649D2CA4710AF58F04C98C06ACC"
-            code: "9977F528758B4C46A4E8B11EB43B8229"
+            code: "F4EC29FCD4804BD29C9A52E15C5835B3"
           }
         ],
         typeArray: [
@@ -490,21 +486,21 @@ export default {
             itemName: "今年",
             current: "",
             // code: "558FA4DDDFF445C3A3D263DB198D0DC4"
-            code: "D3C90CFC37F34BF6AF87D1B618BAF7B1"
+            code: "91E81EC66D324087860BCD30B747B420"
           },
           {
             id: 2,
             itemName: "本月",
             current: "",
             // code: "A41A020D527542F69A4EF1D7FAA9E404"
-            code: "8E312965EFFC4C19AA55848FB8324A7D"
+            code: "BEDFEA46D8A74AECB1665E287A75D029"
           },
           {
             id: 3,
             itemName: "今天",
             current: "",
             // code: "91B6D649D2CA4710AF58F04C98C06ACC"
-            code: "9977F528758B4C46A4E8B11EB43B8229"
+            code: "0ADC1C7B022B4EE790CEF99236F5C9A9"
           }
         ],
         typeArray: [
@@ -664,9 +660,13 @@ export default {
         "&to=" +
         currentArray[1] +
         "&sort=asc";
+      console.log("url");
+      console.log(url);
       this.$axios.get(url).then(res => {
         if (res.status == 200) {
           this.chart1Data = res.data.data || 0;
+          console.log("this.chart1Data");
+          console.log(this.chart1Data);
           this.chart1DataTotal = res.data.total;
           this.formatterToCurveEchartData({
             data: this.chart1Data,
@@ -1347,16 +1347,16 @@ export default {
         xAxis: {
           type: "category",
           data: [
-            this.chart2Data[0].name,
-            this.chart2Data[1].name,
-            this.chart2Data[2].name,
-            this.chart2Data[3].name,
-            this.chart2Data[4].name,
-            this.chart2Data[5].name,
-            this.chart2Data[6].name,
-            this.chart2Data[7].name,
-            this.chart2Data[8].name,
-            this.chart2Data[9].name
+            this.chart4Data[0].name,
+            this.chart4Data[1].name,
+            this.chart4Data[2].name,
+            this.chart4Data[3].name,
+            this.chart4Data[4].name,
+            this.chart4Data[5].name,
+            this.chart4Data[6].name,
+            this.chart4Data[7].name,
+            this.chart4Data[8].name,
+            this.chart4Data[9].name
           ],
           axisLabel: {
             formatter: function(params) {
@@ -1411,16 +1411,16 @@ export default {
         series: [
           {
             data: [
-              this.chart2Data[0].pdrData,
-              this.chart2Data[1].pdrData,
-              this.chart2Data[2].pdrData,
-              this.chart2Data[3].pdrData,
-              this.chart2Data[4].pdrData,
-              this.chart2Data[5].pdrData,
-              this.chart2Data[6].pdrData,
-              this.chart2Data[7].pdrData,
-              this.chart2Data[8].pdrData,
-              this.chart2Data[9].pdrData
+              this.chart4Data[0].pdrData,
+              this.chart4Data[1].pdrData,
+              this.chart4Data[2].pdrData,
+              this.chart4Data[3].pdrData,
+              this.chart4Data[4].pdrData,
+              this.chart4Data[5].pdrData,
+              this.chart4Data[6].pdrData,
+              this.chart4Data[7].pdrData,
+              this.chart4Data[8].pdrData,
+              this.chart4Data[9].pdrData
             ],
             type: "bar",
             barWidth: "60",
