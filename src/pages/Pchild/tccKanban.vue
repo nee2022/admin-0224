@@ -317,6 +317,8 @@ export default {
         ]
       },
       chart1Data: [],
+      chart1DataTotal: 0,
+      formattedChart1Data: [],
       chart2ChangeInfo: {
         axiosParameter: {
           code: "",
@@ -440,33 +442,17 @@ export default {
     });
   },
   methods: {
-    // getCurrentDate() {
-    //   let dateString = new Date().toLocaleDateString();
-    //   let dateArray = dateString.split("/");
-    //   if (dateArray[1].length === 1) {
-    //     dateArray[1] = "0" + dateArray[1];
-    //   }
-    //   return dateArray;
-    // },
     setCurrentDate() {
       let currentArray = this.getPastDateArray({ type: "day", spanTime: "1" });
-      // console.log("currentArray");
-      // console.log(currentArray);
       let lastWeekArray = this.getPastDateArray({ type: "day", spanTime: "7" });
-      // console.log("lastWeekArray");
-      // console.log(lastWeekArray);
       let lastSixMonthArray = this.getPastDateArray({
         type: "month",
         spanTime: "6"
       });
-      // console.log("lastSixMonthArray");
-      // console.log(lastSixMonthArray);
       let lastFiveYearArray = this.getPastDateArray({
         type: "year",
         spanTime: "5"
       });
-      // console.log("lastFiveYearArray");
-      // console.log(lastFiveYearArray);
       this.chart1ChangeInfo.dateArray[0].currentArray = [
         lastWeekArray.join(""),
         currentArray.join("")
@@ -487,11 +473,6 @@ export default {
         .join("")
         .slice(0, 6);
       this.chart2ChangeInfo.dateArray[2].current = currentArray.join("");
-      console.log("chartChangeInfo");
-      console.log(this.chart1ChangeInfo);
-      console.log(this.chart2ChangeInfo);
-      // console.log("this.chart2ChangeInfo.dateArray");
-      // console.log(this.chart2ChangeInfo.dateArray);
     },
     setChart1AxiosParameter({ currentArray, code }) {
       this.chart1ChangeInfo.axiosParameter.currentArray = currentArray;
@@ -515,17 +496,14 @@ export default {
         "&to=" +
         currentArray[1] +
         "&sort=asc";
-      // console.log("url");
-      // console.log(url);
       this.$axios.get(url).then(res => {
         if (res.status == 200) {
-          this.chart1Data = res.data.data;
-          // console.log("this.chart2Data");
-          // console.log(this.chart2Data);
-          this.formatterToCurveEchartData(
-            this.chart1Data,
-            this.chart1ChangeInfo.axiosParameter.currentArray
-          );
+          this.chart1Data = res.data.data || 0;
+          this.chart1DataTotal = res.data.total;
+          this.formatterToCurveEchartData({
+            data: this.chart1Data,
+            currentArray: this.chart1ChangeInfo.axiosParameter.currentArray
+          });
 
           this.drawChart1();
         }
@@ -545,13 +523,9 @@ export default {
         "&to=" +
         current +
         "&sort=desc";
-      // console.log("url");
-      // console.log(url);
       this.$axios.get(url).then(res => {
         if (res.status == 200) {
           this.chart2Data = res.data.data;
-          // console.log("this.chart2Data");
-          // console.log(this.chart2Data);
           this.formatterToBarEchartData(
             this.chart2Data,
             this.chart2ChangeInfo.axiosParameter.order
@@ -577,7 +551,6 @@ export default {
         }
       });
     },
-
     getPastDateArray({ type, spanTime }) {
       if (type === "day") {
         var dt = new Date().getTime() - 3600 * 1000 * 24 * (spanTime - 1);
@@ -601,26 +574,43 @@ export default {
 
       return dateArray;
     },
-    formatterToCurveEchartData({ data, currentArray }) {
-      console.log("data");
-      console.log(data);
-      console.log(currentArray);
+    formatterToCurveEchartData({ currentArray }) {
+      if (currentArray[0].length === 8) {
+        for (let i = 0; i < 7; i++) {
+          let arrItem = this.getPastDateArray({ type: "day", spanTime: i });
+
+          this.formattedChart1Data.push({
+            dateArray: arrItem,
+            dt: arrItem.join(""),
+            value: 0
+          });
+          // console.log(this.formattedChart1Data);
+        }
+        if (this.chart1DataTotal) {
+          for (let i = 0; i < this.chart1Data.length; i++) {
+            let id = this.chart1Data[i].dt;
+            for (let j = 0; j < this.formattedChart1Data.length; j++) {
+              if (this.formattedChart1Data[j].dt == id) {
+                this.formattedChart1Data[j].value = this.chart1Data[
+                  i
+                ].pdr_count;
+              }
+            }
+          }
+        }
+      }
+
+      return this.formattedChart1Data;
     },
     formatterToBarEchartData(data, type) {
       if (data.length < this.pagesize) {
         let newArrayLength = this.pagesize - data.length;
         let newArray = [];
         for (let i = 0; i < newArrayLength; i++) {
-          // console.log("for");
           newArray.push({ name: "", pdr_paid: "", pdr_amount: "" });
-          // console.log(newArray);
         }
 
         data = data.concat(newArray);
-        // console.log("newArray");
-        // console.log(newArray);
-        // console.log("data");
-        // console.log(data);
       }
       if (type === "pdr_paid") {
         for (let i = 0; i < this.pagesize; i++) {
@@ -648,8 +638,6 @@ export default {
     },
     changeBg2(id, order) {
       this.isActive2 = id;
-      // console.log("{id,order}")
-      // console.log({id,order})
       this.setChart2AxiosParameter({
         current: this.chart2ChangeInfo.axiosParameter.current,
         code: this.chart2ChangeInfo.axiosParameter.code,
