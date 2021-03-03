@@ -507,13 +507,13 @@ export default {
         typeArray: [
           {
             id: 1,
-            order: "pdr_paid",
+            order: "payment_pay",
             itemName: "实收"
           },
           {
             id: 2,
-            order: "pdr_amount",
-            itemName: "应收"
+            order: "payment_amount",
+            itemName: "欠费"
           }
         ]
       },
@@ -740,8 +740,6 @@ export default {
         "&to=" +
         current +
         "&sort=desc";
-      console.log("url");
-      console.log(url);
       this.$axios.get(url).then(res => {
         if (res.status == 200) {
           this.chart4Data = res.data.data;
@@ -956,18 +954,18 @@ export default {
         let newArrayLength = this.pagesize - data.length;
         let newArray = [];
         for (let i = 0; i < newArrayLength; i++) {
-          newArray.push({ username: "", pdr_paid: "", pdr_amount: "" });
+          newArray.push({ username: "", payment_pay: "", payment_amount: "" });
         }
         data = data.concat(newArray);
       }
-      if (type === "pdr_paid") {
+      if (type === "payment_pay") {
         for (let i = 0; i < this.pagesize; i++) {
-          data[i].pdrData = data[i].pdr_paid;
+          data[i].pdrData = data[i].payment_pay;
         }
       }
-      if (type === "pdr_amount") {
+      if (type === "payment_amount") {
         for (let i = 0; i < this.pagesize; i++) {
-          data[i].pdrData = data[i].pdr_amount;
+          data[i].pdrData = data[i].payment_amount;
         }
       }
       this.chart4Data = data;
