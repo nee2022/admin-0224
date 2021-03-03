@@ -303,6 +303,7 @@
         </div>
         <div class="charstBox1" id="myEcharts3"></div>
       </div>
+
       <div class="wulianBotBox1">
         <div class="roadTopBox">
           <div
@@ -316,7 +317,7 @@
               <div
                 class="blueBoxs"
                 v-for="item in chart4ChangeInfo.dateArray"
-                :class="{ BGactive: item.id == isActive1 }"
+                :class="{ BGactive: item.id == isActive5 }"
                 @click="
                   changeBg5({
                     id: item.id,
@@ -332,7 +333,7 @@
               <div
                 class="blueBoxs1"
                 v-for="item in chart4ChangeInfo.typeArray"
-                :class="{ BGactive: item.id == isActive2 }"
+                :class="{ BGactive: item.id == isActive6 }"
                 @click="changeBg6(item.id, item.order)"
               >
                 {{ item.itemName }}
@@ -660,13 +661,9 @@ export default {
         "&to=" +
         currentArray[1] +
         "&sort=asc";
-      console.log("url");
-      console.log(url);
       this.$axios.get(url).then(res => {
         if (res.status == 200) {
           this.chart1Data = res.data.data || 0;
-          console.log("this.chart1Data");
-          console.log(this.chart1Data);
           this.chart1DataTotal = res.data.total;
           this.formatterToCurveEchartData({
             data: this.chart1Data,
@@ -730,7 +727,7 @@ export default {
       });
     },
     getDataAndDrawChart4() {
-      let { code, order, current } = this.chart3ChangeInfo.axiosParameter;
+      let { code, order, current } = this.chart4ChangeInfo.axiosParameter;
       let url =
         "/admin/api/report/" +
         code +
@@ -743,6 +740,8 @@ export default {
         "&to=" +
         current +
         "&sort=desc";
+      console.log("url");
+      console.log(url);
       this.$axios.get(url).then(res => {
         if (res.status == 200) {
           this.chart4Data = res.data.data;
@@ -935,7 +934,7 @@ export default {
         let newArrayLength = this.pagesize - data.length;
         let newArray = [];
         for (let i = 0; i < newArrayLength; i++) {
-          newArray.push({ name: "", pdr_paid: "", pdr_amount: "" });
+          newArray.push({ username: "", pdr_paid: "", pdr_amount: "" });
         }
 
         data = data.concat(newArray);
@@ -957,7 +956,7 @@ export default {
         let newArrayLength = this.pagesize - data.length;
         let newArray = [];
         for (let i = 0; i < newArrayLength; i++) {
-          newArray.push({ name: "", pdr_paid: "", pdr_amount: "" });
+          newArray.push({ username: "", pdr_paid: "", pdr_amount: "" });
         }
         data = data.concat(newArray);
       }
@@ -1231,16 +1230,16 @@ export default {
         xAxis: {
           type: "category",
           data: [
-            this.chart3Data[0].name,
-            this.chart3Data[1].name,
-            this.chart3Data[2].name,
-            this.chart3Data[3].name,
-            this.chart3Data[4].name,
-            this.chart3Data[5].name,
-            this.chart3Data[6].name,
-            this.chart3Data[7].name,
-            this.chart3Data[8].name,
-            this.chart3Data[9].name
+            this.chart3Data[0].username,
+            this.chart3Data[1].username,
+            this.chart3Data[2].username,
+            this.chart3Data[3].username,
+            this.chart3Data[4].username,
+            this.chart3Data[5].username,
+            this.chart3Data[6].username,
+            this.chart3Data[7].username,
+            this.chart3Data[8].username,
+            this.chart3Data[9].username
           ],
           axisLabel: {
             formatter: function(params) {
@@ -1347,16 +1346,16 @@ export default {
         xAxis: {
           type: "category",
           data: [
-            this.chart4Data[0].name,
-            this.chart4Data[1].name,
-            this.chart4Data[2].name,
-            this.chart4Data[3].name,
-            this.chart4Data[4].name,
-            this.chart4Data[5].name,
-            this.chart4Data[6].name,
-            this.chart4Data[7].name,
-            this.chart4Data[8].name,
-            this.chart4Data[9].name
+            this.chart4Data[0].username,
+            this.chart4Data[1].username,
+            this.chart4Data[2].username,
+            this.chart4Data[3].username,
+            this.chart4Data[4].username,
+            this.chart4Data[5].username,
+            this.chart4Data[6].username,
+            this.chart4Data[7].username,
+            this.chart4Data[8].username,
+            this.chart4Data[9].username
           ],
           axisLabel: {
             formatter: function(params) {
