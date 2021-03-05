@@ -499,11 +499,7 @@ export default {
   methods: {
         huodeid(id, name, type, address, memo, lot_rate_group, rate_group,kong) {
       if(kong == 1){
-        console.log('you');
-        console.log(kong);
       }if (!kong ==1){
-        console.log('zuo');
-        console.log(kong);
       }
       this.$store.commit("changeId", { 
         chanId: id,
@@ -537,7 +533,6 @@ export default {
             "&type=4"
         )
         .then((res) => {
-          console.log(res);
           if (res.data.error == 0) {
             this.addD = false;
             this.$message.success("修改站点成功");
@@ -557,7 +552,6 @@ export default {
     getRoadMes() {
       //token去掉引号
       let toKen = this.token.replace(/\"/g, "");
-      // console.log(toKen)
       this.$axios
         .get(
           "/admin/api/stations/4?token=" +
@@ -573,7 +567,6 @@ export default {
             this.total = res.data.total;
             this.getFristID = this.tableData[0].id;
             this.isActive = this.tableData[0].id;
-            console.log(this.tableData);
           }
         });
     },
@@ -587,7 +580,6 @@ export default {
     getInputMes() {
       //token去掉引号
       let toKen = this.token.replace(/\"/g, "");
-      // console.log(toKen)
       this.$axios
         .get(
           "admin/api/stations?token=" +
@@ -601,7 +593,6 @@ export default {
           if (res.status == 200) {
             this.tableData = res.data.stations; //用户列表数据
             this.total = res.data.total;
-            // console.log(this.tableData)
           }
         });
     },
@@ -622,20 +613,16 @@ export default {
             "&row=14"
         )
         .then((res) => {
-          //console.log(id)
-          console.log(res);
           if (res.status == 200) {
             this.parkList = res.data.chargers; //用户列表数据
             this.parkTotal = res.data.total;
             this.isType = true;
-            console.log(this.getFristID);
           }
         });
     },
     getRoadChargers() {
       //token去掉引号
       let toKen = this.token.replace(/\"/g, "");
-      // console.log(toKen)
       this.$axios
         .get(
           "admin/api/station/" +
@@ -648,11 +635,9 @@ export default {
             this.input2
         )
         .then((res) => {
-          console.log(res.data);
           if (res.status == 200) {
             this.parkList = res.data.chargers; //用户列表数据
             this.parkTotal = res.data.total;
-            // console.log(this.tableData)
           }
         });
     },
@@ -682,8 +667,6 @@ export default {
               }
               this.$message.success("添加成功!");
               this.addDialogVisible = false;
-              console.log(this.addForm);
-              console.log(res);
               //刷新用户列表
               setTimeout(() => {
                 this.getRoadChargers();
@@ -714,7 +697,6 @@ export default {
       //如果验证通过，则发起添加用户请求
     },
     handleCurrentChange(newPage) {
-      //console.log(newPage)
       this.pagenum = newPage;
       this.getRoadMes();
     },
@@ -728,7 +710,6 @@ export default {
     },
     //根据ID删除泊位
     async removeUserByID(id) {
-      console.log(id);
       let toKen = this.token.replace(/\"/g, "");
       const confirmRes = await this.$confirm(
         "此操作将永久删除该信息, 是否继续?",
@@ -739,14 +720,12 @@ export default {
           type: "warning",
         }
       ).catch((err) => err);
-      // console.log(confirmRes)
       if (confirmRes !== "confirm") {
         return this.$message.info("已取消删除");
       }
       this.$axios
         .delete("/admin/api/charger/" + id + "?token=" + toKen)
         .then((res) => {
-          console.log(res.status);
           if (res.status == 200) {
             this.$message.success("删除数据成功");
             setTimeout(() => {
@@ -759,7 +738,6 @@ export default {
       //删除设备提示
     },
     async removeUserByID1(id) {
-      console.log(id);
       let toKen = this.token.replace(/\"/g, "");
       const confirmRes1 = await this.$confirm(
         "此操作将永久删除该信息, 是否继续?",
@@ -770,21 +748,18 @@ export default {
           type: "warning",
         }
       ).catch((err) => err);
-      // console.log(confirmRes)
       if (confirmRes1 !== "confirm") {
         return this.$message.info("已取消删除");
       }
       this.$axios
         .delete("/admin/api/station/" + id + "?token=" + toKen)
         .then((res) => {
-          console.log(res.status);
           if (res.status == 200) {
             this.$message.success("删除数据成功");
             setTimeout(() => {
               this.getRoadMes(); //刷新设备数据
               this.getRoadChargers();
             }, 2000);
-            console.log(this.tableData);
           } else {
             this.$message.error("删除数据失败");
           }
@@ -796,14 +771,11 @@ export default {
       this.editDialogVisible = true;
       //token去掉引号
       let toKen = this.token.replace(/\"/g, "");
-      // console.log(toKen)
       this.$axios
         .get("admin/api/charger/" + id + "?token=" + toKen + "&attach=state") //根据id点击修改的id查询设备信息
         .then((res) => {
-          //console.log(res.status)
           if (res.status == 200) {
             this.editForm = res.data.charger;
-            console.log(res.data.charger);
           }
         });
     },
@@ -811,11 +783,9 @@ export default {
       this.editDialogVisible1 = true;
       //token去掉引号
       let toKen = this.token.replace(/\"/g, "");
-      // console.log(toKen)
       this.$axios
         .get("admin/api/station/" + id + "?token=" + toKen) //根据id点击修改的id查询设备信息
         .then((res) => {
-          //console.log(res.status)
           if (res.status == 200) {
             this.editForm1 = res.data.station;
           }
@@ -876,7 +846,6 @@ export default {
                 }
                 this.$message.success("设备站点成功!");
                 this.addDialogVisible1 = false;
-                console.log(this.editForm1);
                 //刷新设备列表
                 setTimeout(() => {
                   this.getRoadMes(); //刷新设备数据
@@ -917,10 +886,8 @@ export default {
       } else {
         this.value = 4;
       }
-      console.log(this.value);
       let toKen = this.token.replace(/\"/g, "");
       if (this.lest_id) {
-        console.log("输出的是id");
         this.$axios
           .put(
             "/admin/api/charger/" +
@@ -952,9 +919,7 @@ export default {
         this.d = "";
       } else {
         this.name = "添加设备";
-        console.log(this.name);
 
-        console.log("输出的是添加");
 
         this.$axios
           .post(
@@ -972,7 +937,6 @@ export default {
               this.getFristID
           )
           .then((res) => {
-            console.log(res);
             if (res.data.error == 0) {
               this.$message.success("添加设备成功");
 
@@ -980,7 +944,6 @@ export default {
             } else {
               this.$message.success("添加设备失败");
             }
-            console.log(res.data.error);
           });
         this.a = "";
         this.b = "";
