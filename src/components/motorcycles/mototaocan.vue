@@ -221,7 +221,7 @@
 import myhead from "../../components/myhead.vue";
 export default {
   components: {
-    myhead,
+    myhead
   },
   data() {
     return {
@@ -253,20 +253,20 @@ export default {
       options: [
         {
           value: "选项1",
-          label: "金额",
+          label: "金额"
         },
         {
           value: "选项2",
-          label: "电能",
+          label: "电能"
         },
         {
           value: "选项3",
-          label: "时间",
-        },
+          label: "时间"
+        }
       ],
       value: "",
       huodongId: "",
-      lest_id: "",
+      lest_id: ""
     };
   },
   created() {
@@ -286,11 +286,8 @@ export default {
       } else {
         this.value = 3;
       }
-      console.log(this.lest_id);
-      console.log(this.value);
       let toKen = this.token.replace(/\"/g, "");
       if (this.lest_id) {
-        console.log("输出的是id");
         this.$axios
           .put(
             "/admin/api/package/" +
@@ -306,7 +303,7 @@ export default {
               "&type=" +
               this.value
           )
-          .then((res) => {
+          .then(res => {
             if (res.data.error == 0) {
               this.$message.success("修改套餐成功");
               setTimeout(() => {
@@ -319,9 +316,6 @@ export default {
         this.lest_id = "";
       } else {
         this.name = "添加活动";
-        console.log(this.name);
-
-        console.log("输出的是添加");
 
         this.$axios
           .post(
@@ -338,15 +332,13 @@ export default {
               "&station=1&group=" +
               this.huodongId
           )
-          .then((res) => {
-            console.log(res);
+          .then(res => {
             if (res.data.error == 0) {
               this.$message.success("添加套餐成功");
               this.getParksMe();
             } else {
               this.$message.error("添加套餐失败");
             }
-            console.log(res.data.error);
           });
         this.a = "";
         this.b = "";
@@ -366,15 +358,13 @@ export default {
             "&keyword=" +
             this.station_msg
         )
-        .then((res) => {
+        .then(res => {
           this.station_msg = "";
-          console.log(res);
           this.tancanList = res.data.package_groups;
           this.total = res.data.total;
         });
     },
     async removetapcanByID(id) {
-      console.log(id);
       let toKen = this.token.replace(/\"/g, "");
       const confirmRes = await this.$confirm(
         "此操作将永久删除该套餐, 是否继续?",
@@ -382,16 +372,15 @@ export default {
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning",
+          type: "warning"
         }
-      ).catch((err) => err);
+      ).catch(err => err);
       if (confirmRes !== "confirm") {
         return this.$message.info("已取消删除");
       }
       this.$axios
         .delete("/admin/api/package/" + id + "?token=" + toKen)
-        .then((res) => {
-          console.log(res);
+        .then(res => {
           if (res.status == 200) {
             this.$message.success("删除成功");
             setTimeout(() => {
@@ -406,7 +395,6 @@ export default {
       //删除用户提示
     },
     async removeUserByID(id) {
-      console.log(id);
       let toKen = this.token.replace(/\"/g, "");
       const confirmRes = await this.$confirm(
         "此操作将永久删除该活动, 是否继续?",
@@ -414,16 +402,15 @@ export default {
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning",
+          type: "warning"
         }
-      ).catch((err) => err);
+      ).catch(err => err);
       if (confirmRes !== "confirm") {
         return this.$message.info("已取消删除");
       }
       this.$axios
         .delete("/admin/api/package/group/" + id + "?token=" + toKen)
-        .then((res) => {
-          console.log(res);
+        .then(res => {
           if (res.status == 200) {
             this.$message.success("删除成功");
             setTimeout(() => {
@@ -449,10 +436,8 @@ export default {
       this.name = "修改套餐";
     },
     add() {
-      console.log(this.value);
       let toKen = this.token.replace(/\"/g, "");
       if (this.huodongid) {
-        console.log("输出的是id");
         this.$axios
           .put(
             "/admin/api/package/group/" +
@@ -464,7 +449,7 @@ export default {
               "&memo=" +
               this.b
           )
-          .then((res) => {
+          .then(res => {
             if (res.data.error == 0) {
               this.$message.success("修改活动成功");
               setTimeout(() => {
@@ -481,7 +466,6 @@ export default {
         this.value = "时间";
       } else {
         this.name = "添加设备";
-        console.log("输出的是添加");
         this.$axios
           .post(
             "/admin/api/package/group?token=" +
@@ -491,7 +475,7 @@ export default {
               "&memo=" +
               this.b
           )
-          .then((res) => {
+          .then(res => {
             if (res.data.error == 0) {
               this.$message.success("添加活动成功");
             } else {
@@ -518,8 +502,7 @@ export default {
             this.pagenum +
             "&row=16"
         )
-        .then((res) => {
-          console.log(res.data.package_groups);
+        .then(res => {
           this.tancanList = res.data.package_groups;
           this.total = res.data.total;
         });
@@ -528,7 +511,6 @@ export default {
       //token去掉引号
       this.huodongId = id;
       let toKen = this.token.replace(/\"/g, "");
-      console.log(id);
       this.$axios
         .get(
           "/admin/api/package/group/" +
@@ -539,14 +521,10 @@ export default {
             this.newpark +
             "&row=16"
         )
-        .then((res) => {
-          console.log(res.data);
-          // console.log(res.data.users)
-          // console.log(res.status)//打印状态码
+        .then(res => {
           if (res.status == 200) {
             this.parkList = res.data.packages; //用户列表数据
             this.parkTotal = res.data.total;
-            // console.log(this.parkList)
             this.isType = true;
           }
           this.topName = name;
@@ -556,7 +534,6 @@ export default {
     getParksMe() {
       //token去掉引号
       let toKen = this.token.replace(/\"/g, "");
-      // console.log(toKen)
       this.$axios
         .get(
           "/admin/api/package/group/2" +
@@ -566,9 +543,7 @@ export default {
             this.newpark +
             "&row=14"
         )
-        .then((res) => {
-          console.log(res.data);
-          // console.log(res.status)//打印状态码
+        .then(res => {
           if (res.status == 200) {
             this.parkList = res.data.packages; //用户列表数据
             this.parkTotal = res.data.total;
@@ -576,7 +551,6 @@ export default {
         });
     },
     handleCurrentChange(newPage) {
-      //console.log(newPage)
       this.pagenum = newPage;
       this.getRoadMes();
     },
@@ -587,8 +561,8 @@ export default {
       } else {
         this.getParksMe();
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

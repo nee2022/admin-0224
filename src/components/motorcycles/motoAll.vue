@@ -919,8 +919,6 @@ export default {
         this.d = "";
       } else {
         this.name = "添加设备";
-
-
         this.$axios
           .post(
             "/admin/api/charger?token=" +
